@@ -4,13 +4,13 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 ## Packages
 
-"@reduxjs/toolkit": "^1.8.2",
-"axios": "^0.27.2",
-"lodash": "^4.17.21",
-"react-redux": "^8.0.2",
-"react-router-dom": "^6.3.0",
-"redux": "^4.2.0",
-"sass": "^1.52.3"
+"@reduxjs/toolkit": "^1.8.2"\
+"axios": "^0.27.2"\
+"lodash": "^4.17.21"\
+"react-redux": "^8.0.2"\
+"react-router-dom": "^6.3.0"\
+"redux": "^4.2.0"\
+"sass": "^1.52.3"\
 
 ## Available Scripts
 
