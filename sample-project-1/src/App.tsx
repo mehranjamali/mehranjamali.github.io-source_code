@@ -1,16 +1,20 @@
 import React from "react";
-import "./App.css";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUserGroup, faBorderAll } from "@fortawesome/free-solid-svg-icons";
-import { faUser, faObjectGroup } from "@fortawesome/free-regular-svg-icons";
+import { BrowserRouter as Router } from "react-router-dom";
+
+// components
+import Navbar from "./components/navbar/navbar";
+import Footer from "./components/footer/footer";
+// Routes
+import Pages from "./pages/pages";
 
 function App() {
    return (
       <div className="App">
-         <header className="App-header">
-            <FontAwesomeIcon icon={faUser} />
-            <FontAwesomeIcon icon={faBorderAll} />
-         </header>
+         <Router>
+            <Navbar />
+            <Pages />
+            <Footer />
+         </Router>
       </div>
    );
 }
