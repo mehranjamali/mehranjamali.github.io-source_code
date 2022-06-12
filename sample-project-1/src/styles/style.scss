@@ -1,7 +1,7 @@
 // tailwind
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
 
 // utils
 @import "./utils/colors";
@@ -9,21 +9,21 @@
 @import "./utils/functions";
 @import "./utils/mixins";
 
-// base
-@import "./base/base";
-@import "./base/typography";
-
 // theme
 @import "./themes/dark";
 @import "./themes/light";
+
+// base
+@import "./base/base";
+@import "./base/typography";
 
 // index, app
 @import "./index";
 @import "./App";
 
 // pages
-@import "../pages/pages";
+// ...
 
 // components
 @import "../components/navbar/navbar";
-@import "../components/footer/footer";
+// ...

@@ -1,0 +1,74 @@
+// Navbar
+.navbar-h {
+   height: 51px;
+}
+.nav-links {
+   li {
+      a {
+         transition: all 0.5s;
+      }
+   }
+}
+// Hamburger
+.hamburger {
+   cursor: pointer;
+   width: 30px;
+   height: 30px;
+   position: relative;
+   &-top {
+      position: absolute;
+      top: 5px;
+      right: 0;
+      width: 30px;
+      height: 2px;
+      transform: rotate(0);
+      transition: all 0.5s;
+   }
+   &-middle {
+      @extend .hamburger-top;
+      transform: translateY(9px);
+   }
+   &-bottom {
+      @extend .hamburger-top;
+      transform: translateY(18px);
+   }
+}
+.open {
+   transform: rotate(90deg);
+   transform: translateY(0px);
+   .hamburger-top {
+      transform: rotate(45deg) translateY(6px) translate(6px);
+   }
+   .hamburger-middle {
+      display: none;
+   }
+   .hamburger-bottom {
+      transform: rotate(-45deg) translateY(6px) translate(-6px);
+   }
+}
+
+// Profile
+.profile-dropdown {
+   width: 241px;
+   &::before {
+      content: "";
+      display: block;
+      height: 14px;
+      left: 8px;
+      position: absolute;
+      top: -16px;
+      transform: rotate(45deg) translate(6px, 6px);
+      width: 14px;
+      z-index: -1 !important;
+   }
+}
+
+@media screen and(max-width:768px) {
+   .navbar-h {
+      height: 56px;
+   }
+}
+
+.transition-05 {
+   transition: all 0.5s !important;
+}

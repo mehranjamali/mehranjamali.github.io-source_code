@@ -9,7 +9,7 @@ import Pages from "./pages/pages";
 
 function App() {
    return (
-      <div className="App">
+      <div className="flex flex-col justify-between items-center relative min-h-screen text-white">
          <Router>
             <Navbar />
             <Pages />
