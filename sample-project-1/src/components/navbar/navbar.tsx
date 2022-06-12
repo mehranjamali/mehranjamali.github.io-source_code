@@ -1,7 +1,7 @@
 import React, { useMemo, useRef } from "react";
 import { NavLink } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUser, faSun, faMoon, faBell } from "@fortawesome/free-regular-svg-icons";
+import { faUser, faSun, faMoon, faBell, faHeart } from "@fortawesome/free-regular-svg-icons";
 import { faSearch, faArrowRightFromBracket } from "@fortawesome/free-solid-svg-icons";
 
 function Navbar() {
@@ -61,7 +61,7 @@ function Navbar() {
       >
          {/* nav container */}
          <div className=" flex flex-row justify-between items-center w-full px-4 lg:px-0 lg:max-w-5xl xl:max-w-6xl mx-auto navbar-h">
-            {/* hamburger , brand , mobile menu - nav links */}
+            {/* right_side: hamburger , brand , mobile menu - nav links */}
             <div className="flex flex-row justify-end items-center gap-12">
                {/* hamburger , brand , mobile menu */}
                <div className="flex flex-row justify-end items-center gap-6">
@@ -71,86 +71,144 @@ function Navbar() {
                         ref={mobileMenuBg}
                         className="hidden absolute top-0 bottom-0 z-10 right-0 left-0 h-screen w-screen bg-slate-400/50 md:hidden"
                      ></div>
-                     <ul
+                     {/* ---end of side list */}
+                     {/* right side panel */}
+                     <div
                         ref={mobileMenu}
                         className=" absolute h-screen
-                        flex flex-col justify-start items-start mr-0 z-50 shadow-2xl w-52 font-semibold text-sm bg-white dark:bg-slate-800 
+                        flex flex-col justify-between items-start mr-0  z-50 shadow-2xl w-52 text-sm bg-white dark:bg-slate-800 
+                        dark:text-slate-300 
                         border-t-2 dark:border-slate-600
-                        translate-x-full transition-05"
+                        translate-x-full transition-05 pr-0 pb-16"
                      >
-                        <li className="relative w-full py-3 hover:bg-gray-100 dark:hover:bg-slate-700">
-                           <NavLink
-                              to="/"
-                              className={({ isActive }) =>
-                                 `py-3 pr-4 pl-28 hover:text-gray-800 dark:hover:text-gray-50 ${
-                                    isActive
-                                       ? "border-r-2 border-slate-800 dark:border-slate-50 font-bold hover:text-gray-600"
-                                       : ""
-                                 }`
-                              }
+                        {/* side list */}
+                        <ul className="w-full p-0 m-0">
+                           <li
+                              className="w-full py-3 dark:hover:bg-slate-600 hover:bg-gray-200
+                                    dark:active:bg-slate-600 active:bg-gray-200
+                                    hover:text-sky-400 hover:border-sky-400 transition-03"
                            >
-                              صفحه اصلی
-                           </NavLink>
-                        </li>
-
-                        <li className="relative w-full py-3 hover:bg-gray-100 dark:hover:bg-slate-700">
-                           <NavLink
-                              to="/users"
-                              className={({ isActive }) =>
-                                 `py-3 pr-4 pl-28 hover:text-gray-800 dark:hover:text-gray-50 ${
-                                    isActive
-                                       ? "border-r-2 border-slate-800 dark:border-slate-50 font-bold hover:text-gray-600"
-                                       : ""
-                                 }`
-                              }
+                              <NavLink
+                                 to="/"
+                                 className={({ isActive }) =>
+                                    `py-3 pr-4 pl-28 ${
+                                       isActive
+                                          ? "border-r-2 border-sky-400 font-bold dark:text-white"
+                                          : ""
+                                    }`
+                                 }
+                              >
+                                 صفحه اصلی
+                              </NavLink>
+                           </li>
+                           <li
+                              className="w-full py-3 dark:hover:bg-slate-600 hover:bg-gray-200
+                                       dark:active:bg-slate-600 active:bg-gray-200
+                                    hover:text-sky-400 hover:border-sky-400 transition-03"
                            >
-                              نویسنده ها
-                           </NavLink>
-                        </li>
-                        <li className="relative w-full py-3 hover:bg-gray-100 dark:hover:bg-slate-700">
-                           <NavLink
-                              to="/articles"
-                              className={({ isActive }) =>
-                                 `py-3 pr-4 pl-28 hover:text-gray-800 dark:hover:text-gray-50 ${
-                                    isActive
-                                       ? "border-r-2 border-slate-800 dark:border-slate-50 font-bold hover:text-gray-600"
-                                       : ""
-                                 }`
-                              }
+                              <NavLink
+                                 to="/users"
+                                 className={({ isActive }) =>
+                                    `py-3 pr-4 pl-28 ${
+                                       isActive
+                                          ? "border-r-2 border-sky-400 font-bold dark:text-white"
+                                          : ""
+                                    }`
+                                 }
+                              >
+                                 نویسنده ها
+                              </NavLink>
+                           </li>
+                           <li
+                              className="w-full py-3 dark:hover:bg-slate-600 hover:bg-gray-200
+                                       dark:active:bg-slate-600 active:bg-gray-200
+                                    hover:text-sky-400 hover:border-sky-400 transition-03"
                            >
-                              مقالات
-                           </NavLink>
-                        </li>
-                        <li className="relative w-full py-3 hover:bg-gray-100 dark:hover:bg-slate-700">
-                           <NavLink
-                              to="/onlineLearning"
-                              className={({ isActive }) =>
-                                 `py-3 pr-4 pl-28 hover:text-gray-800 dark:hover:text-gray-50 ${
-                                    isActive
-                                       ? "border-r-2 border-slate-800 dark:border-slate-50 font-bold hover:text-gray-600"
-                                       : ""
-                                 }`
-                              }
+                              <NavLink
+                                 to="/articles"
+                                 className={({ isActive }) =>
+                                    `py-3 pr-4 pl-36 ${
+                                       isActive
+                                          ? "border-r-2 border-sky-400 font-bold dark:text-white"
+                                          : ""
+                                    }`
+                                 }
+                              >
+                                 مقالات
+                              </NavLink>
+                           </li>
+                           <li
+                              className="w-full py-3 dark:hover:bg-slate-600 hover:bg-gray-200
+                                       dark:active:bg-slate-600 active:bg-gray-200
+                                    hover:text-sky-400 hover:border-sky-400 transition-03"
                            >
-                              آموزش مجازی
-                           </NavLink>
-                        </li>
-                        <li className="relative w-full py-3 hover:bg-gray-100 dark:hover:bg-slate-700">
-                           <NavLink
-                              to="/aboutUs"
-                              className={({ isActive }) =>
-                                 `py-3 pr-4 pl-36 hover:text-gray-800 dark:hover:text-gray-50 ${
-                                    isActive
-                                       ? "border-r-2 border-slate-800 dark:border-slate-50 font-bold hover:text-gray-600"
-                                       : ""
-                                 }`
-                              }
+                              <NavLink
+                                 to="/onlineLearning"
+                                 className={({ isActive }) =>
+                                    `py-3 pr-4 pl-28 ${
+                                       isActive
+                                          ? "border-r-2 border-sky-400 font-bold dark:text-white"
+                                          : ""
+                                    }`
+                                 }
+                              >
+                                 آموزش مجازی
+                              </NavLink>
+                           </li>
+                           <li
+                              className="w-full py-3 dark:hover:bg-slate-600 hover:bg-gray-200
+                                       dark:active:bg-slate-600 active:bg-gray-200
+                                    hover:text-sky-400 hover:border-sky-400 transition-03"
                            >
-                              درباره ما
-                           </NavLink>
-                        </li>
-                     </ul>
+                              <NavLink
+                                 to="/aboutUs"
+                                 className={({ isActive }) =>
+                                    `py-3 pr-4 pl-36 ${
+                                       isActive
+                                          ? "border-r-2 border-sky-400 font-bold dark:text-white"
+                                          : ""
+                                    }`
+                                 }
+                              >
+                                 درباره ما
+                              </NavLink>
+                           </li>
+                        </ul>
+                        {/* me */}
+                        <div className="flex flex-col px-2 gap-5">
+                           <div className="flex flex-col justify-between items-center px-3">
+                              <a
+                                 className="hover:text-sky-500 active:text-sky-500 underline"
+                                 href="https://www.linkedin.com/in/mehran-jamali-b2a43b239/"
+                              >
+                                 Linkedin
+                              </a>
+                              <span className="h-3">||||||</span>
+                              <span className="h-3">||||||</span>
+                              <span className="h-3">||||||</span>
+                              <span className="h-3">||||||</span>
+                              <a
+                                 className="pt-2 hover:text-sky-500 active:text-sky-500 underline"
+                                 href="https://github.com/mehranjamali/React-Redux-Sample1"
+                              >
+                                 Github{" "}
+                              </a>
+                           </div>
+                           <h2>
+                              <span className="text-xs">طراحی شده توسط </span>
+                              <FontAwesomeIcon icon={faHeart} className="text-base text-red-500" />
+                              <span className="text-base font-bold dark:text-gray-100">
+                                 {" "}
+                                 مهران جمالی
+                              </span>
+                           </h2>
+                        </div>
+                        {/* ---end of me -_- */}
+                        {/* ---end of side list */}
+                     </div>
+                     {/* --end of right side panel */}
                   </div>
+                  {/* ---end of mobile menu */}
                   {/* hamburger */}
                   <div
                      ref={mobileMenuBtn}
@@ -161,12 +219,15 @@ function Navbar() {
                      <span className="hamburger-middle bg-slate-800 dark:bg-white"></span>
                      <span className="hamburger-bottom bg-slate-800 dark:bg-white"></span>
                   </div>
+                  {/* ---end of hamburger */}
                   {/* brand */}
                   <NavLink to="/" className="font-bold text-xl">
                      {/* set style later */}
                      Brand
                   </NavLink>
+                  {/* ---end of brand */}
                </div>
+               {/* ---end of hamburger , brand , mobile menu */}
                {/* nav links */}
                <div className="hidden md:block">
                   <ul className="flex flex-row justify-end gap-5 text-sm text-slate-600 dark:text-slate-300 nav-links">
@@ -174,9 +235,9 @@ function Navbar() {
                         <NavLink
                            to="/"
                            className={({ isActive }) =>
-                              `py-4 px-1 hover:text-gray-800 dark:hover:text-slate-50 ${
+                              `py-4 px-1 hover:text-sky-400 hover:border-sky-400 transition-03 ${
                                  isActive
-                                    ? "border-b border-slate-800 dark:border-slate-100 font-bold hover:text-gray-600 dark:text-gray-50"
+                                    ? "border-b border-slate-800 dark:border-slate-100 font-bold dark:text-gray-50"
                                     : ""
                               }`
                            }
@@ -188,7 +249,7 @@ function Navbar() {
                         <NavLink
                            to="/users"
                            className={({ isActive }) =>
-                              `py-4 px-1 hover:text-gray-800 dark:hover:text-slate-50 ${
+                              `py-4 px-1 hover:text-sky-400 hover:border-sky-400 transition-03 ${
                                  isActive
                                     ? "border-b border-slate-800 dark:border-slate-100 font-bold hover:text-gray-600 dark:text-gray-50"
                                     : ""
@@ -202,7 +263,7 @@ function Navbar() {
                         <NavLink
                            to="/articles"
                            className={({ isActive }) =>
-                              `py-4 px-1 hover:text-gray-800 dark:hover:text-slate-50 ${
+                              `py-4 px-1 hover:text-sky-400 hover:border-sky-400 transition-03 ${
                                  isActive
                                     ? "border-b border-slate-800 dark:border-slate-100 font-bold hover:text-gray-600 dark:text-gray-50"
                                     : ""
@@ -216,7 +277,7 @@ function Navbar() {
                         <NavLink
                            to="/onlineLearning"
                            className={({ isActive }) =>
-                              `py-4 px-1 hover:text-gray-800 dark:hover:text-slate-50 ${
+                              `py-4 px-1 hover:text-sky-400 hover:border-sky-400 transition-03 ${
                                  isActive
                                     ? "border-b border-slate-800 dark:border-slate-100 font-bold hover:text-gray-600 dark:text-gray-50"
                                     : ""
@@ -230,7 +291,7 @@ function Navbar() {
                         <NavLink
                            to="/aboutUs"
                            className={({ isActive }) =>
-                              `py-4 px-1 hover:text-gray-800 dark:hover:text-slate-50 ${
+                              `py-4 px-1 hover:text-sky-400 hover:border-sky-400 transition-03 ${
                                  isActive
                                     ? "border-b border-slate-800 dark:border-slate-100 font-bold hover:text-gray-600 dark:text-gray-50"
                                     : ""
@@ -242,24 +303,38 @@ function Navbar() {
                      </li>
                   </ul>
                </div>
+               {/* ---end of nav links */}
             </div>
-            {/* profile , search , notification , theme*/}
+            {/* ---end of right_side: hamburger , brand , mobile menu - nav links */}
+            {/* left_side: profile , search , notification , theme*/}
             <div className="relative flex flex-row justify-start items-center gap-6">
+               {/* theme */}
                <div className="flex items-center py-4 cursor-pointer text-lg">
                   <FontAwesomeIcon icon={faSun} className="text-yellow-500 py-1" />
                   <FontAwesomeIcon icon={faMoon} className="text-indigo-700 py-1" />
                </div>
+               {/* ---end of theme */}
+               {/* search  */}
                <div className="flex items-center py-4 cursor-pointer text-lg">
-                  <FontAwesomeIcon icon={faSearch} className="py-1" />
+                  <FontAwesomeIcon
+                     icon={faSearch}
+                     className="py-1 hover:text-sky-400 transition-03"
+                  />
                </div>
+               {/* ---end of search  */}
+               {/* notification */}
                <div className="flex items-center py-4 cursor-pointer text-lg">
-                  <FontAwesomeIcon icon={faBell} className="py-1" />
+                  <FontAwesomeIcon
+                     icon={faBell}
+                     className="py-1 hover:text-sky-400 transition-03"
+                  />
                </div>
-               {/* user icon */}
+               {/* ---end of notification */}
+               {/* user */}
                <div className="flex items-center relative py-4 cursor-pointer text-lg">
                   <FontAwesomeIcon
                      icon={faUser}
-                     className="bg-gray-200 dark:bg-slate-600 text-gray-600 dark:text-gray-200 p-2 rounded-full"
+                     className="bg-gray-200 dark:bg-slate-600 text-gray-600 dark:text-gray-200 p-2 rounded-full hover:text-sky-400 dark:hover:text-sky-500 transition-03"
                      onClick={toggleProfileDropDown}
                   />
                   {/* !!!!!!!!!!!!!!!!!!!!!! Create DropDown Component */}
@@ -271,7 +346,7 @@ function Navbar() {
                      px-4 py-2 text-sm"
                   >
                      <li className="flex flex-col items-start py-2">
-                        <h3 className="mb-2 text-lg font-bold dark:text-white">اکانت کاربری</h3>
+                        <h3 className="mb-2 text-lg font-bold dark:text-gray-100">اکانت کاربری</h3>
                         <div
                            className="py-1 pr-2 border-r-2 border-gray-400 text-xs w-full 
                                     dark:hover:bg-slate-600 hover:bg-gray-200
@@ -284,14 +359,14 @@ function Navbar() {
                            className="py-1 pr-2 mt-1 border-r-2 border-gray-400 text-xs w-full 
                                     dark:hover:bg-slate-600 hover:bg-gray-200
                                     dark:active:bg-slate-600 active:bg-gray-200
-                                    hover:text-sky-400 hover:border-sky-400 transition-03"
+                                    hover:text-sky-400 hover:border-sky-400 transition-03                                    "
                         >
                            <p>ویرایش اطلاعات کاربری</p>
                         </div>
                      </li>
 
                      <li className="flex flex-col items-start py-2 mt-2 border-t border-gray-400">
-                        <h3 className="mb-2 text-lg font-bold dark:text-white">مدیریت</h3>
+                        <h3 className="mb-2 text-lg font-bold dark:text-gray-100">مدیریت</h3>
                         <div
                            className="py-1 pr-2 border-r-2 border-gray-400 text-xs w-full 
                                     dark:hover:bg-slate-600 hover:bg-gray-200
@@ -352,11 +427,13 @@ function Navbar() {
                         </div>
                      </li>
                   </ul>
+                  {/* !!!!!!!!!!!!!!!!!!!!!! Create DropDown Component */}
                </div>
-               {/* end of user icon */}
+               {/* ---end of user */}
             </div>
-            {/* end of profile , search , notification , theme*/}
+            {/* ---end of left_side: profile , search , notification , theme*/}
          </div>
+         {/* ---end of nav container */}
       </nav>
    );
 }
