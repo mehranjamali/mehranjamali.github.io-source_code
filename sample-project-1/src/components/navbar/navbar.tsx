@@ -2,7 +2,7 @@ import React, { useMemo, useRef } from "react";
 import { NavLink } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser, faSun, faMoon, faBell } from "@fortawesome/free-regular-svg-icons";
-import { faSearch } from "@fortawesome/free-solid-svg-icons";
+import { faSearch, faArrowRightFromBracket } from "@fortawesome/free-solid-svg-icons";
 
 function Navbar() {
    // body
@@ -255,26 +255,107 @@ function Navbar() {
                <div className="flex items-center py-4 cursor-pointer text-lg">
                   <FontAwesomeIcon icon={faBell} className="py-1" />
                </div>
+               {/* user icon */}
                <div className="flex items-center relative py-4 cursor-pointer text-lg">
                   <FontAwesomeIcon
                      icon={faUser}
-                     className="bg-gray-200 dark:bg-slate-600 text-gray-600 dark:text-gray-50 p-2 rounded-full"
+                     className="bg-gray-200 dark:bg-slate-600 text-gray-600 dark:text-gray-200 p-2 rounded-full"
                      onClick={toggleProfileDropDown}
                   />
+                  {/* !!!!!!!!!!!!!!!!!!!!!! Create DropDown Component */}
                   <ul
                      ref={profileDd}
-                     className="hidden profile-dropdown before:border-l before:border-t before:bg-white dark:before:bg-slate-800 before:border-t-slate-300 
-                           dark:before:border-t-slate-600 before:border-l-slate-300 dark:before:border-l-slate-600
-                             absolute top-16 left-0 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 rounded-md shadow-2xl z-50 h-fit"
+                     className="hidden profile-dropdown before:border-l before:border-t before:bg-white dark:before:bg-slate-800 
+                     before:border-t-slate-300 dark:before:border-t-slate-600 before:border-l-slate-300 dark:before:border-l-slate-600
+                     absolute top-16 left-0 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 rounded-md shadow-2xl z-50 h-fit
+                     px-4 py-2 text-sm"
                   >
-                     <li>first item in list!</li>
-                     <li>first item in list!</li>
-                     <li>first item in list!</li>
-                     <li>first item in list!</li>
-                     <li>first item in list!</li>
+                     <li className="flex flex-col items-start py-2">
+                        <h3 className="mb-2 text-lg font-bold dark:text-white">اکانت کاربری</h3>
+                        <div
+                           className="py-1 pr-2 border-r-2 border-gray-400 text-xs w-full 
+                                    dark:hover:bg-slate-600 hover:bg-gray-200
+                                    dark:active:bg-slate-600 active:bg-gray-200
+                                    hover:text-sky-400 hover:border-sky-400 transition-03"
+                        >
+                           <p>تنظیمات</p>
+                        </div>
+                        <div
+                           className="py-1 pr-2 mt-1 border-r-2 border-gray-400 text-xs w-full 
+                                    dark:hover:bg-slate-600 hover:bg-gray-200
+                                    dark:active:bg-slate-600 active:bg-gray-200
+                                    hover:text-sky-400 hover:border-sky-400 transition-03"
+                        >
+                           <p>ویرایش اطلاعات کاربری</p>
+                        </div>
+                     </li>
+
+                     <li className="flex flex-col items-start py-2 mt-2 border-t border-gray-400">
+                        <h3 className="mb-2 text-lg font-bold dark:text-white">مدیریت</h3>
+                        <div
+                           className="py-1 pr-2 border-r-2 border-gray-400 text-xs w-full 
+                                    dark:hover:bg-slate-600 hover:bg-gray-200
+                                    dark:active:bg-slate-600 active:bg-gray-200
+                                    hover:text-sky-400 hover:border-sky-400 transition-03"
+                        >
+                           <p> لیست های من</p>
+                        </div>
+                        <div
+                           className="py-1 pr-2 mt-1 border-r-2 border-gray-400 text-xs w-full 
+                                    dark:hover:bg-slate-600 hover:bg-gray-200
+                                    dark:active:bg-slate-600 active:bg-gray-200
+                                    hover:text-sky-400 hover:border-sky-400 transition-03"
+                        >
+                           مورد علاقه های من
+                        </div>
+                        <div
+                           className="py-1 pr-2 mt-1 border-r-2 border-gray-400 text-xs w-full 
+                                    dark:hover:bg-slate-600 hover:bg-gray-200
+                                    dark:active:bg-slate-600 active:bg-gray-200
+                                    hover:text-sky-400 hover:border-sky-400 transition-03"
+                        >
+                           آموزش های من
+                        </div>
+                        <div
+                           className="py-1 pr-2 mt-1 border-r-2 border-gray-400 text-xs w-full 
+                                    dark:hover:bg-slate-600 hover:bg-gray-200
+                                    dark:active:bg-slate-600 active:bg-gray-200
+                                    hover:text-sky-400 hover:border-sky-400 transition-03"
+                        >
+                           پست ها و پیش نویس ها
+                        </div>
+                     </li>
+
+                     <li className="flex flex-row items-start justify-between gap-4 pt-3 pb-1 mt-2 border-t border-gray-400">
+                        <div className="w-full">
+                           <button
+                              className="flex items-center justify-center text-xs font-semibold 
+                                       text-red-500 py-2 border border-red-500 rounded-md w-full
+                                       hover:text-white hover:bg-red-500 
+                                       active:text-white active:bg-red-500 
+                                       shadow-xl transition-03"
+                           >
+                              <FontAwesomeIcon icon={faArrowRightFromBracket} className="pl-2" />
+                              <span>خروج</span>
+                           </button>
+                        </div>
+                        <div className="w-full">
+                           <button
+                              className="text-xs font-semibold text-sky-400 py-2 border
+                                  border-sky-500 rounded-md w-full 
+                                       hover:text-white hover:bg-sky-500 
+                                       active:text-white active:bg-sky-500 
+                                       shadow-xl transition-03"
+                           >
+                              ایجاد حساب
+                           </button>
+                        </div>
+                     </li>
                   </ul>
                </div>
+               {/* end of user icon */}
             </div>
+            {/* end of profile , search , notification , theme*/}
          </div>
       </nav>
    );
