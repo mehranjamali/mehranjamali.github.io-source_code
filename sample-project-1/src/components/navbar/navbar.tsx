@@ -5,19 +5,31 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser, faSun, faMoon, faBell, faHeart } from "@fortawesome/free-regular-svg-icons";
 import { faSearch, faArrowRightFromBracket } from "@fortawesome/free-solid-svg-icons";
 
+// search service
+import { getAllSugests } from "./search";
+
 function Navbar() {
-   // generate date
-   const generateDate = (d: number) => {
-      const date = new Date();
-      date.setDate(date.getDate() - d);
-      return moment(date).locale("fa").format("YYYY/MM/DD");
-   };
+   // use state for search
+   const [searchQuery, setSearchQuery] = useState("");
+   const [searchSugests, setSearchSugests]: any = useState([]);
+
+   //
+   useEffect(() => {
+      setSearchSugests(getAllSugests());
+   }, []);
 
    // body
    const body = useMemo(() => {
       console.log("useMemo called!");
       return document.body;
    }, []);
+
+   // generate date
+   const generateDate = (d: number) => {
+      const date = new Date();
+      date.setDate(date.getDate() - d);
+      return moment(date).locale("fa").format("YYYY/MM/DD");
+   };
 
    // mobile menu
    const mobileMenuBg: any = useRef(null);
@@ -29,6 +41,10 @@ function Navbar() {
 
    // notification slide
    const notificationSlide: any = useRef(null);
+
+   // search modal
+   const searchModalBg: any = useRef(null);
+   const searchModal: any = useRef(null);
 
    // close menus
    const closeMenus = (type: string) => {
@@ -70,10 +86,25 @@ function Navbar() {
       profileDd.current.classList.toggle("hidden");
    };
 
-   // toggle notification slide 70%
+   // toggle notification slide
    const toggleNotificationSlide = () => {
       notificationSlide.current.classList.toggle("-translate-x-full");
       body.classList.toggle("stop-scroll-from-notification");
+   };
+
+   // toggle notification slide
+   const toggleSearchModal = () => {
+      searchModalBg.current.classList.toggle("hidden");
+      searchModal.current.classList.toggle("");
+      body.classList.toggle("stop-scroll-from-search");
+   };
+
+   // show sugested search
+   const showSugestedSearchItems = () => {};
+
+   // handle search input
+   const handleSearchInput = (event: any) => {
+      setSearchQuery(event.currentTarget.value);
    };
 
    return (
@@ -88,7 +119,7 @@ function Navbar() {
                {/* hamburger , brand , mobile menu */}
                <div className="flex flex-row justify-end items-center gap-6">
                   {/* mobile menu */}
-                  <div className="absolute w-0 top-14 right-0 md:hidden">
+                  <div className="absolute w-0 top-14 right-0 md:hidden z-50">
                      <div
                         ref={mobileMenuBg}
                         className="hidden absolute top-0 bottom-0 z-10 right-0 left-0 h-screen w-screen bg-slate-400/50 md:hidden"
@@ -105,7 +136,7 @@ function Navbar() {
                         translate-x-full transition-05 pr-0 pb-16"
                      >
                         {/* side list */}
-                        <ul className="w-full p-0 m-0">
+                        <ul className="w-full p-0 m-0 z-50">
                            <li
                               className="w-full py-3 dark:hover:bg-slate-600 hover:bg-gray-200
                                     dark:active:bg-slate-600 active:bg-gray-200
@@ -343,7 +374,47 @@ function Navbar() {
                      icon={faSearch}
                      className="py-1 hover:text-sky-400 transition-03"
                   />
-                  <div className="absolute inset-0 top-14 bg-slate-400/50 w-full h-screen z-50">Lorem ipsum dolor sit.</div>
+                  <div className="absolute inset-0 from-top">
+                     {/* bg */}
+                     <div className="absolute inset-0 bg-slate-400/50 w-full h-screen"></div>
+                     {/* ---end of bg */}
+                     {/* search modal */}
+                     <div
+                        className="relative flex flex-col gap-1 shadow-xl
+                              w-11/12 sm:max-w-xl mx-auto dark:bg-slate-800 mt-6 md:mt-7 z-40 p-3 rounded-md"
+                     >
+                        <div className="pb-3 border-b border-slate-600">
+                           <input
+                              className="shadow appearance-none border rounded w-full py-1 px-2 text-sm text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                              type="text"
+                              name="search"
+                              placeholder="جستجو . . ."
+                              value={searchQuery}
+                              onChange={(e) => {
+                                 handleSearchInput(e);
+                              }}
+                           />
+                        </div>
+
+                        {searchSugests.map((item: any, index: number) => {
+                           return (
+                              <div key={index}>
+                                 <div className="flex flex-row items-center justify-start gap-3 p-1 pt-2">
+                                    <div>
+                                       <FontAwesomeIcon icon={faSearch} />
+                                    </div>
+                                    <div className="text-slate-200 text-sm">
+                                       <NavLink to={`/search/${item.id}?title=${item.title}`}>
+                                          {item.title}
+                                       </NavLink>
+                                    </div>
+                                 </div>
+                              </div>
+                           );
+                        })}
+                     </div>
+                     {/* ---end of search modal */}
+                  </div>
                </div>
                {/* ---end of search  */}
                {/* notification */}
@@ -355,7 +426,7 @@ function Navbar() {
                   />
                   <div
                      ref={notificationSlide}
-                     className="absolute left-0 notification-top z-50 
+                     className="absolute left-0 from-top z-50 
                                  flex flex-col justify-between items-start
                                  shadow-xl w-56 sm:w-80 h-screen pb-16
                                  bg-white dark:bg-slate-800 

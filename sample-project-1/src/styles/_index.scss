@@ -7,6 +7,10 @@ body {
    overflow-y: hidden;
 }
 
+.stop-scroll-from-search {
+   overflow-y: hidden;
+}
+
 @media screen and(max-width:768px) {
    .stop-scroll {
       overflow-y: hidden;
