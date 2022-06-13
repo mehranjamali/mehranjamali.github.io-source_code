@@ -56,9 +56,21 @@
    }
 }
 
+.notification-top {
+   top: 51px;
+}
+.notification-list {
+   div:nth-child(2) {
+      border-top: none;
+   }
+}
+
 @media screen and(max-width:768px) {
    .navbar-h {
       height: 56px;
+   }
+   .notification-top {
+      top: 56px;
    }
 }
 
@@ -69,3 +81,5 @@
 .transition-03 {
    transition: all 0.3s !important;
 }
+
+@import "./components/search";

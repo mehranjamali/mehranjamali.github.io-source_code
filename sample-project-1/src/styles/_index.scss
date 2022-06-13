@@ -3,6 +3,10 @@ body {
    font-family: Shabnam;
 }
 
+.stop-scroll-from-notification {
+   overflow-y: hidden;
+}
+
 @media screen and(max-width:768px) {
    .stop-scroll {
       overflow-y: hidden;
@@ -18,4 +22,15 @@ body {
       url("../../assets/font/Shabnam.ttf") format("truetype");
    font-weight: 400;
    font-style: normal;
+}
+
+@font-face {
+   font-family: bYekan;
+   src: url("../../assets/font/bYekan.ttf");
+   font-weight: 400;
+   font-style: normal;
+}
+
+.font-bYekan {
+   font-family: bYekan !important;
 }
