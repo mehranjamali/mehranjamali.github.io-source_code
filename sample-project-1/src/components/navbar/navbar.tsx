@@ -1,50 +1,46 @@
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { NavLink } from "react-router-dom";
-import moment from "jalali-moment";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser, faSun, faMoon, faBell, faHeart } from "@fortawesome/free-regular-svg-icons";
-import { faSearch, faArrowRightFromBracket } from "@fortawesome/free-solid-svg-icons";
+import { faSearch } from "@fortawesome/free-solid-svg-icons";
 
-// search service
-import { getAllSugests } from "./search";
+// components
+import Search from "./components/search";
+import Notification from "./components/notification";
+import Dropdown, { dropdownType } from "./components/dropdown";
+
+const dropdownObjs: dropdownType[] = [
+   {
+      title: "اکانت کاربری",
+      list: [
+         { link: "/users", name: "تنظیمات" },
+         { link: "/users", name: "ویرایش اطلاعات کاربری" },
+      ],
+   },
+   {
+      title: "مدیریت",
+      list: [
+         { link: "/users", name: "لیست های من" },
+         { link: "/users", name: "مورد علاقه های من" },
+         { link: "/users", name: "آموزش های من" },
+         { link: "/users", name: "پست ها و پیش نویس ها" },
+      ],
+   },
+];
 
 function Navbar() {
-   // use state for search
-   const [searchQuery, setSearchQuery] = useState("");
-   const [searchSugests, setSearchSugests]: any = useState([]);
-
-   //
-   useEffect(() => {
-      setSearchSugests(getAllSugests());
-   }, []);
-
+   const [showSearchModal, setShowSearchModal] = useState(false);
+   const [showNotificationPanel, setNotificationPanel] = useState(false);
+   const [showDropdown, setShowDropdown] = useState(false);
    // body
    const body = useMemo(() => {
-      console.log("useMemo called!");
       return document.body;
    }, []);
-
-   // generate date
-   const generateDate = (d: number) => {
-      const date = new Date();
-      date.setDate(date.getDate() - d);
-      return moment(date).locale("fa").format("YYYY/MM/DD");
-   };
 
    // mobile menu
    const mobileMenuBg: any = useRef(null);
    const mobileMenu: any = useRef(null);
    const mobileMenuBtn: any = useRef(null);
-
-   // profile dropdown
-   const profileDd: any = useRef(null);
-
-   // notification slide
-   const notificationSlide: any = useRef(null);
-
-   // search modal
-   const searchModalBg: any = useRef(null);
-   const searchModal: any = useRef(null);
 
    // close menus
    const closeMenus = (type: string) => {
@@ -53,14 +49,6 @@ function Navbar() {
             mobileMenuBg.current.classList.add("hidden");
             mobileMenuBtn.current.classList.remove("open");
             mobileMenu.current.classList.add("translate-x-full");
-            break;
-         case "profile":
-            profileDd.current.classList.add("hidden");
-            break;
-         case "notification":
-            body.classList.remove("stop-scroll-from-notification");
-            // 70%
-            notificationSlide.current.classList.add("-translate-x-full");
             break;
          default:
             break;
@@ -82,38 +70,29 @@ function Navbar() {
    };
 
    // toggle profile dropdown
-   const toggleProfileDropDown = () => {
-      profileDd.current.classList.toggle("hidden");
+   const toggleProfileDropdown = () => {
+      setShowDropdown(!showDropdown);
    };
 
    // toggle notification slide
    const toggleNotificationSlide = () => {
-      notificationSlide.current.classList.toggle("-translate-x-full");
+      setNotificationPanel(!showNotificationPanel);
       body.classList.toggle("stop-scroll-from-notification");
    };
 
-   // toggle notification slide
+   // toggle search slide
    const toggleSearchModal = () => {
-      searchModalBg.current.classList.toggle("hidden");
-      searchModal.current.classList.toggle("");
+      setShowSearchModal(!showSearchModal);
       body.classList.toggle("stop-scroll-from-search");
-   };
-
-   // show sugested search
-   const showSugestedSearchItems = () => {};
-
-   // handle search input
-   const handleSearchInput = (event: any) => {
-      setSearchQuery(event.currentTarget.value);
    };
 
    return (
       <nav
-         className="fixed top-0 right-0 left-0 z-50 bg-white text-slate-900 dark:bg-slate-800 dark:text-white border-b 
-      border-slate-300 dark:border-b dark:border-slate-600"
+         className="fixed top-0 right-0 left-0 bg-white text-slate-900 dark:bg-slate-800 dark:text-white border-b 
+      border-slate-300 dark:border-b dark:border-slate-600 z-50"
       >
          {/* nav container */}
-         <div className=" flex flex-row justify-between items-center w-full px-4 lg:px-0 lg:max-w-5xl xl:max-w-6xl mx-auto navbar-h">
+         <div className="flex flex-row justify-between items-center w-full px-4 lg:px-0 lg:max-w-5xl xl:max-w-6xl mx-auto navbar-h">
             {/* right_side: hamburger , brand , mobile menu - nav links */}
             <div className="flex flex-row justify-end items-center gap-12">
                {/* hamburger , brand , mobile menu */}
@@ -122,7 +101,7 @@ function Navbar() {
                   <div className="absolute w-0 top-14 right-0 md:hidden z-50">
                      <div
                         ref={mobileMenuBg}
-                        className="hidden absolute top-0 bottom-0 z-10 right-0 left-0 h-screen w-screen bg-slate-400/50 md:hidden"
+                        className="hidden absolute top-0 bottom-0 z-50 right-0 left-0 h-screen w-screen bg-slate-400/50 md:hidden"
                      ></div>
                      {/* ---end of side list */}
                      {/* right side panel */}
@@ -373,47 +352,18 @@ function Navbar() {
                   <FontAwesomeIcon
                      icon={faSearch}
                      className="py-1 hover:text-sky-400 transition-03"
+                     onClick={toggleSearchModal}
                   />
-                  <div className="absolute inset-0 from-top">
+                  <div className="absolute inset-0 from-top h-screen bg-red ">
                      {/* bg */}
-                     <div className="absolute inset-0 bg-slate-400/50 w-full h-screen"></div>
-                     {/* ---end of bg */}
-                     {/* search modal */}
                      <div
-                        className="relative flex flex-col gap-1 shadow-xl
-                              w-11/12 sm:max-w-xl mx-auto dark:bg-slate-800 mt-6 md:mt-7 z-40 p-3 rounded-md"
-                     >
-                        <div className="pb-3 border-b border-slate-600">
-                           <input
-                              className="shadow appearance-none border rounded w-full py-1 px-2 text-sm text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                              type="text"
-                              name="search"
-                              placeholder="جستجو . . ."
-                              value={searchQuery}
-                              onChange={(e) => {
-                                 handleSearchInput(e);
-                              }}
-                           />
-                        </div>
-
-                        {searchSugests.map((item: any, index: number) => {
-                           return (
-                              <div key={index}>
-                                 <div className="flex flex-row items-center justify-start gap-3 p-1 pt-2">
-                                    <div>
-                                       <FontAwesomeIcon icon={faSearch} />
-                                    </div>
-                                    <div className="text-slate-200 text-sm">
-                                       <NavLink to={`/search/${item.id}?title=${item.title}`}>
-                                          {item.title}
-                                       </NavLink>
-                                    </div>
-                                 </div>
-                              </div>
-                           );
-                        })}
-                     </div>
-                     {/* ---end of search modal */}
+                        className={`absolute inset-0 bg-slate-400/50 w-full h-screen ${
+                           !showSearchModal ? "hidden" : ""
+                        }`}
+                     ></div>
+                     {/* ---end of bg */}
+                     {/* Search Component */}
+                     <Search showModal={showSearchModal} />
                   </div>
                </div>
                {/* ---end of search  */}
@@ -424,409 +374,20 @@ function Navbar() {
                      className="cursor-pointer py-1 hover:text-sky-400 transition-03"
                      onClick={toggleNotificationSlide}
                   />
-                  <div
-                     ref={notificationSlide}
-                     className="absolute left-0 from-top z-50 
-                                 flex flex-col justify-between items-start
-                                 shadow-xl w-56 sm:w-80 h-screen pb-16
-                                 bg-white dark:bg-slate-800 
-                                 dark:text-slate-300 
-                                 border-t border-r dark:border-slate-600
-                                 -translate-x-full transition-05"
-                  >
-                     <div className="w-full overflow-y-auto">
-                        {/* day */}
-                        <div className="notification-list">
-                           {/* date */}
-                           <div
-                              className="bg-slate-200 dark:bg-slate-700 dark:border-slate-500 text-sky-600 shadow-lg 
-                                    w-full p-1 font-semibold text-sm font-bYekan sticky top-0 border-b border-slate-300"
-                           >
-                              {generateDate(0)}
-                           </div>
-                           {/* ---end of date */}
-                           {/* notification list */}
-                           <div className="flex flex-col gap-2 justify-start items-start p-3 overflow-x-hidden border-t dark:border-slate-700">
-                              <div className="flex flex-row flex-wrap items-center justify-start gap-2">
-                                 <img
-                                    src="../../../assets/img/skills.jpg"
-                                    className="bg-sky-500 rounded-full flex-grow-0"
-                                    width="40px"
-                                    height="40px"
-                                    alt="img"
-                                 />
-                                 <h2 className="text-base h-full flex-1">
-                                    <span>با نزدیک شدن</span>
-                                 </h2>
-                              </div>
-                              <div>
-                                 <p className="text-sm text-slate-500">
-                                    ممکن است با نزدیک شدن به زمان تحویل پروژه‌های سازمان، همه چیز به
-                                    سرعت آشفته شود و شما را سردرگم کند.
-                                 </p>
-                              </div>
-                           </div>
-                           <div className="flex flex-col gap-2 justify-start items-start p-3 overflow-x-hidden border-t dark:border-slate-700">
-                              <div className="flex flex-row flex-wrap items-center justify-start gap-2">
-                                 <img
-                                    src="../../../assets/img/skills.jpg"
-                                    className="bg-sky-500 rounded-full flex-grow-0"
-                                    width="40px"
-                                    height="40px"
-                                    alt="img"
-                                 />
-                                 <h2 className="text-base h-full flex-1">
-                                    <span>ممکن است با نزدیک شدن به زمان تحویل پروژه‌های</span>
-                                 </h2>
-                              </div>
-                              <div>
-                                 <p className="text-sm text-slate-500">
-                                    ممکن است با نزدیک شدن به زمان تحویل پروژه‌های سازمان، همه چیز به
-                                    سرعت آشفته شود و شما را سردرگم کند.
-                                 </p>
-                              </div>
-                           </div>
-
-                           {/* ---end of notification list */}
-                        </div>
-                        {/* ---end of day */}
-                        {/* day */}
-                        <div className="notification-list">
-                           {/* date */}
-                           <div
-                              className="bg-slate-200 text-sky-600 shadow-lg dark:bg-slate-700 dark:border-slate-500
-                                    w-full p-1 font-semibold text-sm font-bYekan sticky top-0 border-b border-slate-300"
-                           >
-                              {generateDate(1)}
-                           </div>
-                           {/* ---end of date */}
-                           {/* notification list */}
-                           <div className="flex flex-col gap-2 justify-start items-start p-3 overflow-x-hidden border-t dark:border-slate-700">
-                              <div className="flex flex-row flex-wrap items-center justify-start gap-2">
-                                 <img
-                                    src="../../../assets/img/skills.jpg"
-                                    className="bg-sky-500 rounded-full flex-grow-0"
-                                    width="40px"
-                                    height="40px"
-                                    alt="img"
-                                 />
-                                 <h2 className="text-base h-full flex-1">
-                                    <span>با نزدیک شدن</span>
-                                 </h2>
-                              </div>
-                              <div>
-                                 <p className="text-sm text-slate-500">
-                                    ممکن است با نزدیک شدن به زمان تحویل پروژه‌های سازمان، همه چیز به
-                                    سرعت آشفته شود و شما را سردرگم کند.
-                                 </p>
-                              </div>
-                           </div>
-                           <div className="flex flex-col gap-2 justify-start items-start p-3 overflow-x-hidden border-t dark:border-slate-700">
-                              <div className="flex flex-row flex-wrap items-center justify-start gap-2">
-                                 <img
-                                    src="../../../assets/img/skills.jpg"
-                                    className="bg-sky-500 rounded-full flex-grow-0"
-                                    width="40px"
-                                    height="40px"
-                                    alt="img"
-                                 />
-                                 <h2 className="text-base h-full flex-1">
-                                    <span>با نزدیک شدن</span>
-                                 </h2>
-                              </div>
-                              <div>
-                                 <p className="text-sm text-slate-500">
-                                    ممکن است با نزدیک شدن به زمان تحویل پروژه‌های سازمان، همه چیز به
-                                    سرعت آشفته شود و شما را سردرگم کند.
-                                 </p>
-                              </div>
-                           </div>
-                           <div className="flex flex-col gap-2 justify-start items-start p-3 overflow-x-hidden border-t dark:border-slate-700">
-                              <div className="flex flex-row flex-wrap items-center justify-start gap-2">
-                                 <img
-                                    src="../../../assets/img/skills.jpg"
-                                    className="bg-sky-500 rounded-full flex-grow-0"
-                                    width="40px"
-                                    height="40px"
-                                    alt="img"
-                                 />
-                                 <h2 className="text-base h-full flex-1">
-                                    <span>با نزدیک شدن</span>
-                                 </h2>
-                              </div>
-                              <div>
-                                 <p className="text-sm text-slate-500">
-                                    ممکن است با نزدیک شدن به زمان تحویل پروژه‌های سازمان، همه چیز به
-                                    سرعت آشفته شود و شما را سردرگم کند.
-                                 </p>
-                              </div>
-                           </div>
-                           <div className="flex flex-col gap-2 justify-start items-start p-3 overflow-x-hidden border-t dark:border-slate-700">
-                              <div className="flex flex-row flex-wrap items-center justify-start gap-2">
-                                 <img
-                                    src="../../../assets/img/skills.jpg"
-                                    className="bg-sky-500 rounded-full flex-grow-0"
-                                    width="40px"
-                                    height="40px"
-                                    alt="img"
-                                 />
-                                 <h2 className="text-base h-full flex-1">
-                                    <span>با نزدیک شدن</span>
-                                 </h2>
-                              </div>
-                              <div>
-                                 <p className="text-sm text-slate-500">
-                                    ممکن است با نزدیک شدن به زمان تحویل پروژه‌های سازمان، همه چیز به
-                                    سرعت آشفته شود و شما را سردرگم کند.
-                                 </p>
-                              </div>
-                           </div>
-                           <div className="flex flex-col gap-2 justify-start items-start p-3 overflow-x-hidden border-t dark:border-slate-700">
-                              <div className="flex flex-row flex-wrap items-center justify-start gap-2">
-                                 <img
-                                    src="../../../assets/img/skills.jpg"
-                                    className="bg-sky-500 rounded-full flex-grow-0"
-                                    width="40px"
-                                    height="40px"
-                                    alt="img"
-                                 />
-                                 <h2 className="text-base h-full flex-1">
-                                    <span>با نزدیک شدن</span>
-                                 </h2>
-                              </div>
-                              <div>
-                                 <p className="text-sm text-slate-500">
-                                    ممکن است با نزدیک شدن به زمان تحویل پروژه‌های سازمان، همه چیز به
-                                    سرعت آشفته شود و شما را سردرگم کند.
-                                 </p>
-                              </div>
-                           </div>
-                           {/* ---end of notification list */}
-                        </div>
-                        {/* ---end of day */}
-                        {/* day */}
-                        <div className="notification-list">
-                           {/* date */}
-                           <div
-                              className="bg-slate-200 text-sky-600 shadow-lg dark:bg-slate-700 dark:border-slate-500
-                                    w-full p-1 font-semibold text-sm font-bYekan sticky top-0 border-b border-slate-300"
-                           >
-                              {generateDate(2)}
-                           </div>
-                           {/* ---end of date */}
-                           {/* notification list */}
-                           <div className="flex flex-col gap-2 justify-start items-start p-3 overflow-x-hidden border-t dark:border-slate-700">
-                              <div className="flex flex-row flex-wrap items-center justify-start gap-2">
-                                 <img
-                                    src="../../../assets/img/skills.jpg"
-                                    className="bg-sky-500 rounded-full flex-grow-0"
-                                    width="40px"
-                                    height="40px"
-                                    alt="img"
-                                 />
-                                 <h2 className="text-base h-full flex-1">
-                                    <span>با نزدیک شدن</span>
-                                 </h2>
-                              </div>
-                              <div>
-                                 <p className="text-sm text-slate-500">
-                                    ممکن است با نزدیک شدن به زمان تحویل پروژه‌های سازمان، همه چیز به
-                                    سرعت آشفته شود و شما را سردرگم کند.
-                                 </p>
-                              </div>
-                           </div>
-                           <div className="flex flex-col gap-2 justify-start items-start p-3 overflow-x-hidden border-t dark:border-slate-700">
-                              <div className="flex flex-row flex-wrap items-center justify-start gap-2">
-                                 <img
-                                    src="../../../assets/img/skills.jpg"
-                                    className="bg-sky-500 rounded-full flex-grow-0"
-                                    width="40px"
-                                    height="40px"
-                                    alt="img"
-                                 />
-                                 <h2 className="text-base h-full flex-1">
-                                    <span>با نزدیک شدن</span>
-                                 </h2>
-                              </div>
-                              <div>
-                                 <p className="text-sm text-slate-500">
-                                    ممکن است با نزدیک شدن به زمان تحویل پروژه‌های سازمان، همه چیز به
-                                    سرعت آشفته شود و شما را سردرگم کند.
-                                 </p>
-                              </div>
-                           </div>
-                           <div className="flex flex-col gap-2 justify-start items-start p-3 overflow-x-hidden border-t dark:border-slate-700">
-                              <div className="flex flex-row flex-wrap items-center justify-start gap-2">
-                                 <img
-                                    src="../../../assets/img/skills.jpg"
-                                    className="bg-sky-500 rounded-full flex-grow-0"
-                                    width="40px"
-                                    height="40px"
-                                    alt="img"
-                                 />
-                                 <h2 className="text-base h-full flex-1">
-                                    <span>با نزدیک شدن</span>
-                                 </h2>
-                              </div>
-                              <div>
-                                 <p className="text-sm text-slate-500">
-                                    ممکن است با نزدیک شدن به زمان تحویل پروژه‌های سازمان، همه چیز به
-                                    سرعت آشفته شود و شما را سردرگم کند.
-                                 </p>
-                              </div>
-                           </div>
-                           <div className="flex flex-col gap-2 justify-start items-start p-3 overflow-x-hidden border-t dark:border-slate-700">
-                              <div className="flex flex-row flex-wrap items-center justify-start gap-2">
-                                 <img
-                                    src="../../../assets/img/skills.jpg"
-                                    className="bg-sky-500 rounded-full flex-grow-0"
-                                    width="40px"
-                                    height="40px"
-                                    alt="img"
-                                 />
-                                 <h2 className="text-base h-full flex-1">
-                                    <span>با نزدیک شدن</span>
-                                 </h2>
-                              </div>
-                              <div>
-                                 <p className="text-sm text-slate-500">
-                                    ممکن است با نزدیک شدن به زمان تحویل پروژه‌های سازمان، همه چیز به
-                                    سرعت آشفته شود و شما را سردرگم کند.
-                                 </p>
-                              </div>
-                           </div>
-                           <div className="flex flex-col gap-2 justify-start items-start p-3 overflow-x-hidden border-t dark:border-slate-700">
-                              <div className="flex flex-row flex-wrap items-center justify-start gap-2">
-                                 <img
-                                    src="../../../assets/img/skills.jpg"
-                                    className="bg-sky-500 rounded-full flex-grow-0"
-                                    width="40px"
-                                    height="40px"
-                                    alt="img"
-                                 />
-                                 <h2 className="text-base h-full flex-1">
-                                    <span>با نزدیک شدن</span>
-                                 </h2>
-                              </div>
-                              <div>
-                                 <p className="text-sm text-slate-500">
-                                    ممکن است با نزدیک شدن به زمان تحویل پروژه‌های سازمان، همه چیز به
-                                    سرعت آشفته شود و شما را سردرگم کند.
-                                 </p>
-                              </div>
-                           </div>
-                           {/* ---end of notification list */}
-                        </div>
-                        {/* ---end of day */}
-                     </div>
-                     <div className="flex flex-row justify-between w-11/12 text-xs bg-slate-200 dark:bg-slate-700 p-2 mx-auto text-sky-600 mt-3 font-bold">
-                        <span>امروز</span>
-                        <span className="font-bYekan">{generateDate(0)}</span>
-                     </div>
-                  </div>
+                  <Notification showPanel={showNotificationPanel} />
                </div>
                {/* ---end of notification */}
-               {/* user */}
+               {/* user dropdown */}
                <div className="flex items-center relative py-4 text-lg">
                   <FontAwesomeIcon
                      icon={faUser}
                      className="cursor-pointer bg-gray-200 dark:bg-slate-600 text-gray-600 dark:text-gray-200 p-2 rounded-full 
                      hover:text-sky-400 dark:hover:text-sky-500 transition-03"
-                     onClick={toggleProfileDropDown}
+                     onClick={toggleProfileDropdown}
                   />
-                  {/* !!!!!!!!!!!!!!!!!!!!!! Create DropDown Component */}
-                  <ul
-                     ref={profileDd}
-                     className="hidden profile-dropdown before:border-l before:border-t before:bg-white dark:before:bg-slate-800 
-                     before:border-t-slate-300 dark:before:border-t-slate-600 before:border-l-slate-300 dark:before:border-l-slate-600
-                     absolute top-16 left-0 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 rounded-md shadow-2xl z-50 h-fit
-                     px-4 py-2 text-sm"
-                  >
-                     <li className="flex flex-col items-start py-2">
-                        <h3 className="mb-2 text-lg font-bold dark:text-gray-100">اکانت کاربری</h3>
-                        <div
-                           className="py-1 pr-2 border-r-2 border-gray-400 text-xs w-full 
-                                    dark:hover:bg-slate-600 hover:bg-gray-200
-                                    dark:active:bg-slate-600 active:bg-gray-200
-                                    hover:text-sky-400 hover:border-sky-400 transition-03"
-                        >
-                           <p>تنظیمات</p>
-                        </div>
-                        <div
-                           className="py-1 pr-2 mt-1 border-r-2 border-gray-400 text-xs w-full 
-                                    dark:hover:bg-slate-600 hover:bg-gray-200
-                                    dark:active:bg-slate-600 active:bg-gray-200
-                                    hover:text-sky-400 hover:border-sky-400 transition-03                                    "
-                        >
-                           <p>ویرایش اطلاعات کاربری</p>
-                        </div>
-                     </li>
-
-                     <li className="flex flex-col items-start py-2 mt-2 border-t border-gray-400">
-                        <h3 className="mb-2 text-lg font-bold dark:text-gray-100">مدیریت</h3>
-                        <div
-                           className="py-1 pr-2 border-r-2 border-gray-400 text-xs w-full 
-                                    dark:hover:bg-slate-600 hover:bg-gray-200
-                                    dark:active:bg-slate-600 active:bg-gray-200
-                                    hover:text-sky-400 hover:border-sky-400 transition-03"
-                        >
-                           <p> لیست های من</p>
-                        </div>
-                        <div
-                           className="py-1 pr-2 mt-1 border-r-2 border-gray-400 text-xs w-full 
-                                    dark:hover:bg-slate-600 hover:bg-gray-200
-                                    dark:active:bg-slate-600 active:bg-gray-200
-                                    hover:text-sky-400 hover:border-sky-400 transition-03"
-                        >
-                           مورد علاقه های من
-                        </div>
-                        <div
-                           className="py-1 pr-2 mt-1 border-r-2 border-gray-400 text-xs w-full 
-                                    dark:hover:bg-slate-600 hover:bg-gray-200
-                                    dark:active:bg-slate-600 active:bg-gray-200
-                                    hover:text-sky-400 hover:border-sky-400 transition-03"
-                        >
-                           آموزش های من
-                        </div>
-                        <div
-                           className="py-1 pr-2 mt-1 border-r-2 border-gray-400 text-xs w-full 
-                                    dark:hover:bg-slate-600 hover:bg-gray-200
-                                    dark:active:bg-slate-600 active:bg-gray-200
-                                    hover:text-sky-400 hover:border-sky-400 transition-03"
-                        >
-                           پست ها و پیش نویس ها
-                        </div>
-                     </li>
-
-                     <li className="flex flex-row items-start justify-between gap-4 pt-3 pb-1 mt-2 border-t border-gray-400">
-                        <div className="w-full">
-                           <button
-                              className="flex items-center justify-center text-xs font-semibold 
-                                       text-red-500 py-2 border border-red-500 rounded-md w-full
-                                       hover:text-white hover:bg-red-500 
-                                       active:text-white active:bg-red-500 
-                                       shadow-xl transition-03"
-                           >
-                              <FontAwesomeIcon icon={faArrowRightFromBracket} className="pl-2" />
-                              <span>خروج</span>
-                           </button>
-                        </div>
-                        <div className="w-full">
-                           <button
-                              className="text-xs font-semibold text-sky-400 py-2 border
-                                  border-sky-500 rounded-md w-full 
-                                       hover:text-white hover:bg-sky-500 
-                                       active:text-white active:bg-sky-500 
-                                       shadow-xl transition-03"
-                           >
-                              ایجاد حساب
-                           </button>
-                        </div>
-                     </li>
-                  </ul>
-                  {/* !!!!!!!!!!!!!!!!!!!!!! Create DropDown Component */}
+                  <Dropdown showDropdown={showDropdown} dropdownObjs={dropdownObjs} />
                </div>
-               {/* ---end of user */}
+               {/* ---end of user dropdown */}
             </div>
             {/* ---end of left_side: profile , search , notification , theme*/}
          </div>
