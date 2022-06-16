@@ -1,0 +1,15 @@
+// Profile
+.profile-dropdown {
+   width: 241px;
+   &::before {
+      content: "";
+      display: block;
+      height: 14px;
+      left: 8px;
+      position: absolute;
+      top: -16px;
+      transform: rotate(45deg) translate(6px, 6px);
+      width: 14px;
+      z-index: -1 !important;
+   }
+}

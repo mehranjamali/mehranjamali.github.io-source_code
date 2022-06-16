@@ -58,10 +58,10 @@ const searchReducer = (state: reducerState, action: action) => {
 function Search({ showModal }: props) {
    // reducer, because of handling search sugests
    const [searchItems, searchDispath] = useReducer(searchReducer, initialState);
-   // ---end of reducer, because of handling search sugests
-   //
+   // useState
    const [showSearchResult, setShowSearchResult] = useState(false);
    const [loading, setLoading] = useState(false);
+   const [error, setError] = useState({ inputEmpty: true, showError: false });
    // we must get "searchResult and searchSugests" from server
    const [searchResult, setSearchResult] = useState([]);
 
@@ -75,11 +75,21 @@ function Search({ showModal }: props) {
    // handle search input
    const handleSearchInput = (event: any) => {
       searchDispath({ type: "setFiltered", payload: event.currentTarget.value });
+      if (event.currentTarget.value.length) {
+         setError({ showError: false, inputEmpty: false });
+         return;
+      }
+      setError({ ...error, inputEmpty: true });
    };
 
    // do search
    const doSearch = (e: any) => {
       e.preventDefault();
+      if (error.inputEmpty) {
+         setError({ ...error, showError: true });
+         return;
+      }
+      setError({ ...error, showError: false });
       // search request
       // ...
       setShowSearchResult(true);
@@ -96,15 +106,15 @@ function Search({ showModal }: props) {
 
    return (
       <div
-         className={`relative flex flex-col shadow-2xl w-11/12 sm:max-w-xl mx-auto bg-white 
-         dark:bg-slate-800 mt-6 md:mt-7  mb-30  rounded-md  transition-05 dark:border-slate-500 overflow-y-auto ${
+         className={`absolute left-0 right-0 flex flex-col shadow-2xl w-11/12 sm:max-w-xl mx-auto bg-white 
+         dark:bg-slate-800 mt-12 mb-30  rounded-md  transition-05 dark:border-slate-500 overflow-y-auto ${
             showModal ? "" : "translate-y-search-modal"
          }`}
       >
          {/* search modal */}
-         <div className="p-3 border-b dark:border-slate-600 border-slate-300 sticky top-0 dark:bg-slate-800 bg-white">
+         <div className="p-3 border-b dark:border-slate-600 border-slate-300 sticky top-0 dark:bg-slate-800 bg-white transition-03">
             <input
-               className="shadow appearance-none border rounded w-full py-2 px-3 text-sm text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+               className="shadow appearance-none border rounded relative w-full py-2 px-3 text-sm text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                type="text"
                name="search"
                placeholder="جستجو . . ."
@@ -113,16 +123,22 @@ function Search({ showModal }: props) {
                }}
             />
             <button
-               className="absolute left-3 top-3 z-50 text-slate-500 px-2 pt-2 bg-slate-300 border-r 
-               border-slate-300 rounded-l-sm hover:text-sky-500 transition-03"
+               className="
+               absolute search-btn-position z-50 text-slate-500 hover:text-sky-500 transition-05 
+               shadow-2xl rounded-md bg-gray-300 flex justify-center items-center p-1.5"
                onClick={(e) => doSearch(e)}
             >
-               <FontAwesomeIcon icon={faSearch} />
+               <FontAwesomeIcon icon={faSearch} className="" />
             </button>
+            {error.showError && (
+               <p className="text-xs text-red-500 mt-2 text-center sm:text-right w-full">
+                  کلمه مورد نظر را به درستی جستجو کنید
+               </p>
+            )}
          </div>
          {/* search result list */}
          <div
-            className={`w-full px-3 py-3 border-b dark:border-slate-600 border-slate-300 ${
+            className={`w-full px-3 py-3 border-b dark:border-slate-600 border-slate-300 transition-05 ${
                showSearchResult ? "" : "hidden"
             }`}
          >
