@@ -1,0 +1,50 @@
+div[data-name="relevant"] {
+   max-width: 273px;
+}
+
+button[data-name="relevant-load-more"]:hover .relevant-load-more__faArrowLeft {
+   transform: translateX(-60%);
+}
+
+.follow-btn__faCheck {
+   inset: 7px 9px 5px 5px;
+}
+.follow-btn__faPlus {
+   inset: 7px 9px 5px 5px;
+   transform: none;
+}
+
+.follow-btn__spinner {
+   inset: 8px 9px 5px 5px;
+   transform: translateY(-180%);
+}
+
+button[data-name="follow-btn"]:hover .follow-btn__faPlus {
+   transform: translateY(180%);
+}
+
+button[data-name="follow-btn"]:hover .follow-btn__spinner {
+   transform: none;
+}
+
+@keyframes relevant-item-animation {
+   0% {
+      transform: translateX(0);
+      transition: all 0.3s;
+   }
+   30% {
+      transform: scale(80%);
+   }
+   60% {
+      transform: translateX(-120%);
+   }
+   100% {
+      transform: translateX(0);
+   }
+}
+
+/* The element to apply the animation to */
+.relevant-item-animation {
+   animation-name: relevant-item-animation;
+   animation-duration: 1.2s;
+}

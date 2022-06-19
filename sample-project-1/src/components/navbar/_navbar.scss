@@ -1,5 +1,6 @@
 // components
-@import "./components/search";
+@import "./components/search/search";
+@import "./components/dropdown/dropdown";
 
 // Navbar
 .navbar-h {
@@ -42,7 +43,6 @@
       transform: rotate(-45deg) translateY(6px) translate(-6px);
    }
 }
-
 
 .from-top {
    top: 51px;

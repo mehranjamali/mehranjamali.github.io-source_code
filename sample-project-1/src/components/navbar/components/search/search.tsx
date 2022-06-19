@@ -1,28 +1,26 @@
 import React, { useEffect, useReducer, useState } from "react";
+import { Link } from "react-router-dom";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch, faHistory } from "@fortawesome/free-solid-svg-icons";
 
-import { NavLink } from "react-router-dom";
+// type
+import { actionType } from "../../../../store/types/type";
 
 // search service
 import { getAllSugests } from "./searchService";
 
 // spinner
-import Spinner from "../../snipper/spinner";
+import Spinner from "../../../snipper/spinner";
 
 // types
-type props = {
+type propsSearch = {
    showModal: boolean;
 };
 
 type reducerState = {
    searchSugests: any;
    filtered: any;
-};
-type action = {
-   type: string;
-   payload: any;
 };
 
 // initial state
@@ -32,7 +30,7 @@ const initialState: reducerState = {
 };
 
 // search reducer
-const searchReducer = (state: reducerState, action: action) => {
+const searchReducer = (state: reducerState, action: actionType<any>) => {
    switch (action.type) {
       case "setSearchSugests":
          return { ...state, searchSugests: action.payload };
@@ -40,9 +38,7 @@ const searchReducer = (state: reducerState, action: action) => {
          if (action.payload) {
             return {
                ...state,
-               filtered: state.searchSugests.filter((item: any) =>
-                  item.title.toLowerCase().includes(action.payload.toLowerCase())
-               ),
+               filtered: state.searchSugests.filter((item: any) => item.title.toLowerCase().includes(action.payload.toLowerCase())),
             };
          }
          return {
@@ -55,7 +51,7 @@ const searchReducer = (state: reducerState, action: action) => {
    }
 };
 
-function Search({ showModal }: props) {
+function Search({ showModal }: propsSearch) {
    // reducer, because of handling search sugests
    const [searchItems, searchDispath] = useReducer(searchReducer, initialState);
    // useState
@@ -106,15 +102,19 @@ function Search({ showModal }: props) {
 
    return (
       <div
+         data-name="search"
          className={`absolute left-0 right-0 flex flex-col shadow-2xl w-11/12 sm:max-w-xl mx-auto bg-white 
-         dark:bg-slate-800 mt-12 mb-30  rounded-md  transition-05 dark:border-slate-500 overflow-y-auto ${
-            showModal ? "" : "translate-y-search-modal"
-         }`}
+         dark:bg-slate-800 mt-12 mb-30  rounded-md  transition-05 dark:border-slate-500 overflow-y-auto ${!showModal && "translate-y-search-modal"}`}
       >
          {/* search modal */}
-         <div className="p-3 border-b dark:border-slate-600 border-slate-300 sticky top-0 dark:bg-slate-800 bg-white transition-03">
+         <div
+            data-name="search-input-box"
+            className="p-3 border-b dark:border-slate-600 border-slate-300 
+                     sticky top-0 dark:bg-slate-800 bg-white transition-03"
+         >
             <input
-               className="shadow appearance-none border rounded relative w-full py-2 px-3 text-sm text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+               className="shadow appearance-none border rounded relative w-full py-2 px-3 text-sm
+                        text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                type="text"
                name="search"
                placeholder="جستجو . . ."
@@ -123,24 +123,18 @@ function Search({ showModal }: props) {
                }}
             />
             <button
-               className="
-               absolute search-btn-position z-50 text-slate-500 hover:text-sky-500 transition-05 
-               shadow-2xl rounded-md bg-gray-300 flex justify-center items-center p-1.5"
+               className="absolute search-btn-position z-50 text-slate-500 hover:text-sky-500 transition-05 
+                        shadow-2xl rounded-md bg-gray-300 flex justify-center items-center p-1.5"
                onClick={(e) => doSearch(e)}
             >
                <FontAwesomeIcon icon={faSearch} className="" />
             </button>
-            {error.showError && (
-               <p className="text-xs text-red-500 mt-2 text-center sm:text-right w-full">
-                  کلمه مورد نظر را به درستی جستجو کنید
-               </p>
-            )}
+            {error.showError && <p className="text-xs text-red-500 mt-2 text-center sm:text-right w-full">کلمه مورد نظر را به درستی جستجو کنید</p>}
          </div>
          {/* search result list */}
          <div
-            className={`w-full px-3 py-3 border-b dark:border-slate-600 border-slate-300 transition-05 ${
-               showSearchResult ? "" : "hidden"
-            }`}
+            data-name="search-result-main"
+            className={`w-full px-3 py-3 border-b dark:border-slate-600 border-slate-300 transition-05 ${!showSearchResult && "hidden"}`}
          >
             {loading ? (
                <div className="flex justify-center items-center">
@@ -148,7 +142,7 @@ function Search({ showModal }: props) {
                </div>
             ) : searchResult.length ? (
                <div className="text-base text-center">
-                  <p>not empty</p>
+                  <p>we have data in list</p>
                </div>
             ) : (
                <div className="text-base text-center">
@@ -158,17 +152,17 @@ function Search({ showModal }: props) {
          </div>
          {/* ---end of search result list */}
          {!searchItems.searchSugests.length && (
-            <div className="text-center py-3 text-slate-500 dark:text-slate-400">
+            <div data-name="search-sugest-empty" className="text-center py-3 text-slate-500 dark:text-slate-400">
                <p>Nothing to load</p>
             </div>
          )}
          {/* sugests list */}
          {searchItems.filtered.map((item: any, index: number) => {
             return (
-               <div key={index}>
-                  <NavLink
-                     className="w-full flex flex-col sm:flex-row items-center justify-between gap-3 border-b transition-03 px-5 py-2 
-                     dark:border-slate-600 border-slate-200 dark:hover:bg-slate-600 dark:active:bg-slate-600 
+               <div data-name="search-sugest-item" key={index}>
+                  <Link
+                     className="w-full flex flex-col sm:flex-row items-center justify-between gap-3 border-b transition-03 
+                     px-5 py-2 dark:border-slate-600 border-slate-200 dark:hover:bg-slate-600 dark:active:bg-slate-600 
                      hover:bg-gray-200 active:bg-gray-200"
                      to={`/search/${item.id}?title=${item.title}`}
                   >
@@ -177,14 +171,14 @@ function Search({ showModal }: props) {
                         <span className="pr-2">{item.title}</span>
                      </div>
                      <div className="text-slate-400 dark:text-slate-400 text-xs">
-                        <span className={`pl-2 ${item.history ? "" : "hidden"}`}>
+                        <span className={`pl-2 ${!item.history && "hidden"}`}>
                            <FontAwesomeIcon className="-mb-0.5" icon={faHistory} />
                         </span>
                         <span>{item.categoryTitle} - </span>
                         <span>تعداد بازدید : </span>
                         <span>{item.visitNumber}</span>
                      </div>
-                  </NavLink>
+                  </Link>
                </div>
             );
          })}

@@ -1,5 +1,4 @@
 import { createAction } from "@reduxjs/toolkit";
+import { apiBodyType } from "../types/type";
 
-export const apiCallBegan = createAction<any>("api/callBegan");
-export const apiCallSuccess = createAction<any>("api/callSuccess");
-export const apiCallFailed = createAction<any>("api/callFailed");
+export const apiCallBegan = createAction<apiBodyType>("api/callBegan");

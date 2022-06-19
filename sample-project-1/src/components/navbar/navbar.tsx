@@ -1,13 +1,14 @@
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState, useEffect, useReducer } from "react";
 import { NavLink } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser, faBell, faHeart } from "@fortawesome/free-regular-svg-icons";
 import { faSearch, faSun, faMoon } from "@fortawesome/free-solid-svg-icons";
 
 // components
-import Search from "./components/search";
-import Notification from "./components/notification";
-import Dropdown, { dropdownType } from "./components/dropdown";
+import Search from "./components/search/search";
+import Notification from "./components/notification/notification";
+import Dropdown, { dropdownType } from "./components/dropdown/dropdown";
+import MobileNavMenu, { navLinkType } from "./components/mobileNavMenu/mobileNavMenu";
 
 // dropdown items
 const dropdownObjs: dropdownType[] = [
@@ -29,20 +30,69 @@ const dropdownObjs: dropdownType[] = [
    },
 ];
 
+// nav links
+const navLinks: navLinkType[] = [
+   { title: "صفحه اصلی", to: "/" },
+   { title: "نویسنده ها", to: "/users" },
+   { title: "مقالات", to: "/articles" },
+   { title: "آموزش مجازی", to: "/onlineLearning" },
+   { title: "درباره ما", to: "/aboutUs" },
+];
+
 // html, body
 const body = document.body;
 const html = document.getElementById("html");
 
-function Navbar() {
-   const [showSearchModal, setShowSearchModal] = useState(false);
-   const [showNotificationPanel, setNotificationPanel] = useState(false);
-   const [showDropdown, setShowDropdown] = useState(false);
-   const [lightTheme, setLightTheme] = useState(localStorage.getItem("theme") === "light");
+// initial state
+const initialState = {
+   showSearchModal: false,
+   showNotificationPanel: false,
+   showDropdown: false,
+   showMobileMenu: false,
+};
 
-   // mobile menu
-   const mobileMenuBg: any = useRef(null);
-   const mobileMenu: any = useRef(null);
-   const mobileMenuBtn: any = useRef(null);
+// reducer
+const reducer = (state: typeof initialState, action: any) => {
+   switch (action.type) {
+      // toggle mobile menu below the md(768px) media screen
+      case "mobile-menu":
+         // stop scroll below the md(768px) media screen --> because of mobile menu
+         body.classList.toggle("stop-scroll");
+         // stop scroll in all media screen --> because of notification , search
+         body.classList.remove("stop-scroll-body");
+         return { ...initialState, showMobileMenu: !state.showMobileMenu };
+
+      // toggle notification panel in all media screen
+      case "notification-panel":
+         body.classList.remove("stop-scroll");
+         if (!state.showNotificationPanel) body.classList.add("stop-scroll-body");
+         else body.classList.remove("stop-scroll-body");
+         return { ...initialState, showNotificationPanel: !state.showNotificationPanel };
+
+      // toggle search modal in all media screen
+      case "search-modal":
+         body.classList.remove("stop-scroll");
+         if (!state.showSearchModal) body.classList.add("stop-scroll-body");
+         else body.classList.remove("stop-scroll-body");
+         return { ...initialState, showSearchModal: !state.showSearchModal };
+
+      // toggle dropdown in all media screen
+      case "dropdown":
+         body.className = "";
+         return { ...initialState, showDropdown: !state.showDropdown };
+
+      case "close-all":
+         body.className = "";
+         return { ...initialState };
+
+      default:
+         return state;
+   }
+};
+
+function Navbar() {
+   const [{ showDropdown, showMobileMenu, showNotificationPanel, showSearchModal }, dispatch] = useReducer(reducer, initialState);
+   const [lightTheme, setLightTheme] = useState(localStorage.getItem("theme") === "light");
 
    // CDM
    useEffect(() => {
@@ -50,6 +100,7 @@ function Navbar() {
       if (theme) {
          html?.classList.add(theme);
       } else {
+         // default theme is light
          html?.classList.add("light");
          setLightTheme(true);
       }
@@ -61,251 +112,56 @@ function Navbar() {
          localStorage.setItem("theme", "light");
          setLightTheme(true);
          html?.classList.remove("dark");
+         html?.classList.add("light");
       } else {
          localStorage.setItem("theme", "dark");
          setLightTheme(false);
          html?.classList.add("dark");
+         html?.classList.remove("light");
       }
    };
 
-   // close menus
-   const closeMenus = (type: string) => {
-      switch (type) {
-         case "mobileMenu":
-            setNotificationPanel(false);
-            setShowSearchModal(false);
-            setShowDropdown(false);
-            body.classList.remove("stop-scroll-body");
-            break;
-         case "dropdown":
-            setNotificationPanel(false);
-            setShowSearchModal(false);
-            closeMobileMenu();
-            body.className = "";
-            break;
-         case "notificationPanel":
-            setShowDropdown(false);
-            setShowSearchModal(false);
-            closeMobileMenu();
-            body.classList.remove("stop-scroll");
-            break;
-         case "searchModal":
-            setShowDropdown(false);
-            setNotificationPanel(false);
-            closeMobileMenu();
-            body.classList.remove("stop-scroll");
-            break;
-         case "all":
-            setNotificationPanel(false);
-            setShowSearchModal(false);
-            setShowDropdown(false);
-            closeMobileMenu();
-            body.className = "";
-            break;
-         default:
-            break;
-      }
-   };
-
-   // close mobile nav menu
-   const closeMobileMenu = () => {
-      mobileMenuBg.current.classList.add("hidden");
-      mobileMenuBtn.current.classList.remove("open");
-      mobileMenu.current.classList.add("translate-x-full");
-   };
-
-   // toggle mobile menu
-   const toggleMobileMenu = () => {
-      // bg
-      mobileMenuBg.current.classList.toggle("hidden");
-      // btn
-      mobileMenuBtn.current.classList.toggle("open");
-      // menu
-      mobileMenu.current.classList.toggle("translate-x-full");
-      // scroll body
-      body.classList.toggle("stop-scroll");
-      closeMenus("mobileMenu");
-   };
-
-   // toggle profile dropdown
-   const toggleProfileDropdown = () => {
-      setShowDropdown(!showDropdown);
-      closeMenus("dropdown");
-   };
-
-   // toggle notification slide
-   const toggleNotificationSlide = () => {
-      setNotificationPanel(!showNotificationPanel);
-      closeMenus("notificationPanel");
-      if (!showNotificationPanel) body.classList.add("stop-scroll-body");
-      else body.classList.remove("stop-scroll-body");
-   };
-
-   // toggle search slide
-   const toggleSearchModal = () => {
-      setShowSearchModal(!showSearchModal);
-      closeMenus("searchModal");
-      if (!showSearchModal) body.classList.add("stop-scroll-body");
-      else body.classList.remove("stop-scroll-body");
+   // generate NavLink class
+   const generateNavLinkClass = (isActive: boolean) => {
+      return `py-4 px-1 hover:text-sky-400 hover:border-sky-400 transition-03 ${
+         isActive && "border-b border-sky-400 text-slate-900 dark:text-slate-50"
+      }`;
    };
 
    return (
       <nav
-         className="fixed top-0 right-0 left-0 bg-white text-slate-900 dark:bg-slate-800 dark:text-white border-b 
-      border-slate-300 dark:border-b dark:border-slate-600 z-50 transition-03"
+         data-name="navbar"
+         className="fixed top-0 right-0 left-0 bg-white text-slate-900 dark:bg-slate-800 dark:text-white 
+                    border-b border-slate-300 dark:border-b dark:border-slate-600 z-50 transition-03"
       >
-         {/* nav container */}
-         <div className="flex flex-row justify-between items-center w-full px-4 lg:px-0 lg:max-w-5xl xl:max-w-6xl mx-auto navbar-h">
+         <div
+            data-name="navbar-container"
+            className="flex flex-row justify-between items-center w-full px-4 lg:px-0 lg:max-w-5xl xl:max-w-6xl mx-auto navbar-h"
+         >
             {/* right_side: hamburger , brand , mobile menu - nav links */}
-            {/* ....................................................................................... */}
-            <div className="flex flex-row justify-end items-center gap-12">
+            <div data-name="navbar-right-side" className="flex flex-row justify-end items-center gap-12">
                {/* hamburger , brand , mobile menu */}
                <div className="flex flex-row justify-end items-center gap-6">
                   {/* mobile menu */}
-                  <div className="absolute w-0 top-14 right-0 md:hidden z-50">
+                  <div data-name="mobile-menu" className="absolute w-0 top-14 right-0 md:hidden z-50">
                      <div
-                        ref={mobileMenuBg}
-                        className="hidden absolute top-0 bottom-0 z-50 right-0 left-0 h-screen w-screen bg-slate-400/50 md:hidden"
+                        data-name="mobile-menu-bg"
+                        className={`absolute top-0 bottom-0 z-50 right-0 left-0 h-screen w-screen bg-slate-400/50 md:hidden ${
+                           showMobileMenu ? "" : "hidden"
+                        }`}
                         onClick={() => {
-                           closeMenus("all");
+                           dispatch({ type: "close-all" });
                         }}
                      ></div>
-                     {/* right side panel */}
-                     <div
-                        ref={mobileMenu}
-                        className=" absolute h-screen
-                        flex flex-col justify-between items-start mr-0  z-50 shadow-2xl w-56 text-sm 
-                        bg-white dark:bg-slate-800 
-                        dark:text-slate-300 text-slate-500
-                        border-t border-l dark:border-slate-600
-                        translate-x-full transition-05 pr-0 pb-16"
-                     >
-                        {/* side list */}
-                        <div className="w-full p-0 m-0 z-50 flex flex-col gap-3">
-                           <NavLink
-                              to="/"
-                              className={({ isActive }) =>
-                                 `py-3 pr-4 w-full dark:hover:bg-slate-600 hover:bg-gray-200
-                                    dark:active:bg-slate-600 active:bg-gray-200
-                                    hover:text-sky-400 hover:border-sky-400 transition-05 ${
-                                       isActive
-                                          ? "border-r-2 border-sky-400 dark:text-white text-slate-800"
-                                          : "border-r-2 border-white dark:border-slate-800"
-                                    }`
-                              }
-                              onClick={() => {
-                                 closeMenus("all");
-                              }}
-                           >
-                              صفحه اصلی
-                           </NavLink>
-                           <NavLink
-                              to="/users"
-                              className={({ isActive }) =>
-                                 `py-3 pr-4 w-full dark:hover:bg-slate-600 hover:bg-gray-200
-                                    dark:active:bg-slate-600 active:bg-gray-200
-                                 hover:text-sky-400 hover:border-sky-400 transition-05 ${
-                                    isActive
-                                       ? "border-r-2 border-sky-400 dark:text-white text-slate-800"
-                                       : "border-r-2 border-white dark:border-slate-800"
-                                 }`
-                              }
-                              onClick={() => {
-                                 closeMenus("all");
-                              }}
-                           >
-                              نویسنده ها
-                           </NavLink>
-                           <NavLink
-                              to="/articles"
-                              className={({ isActive }) =>
-                                 `py-3 pr-4 w-full dark:hover:bg-slate-600 hover:bg-gray-200
-                                    dark:active:bg-slate-600 active:bg-gray-200
-                                 hover:text-sky-400 hover:border-sky-400 transition-05 ${
-                                    isActive
-                                       ? "border-r-2 border-sky-400 dark:text-white text-slate-800"
-                                       : "border-r-2 border-white dark:border-slate-800"
-                                 }`
-                              }
-                              onClick={() => {
-                                 closeMenus("all");
-                              }}
-                           >
-                              مقالات
-                           </NavLink>
-                           <NavLink
-                              to="/onlineLearning"
-                              className={({ isActive }) =>
-                                 `py-3 pr-4 w-full dark:hover:bg-slate-600 hover:bg-gray-200
-                                    dark:active:bg-slate-600 active:bg-gray-200
-                                 hover:text-sky-400 hover:border-sky-400 transition-05 ${
-                                    isActive
-                                       ? "border-r-2 border-sky-400 dark:text-white text-slate-800"
-                                       : "border-r-2 border-white dark:border-slate-800"
-                                 }`
-                              }
-                              onClick={() => {
-                                 closeMenus("all");
-                              }}
-                           >
-                              آموزش مجازی
-                           </NavLink>
-                           <NavLink
-                              to="/aboutUs"
-                              className={({ isActive }) =>
-                                 `py-3 pr-4 w-full dark:hover:bg-slate-600 hover:bg-gray-200
-                                    dark:active:bg-slate-600 active:bg-gray-200
-                                 hover:text-sky-400 hover:border-sky-400 transition-05 ${
-                                    isActive
-                                       ? "border-r-2 border-sky-400 dark:text-white text-slate-800"
-                                       : "border-r-2 border-white dark:border-slate-800"
-                                 }`
-                              }
-                              onClick={() => {
-                                 closeMenus("all");
-                              }}
-                           >
-                              درباره ما
-                           </NavLink>
-                        </div>
-                        {/* ---end of side list */}
-                        {/* me */}
-                        <div className="flex flex-col px-2 gap-5 w-full">
-                           <div className="flex flex-col justify-between items-center px-3">
-                              <a
-                                 className="hover:text-sky-500 active:text-sky-500 underline"
-                                 href="https://www.linkedin.com/in/mehran-jamali-b2a43b239/"
-                              >
-                                 Linkedin
-                              </a>
-                              <span className="h-3">||||||</span>
-                              <span className="h-3">||||||</span>
-                              <span className="h-3">||||||</span>
-                              <span className="h-3">||||||</span>
-                              <a
-                                 className="pt-2 hover:text-sky-500 active:text-sky-500 underline"
-                                 href="https://github.com/mehranjamali/React-Redux-Sample1"
-                              >
-                                 Github{" "}
-                              </a>
-                           </div>
-                           <h2 className="text-center w-full">
-                              {/* <FontAwesomeIcon icon={faHeart} className="text-base text-red-500" /> */}
-                              <span className="text-xs"> Design By </span>
-                              <span className="text-sm font-bold"> Mehran Jamali </span>
-                              {/* <FontAwesomeIcon icon={faHeart} className="text-base text-red-500" /> */}
-                           </h2>
-                        </div>
-                        {/* ---end of me -_- */}
-                     </div>
-                     {/* --end of right side panel */}
+                     {/* MobileNavMenu Component */}
+                     <MobileNavMenu closeMenus={() => dispatch({ type: "close-all" })} navLinks={navLinks} showMobileMenu={showMobileMenu} />
                   </div>
                   {/* ---end of mobile menu */}
                   {/* hamburger */}
                   <div
-                     ref={mobileMenuBtn}
-                     className="block hamburger md:hidden"
-                     onClick={toggleMobileMenu}
+                     data-name="hamburger"
+                     className={`block hamburger md:hidden ${showMobileMenu ? "open" : ""}`}
+                     onClick={() => dispatch({ type: "mobile-menu" })}
                   >
                      <span className="hamburger-top bg-slate-800 dark:bg-white"></span>
                      <span className="hamburger-middle bg-slate-800 dark:bg-white"></span>
@@ -321,107 +177,37 @@ function Navbar() {
                </div>
                {/* ---end of hamburger , brand , mobile menu */}
                {/* nav links */}
-               <div className="hidden md:block">
+               <div data-name="nav-menu-desktop" className="hidden md:block">
                   <ul className="flex flex-row justify-end gap-5 text-sm text-slate-500 dark:text-slate-300 nav-links">
-                     <li className="py-4">
-                        <NavLink
-                           to="/"
-                           className={({ isActive }) =>
-                              `py-4 px-1 hover:text-sky-400 hover:border-sky-400 transition-03 ${
-                                 isActive
-                                    ? "border-b border-sky-400 text-slate-900 dark:text-slate-50"
-                                    : ""
-                              }`
-                           }
-                           onClick={() => {
-                              closeMenus("all");
-                           }}
-                        >
-                           صفحه اصلی
-                        </NavLink>
-                     </li>
-                     <li className="py-4">
-                        <NavLink
-                           to="/users"
-                           className={({ isActive }) =>
-                              `py-4 px-1 hover:text-sky-400 hover:border-sky-400 transition-03 ${
-                                 isActive
-                                    ? "border-b border-sky-400 hover:text-gray-600 text-slate-900 dark:text-slate-50"
-                                    : ""
-                              }`
-                           }
-                           onClick={() => {
-                              closeMenus("all");
-                           }}
-                        >
-                           نویسنده ها
-                        </NavLink>
-                     </li>
-                     <li className="py-4">
-                        <NavLink
-                           to="/articles"
-                           className={({ isActive }) =>
-                              `py-4 px-1 hover:text-sky-400 hover:border-sky-400 transition-03 ${
-                                 isActive
-                                    ? "border-b border-sky-400 hover:text-gray-600 text-slate-900 dark:text-slate-50"
-                                    : ""
-                              }`
-                           }
-                           onClick={() => {
-                              closeMenus("all");
-                           }}
-                        >
-                           مقالات
-                        </NavLink>
-                     </li>
-                     <li className="py-4">
-                        <NavLink
-                           to="/onlineLearning"
-                           className={({ isActive }) =>
-                              `py-4 px-1 hover:text-sky-400 hover:border-sky-400 transition-03 ${
-                                 isActive
-                                    ? "border-b border-sky-400 hover:text-gray-600 text-slate-900 dark:text-slate-50"
-                                    : ""
-                              }`
-                           }
-                           onClick={() => {
-                              closeMenus("all");
-                           }}
-                        >
-                           آموزش مجازی
-                        </NavLink>
-                     </li>
-                     <li className="py-4">
-                        <NavLink
-                           to="/aboutUs"
-                           className={({ isActive }) =>
-                              `py-4 px-1 hover:text-sky-400 hover:border-sky-400 transition-03 ${
-                                 isActive
-                                    ? "border-b border-sky-400 hover:text-gray-600 text-slate-900 dark:text-slate-50"
-                                    : ""
-                              }`
-                           }
-                           onClick={() => {
-                              closeMenus("all");
-                           }}
-                        >
-                           درباره ما
-                        </NavLink>
-                     </li>
+                     {/* nav link item */}
+                     {navLinks.map((item: navLinkType, index: number) => {
+                        return (
+                           <li data-name="nav-link" className="py-4" key={index}>
+                              <NavLink
+                                 to={item.to}
+                                 className={({ isActive }) => generateNavLinkClass(isActive)}
+                                 onClick={() => {
+                                    dispatch({ type: "close-all" });
+                                 }}
+                              >
+                                 {item.title}
+                              </NavLink>
+                           </li>
+                        );
+                     })}
                   </ul>
                </div>
                {/* ---end of nav links */}
             </div>
-            {/* ....................................................................................... */}
             {/* ---end of right_side: hamburger , brand , mobile menu - nav links */}
             {/* left_side: profile , search , notification , theme*/}
-            <div className="flex flex-row justify-start items-center navbar-h gap-6">
+            <div data-name="navbar-left-side" className="flex flex-row justify-start items-center navbar-h gap-6">
                {/* theme */}
-               <div className="flex items-center py-4 text-lg">
+               <div data-name="theme" className="flex items-center py-4 text-lg">
                   {lightTheme ? (
                      <FontAwesomeIcon
                         icon={faMoon}
-                        className="text-indigo-700 py-1 text-xl"
+                        className="cursor-pointer text-slate-800 hover:text-indigo-500 py-1 text-xl transition-05"
                         onClick={() => {
                            toggleTheme(false);
                         }}
@@ -429,7 +215,7 @@ function Navbar() {
                   ) : (
                      <FontAwesomeIcon
                         icon={faSun}
-                        className="text-yellow-400 py-1 text-xl"
+                        className="cursor-pointer text-slate-200 py-1 text-xl hover:text-yellow-500 transition-05"
                         onClick={() => {
                            toggleTheme(true);
                         }}
@@ -438,20 +224,21 @@ function Navbar() {
                </div>
                {/* ---end of theme */}
                {/* search  */}
-               <div className="flex items-center py-4 text-lg">
+               <div data-name="search" className="flex items-center py-4 text-lg">
                   <FontAwesomeIcon
                      icon={faSearch}
-                     className="py-1 hover:text-sky-400 transition-03"
-                     onClick={toggleSearchModal}
+                     className="cursor-pointer py-1 hover:text-sky-400 transition-03"
+                     onClick={() => {
+                        dispatch({ type: "search-modal" });
+                     }}
                   />
                   <div className="">
                      {/* bg */}
                      <div
-                        className={`absolute inset-0 from-top bg-slate-400/50 w-full h-screen ${
-                           !showSearchModal ? "hidden" : ""
-                        }`}
+                        data-name="search-bg"
+                        className={`absolute inset-0 from-top bg-slate-400/50 w-full h-screen ${!showSearchModal && "hidden"}`}
                         onClick={() => {
-                           closeMenus("all");
+                           dispatch({ type: "close-all" });
                         }}
                      ></div>
                      {/* ---end of bg */}
@@ -461,20 +248,21 @@ function Navbar() {
                </div>
                {/* ---end of search  */}
                {/* notification */}
-               <div className="flex items-center py-4 text-lg">
+               <div data-name="notification" className="flex items-center py-4 text-lg">
                   <FontAwesomeIcon
                      icon={faBell}
                      className="cursor-pointer py-1 hover:text-sky-400 transition-03"
-                     onClick={toggleNotificationSlide}
+                     onClick={() => {
+                        dispatch({ type: "notification-panel" });
+                     }}
                   />
                   <div className="">
                      {/* bg */}
                      <div
-                        className={`absolute inset-0 bg-slate-400/50  from-top w-full h-screen ${
-                           !showNotificationPanel ? "hidden" : ""
-                        }`}
+                        data-name="notification-bg"
+                        className={`absolute inset-0 bg-slate-400/50  from-top w-full h-screen ${!showNotificationPanel && "hidden"}`}
                         onClick={() => {
-                           closeMenus("all");
+                           dispatch({ type: "close-all" });
                         }}
                      ></div>
                      {/* ---end of bg */}
@@ -483,14 +271,16 @@ function Navbar() {
                </div>
                {/* ---end of notification */}
                {/* user dropdown */}
-               <div className="flex items-center relative py-4 text-lg">
+               <div data-name="dropdown" className="flex items-center relative py-4 text-lg">
                   <FontAwesomeIcon
                      icon={faUser}
                      className="cursor-pointer bg-gray-200 dark:bg-slate-600 text-gray-600 dark:text-gray-200 p-2 rounded-full 
                      hover:text-sky-400 dark:hover:text-sky-500 transition-03"
-                     onClick={toggleProfileDropdown}
+                     onClick={() => {
+                        dispatch({ type: "dropdown" });
+                     }}
                   />
-                  <Dropdown showDropdown={showDropdown} dropdownObjs={dropdownObjs} />
+                  <Dropdown closeMenus={() => dispatch({ type: "close-all" })} showDropdown={showDropdown} dropdownObjs={dropdownObjs} />
                </div>
                {/* ---end of user dropdown */}
             </div>

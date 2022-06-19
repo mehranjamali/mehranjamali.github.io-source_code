@@ -103,9 +103,7 @@ export const deleteNotification: any = (dayId: number, notificationId: number) =
    // step 5 : splice "notification" from list and return notification obj
    let dayIndex = notifications.findIndex((day: any) => day.id === dayId);
    if (dayIndex > -1) {
-      let notificationIndex = notifications[dayIndex].list.findIndex(
-         (notification: any) => notification.id === notificationId
-      );
+      let notificationIndex = notifications[dayIndex].list.findIndex((notification: any) => notification.id === notificationId);
       if (notificationIndex > -1) {
          notifications[dayIndex].list.splice(notificationIndex, 1);
          return true;

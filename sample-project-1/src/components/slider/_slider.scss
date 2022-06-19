@@ -1,0 +1,42 @@
+.mySlides {
+   img {
+      vertical-align: middle;
+   }
+}
+
+.fade {
+   animation-name: fade;
+   animation-duration: 1s;
+}
+
+.min-slide-h {
+   min-height: 100px;
+}
+
+.previous-slide-btn {
+   height: 100%;
+   padding: 0 8px 2px 7px;
+   transition: all 0.3s;
+}
+.next-slide-btn {
+   height: 100%;
+   padding: 0 7px 2px 8px;
+   transition: all 0.3s;
+}
+.previous-slide-btn:hover {
+   padding-right: 2px;
+   padding-left: 13px;
+}
+.next-slide-btn:hover {
+   padding-right: 13px;
+   padding-left: 2px;
+}
+
+@keyframes fade {
+   from {
+      opacity: 0.4;
+   }
+   to {
+      opacity: 1;
+   }
+}

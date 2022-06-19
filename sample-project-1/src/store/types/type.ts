@@ -1,20 +1,21 @@
-export type IAction<P> = {
+export type actionType<P> = {
    type: string;
    payload: P;
 };
 
-export type IState<D> = {
-   data: D[];
+export type stateType<D> = {
+   data: D;
    loading: boolean;
-   lastFetch: any;
+   // lastFetch: any;
    error: string;
 };
 
-export type IApiBody = {
+export type apiBodyType = {
    onStart?: string;
    onSuccess: string;
    onError: string;
    method: string;
    data?: any;
    url: string;
+   needAuthorization?: boolean;
 };

@@ -25,9 +25,9 @@
 @import "../../../node_modules/react-toastify/dist/ReactToastify.css";
 
 // pages
-// ...
+@import "../pages/home/home";
 
 // components
 @import "../components/navbar/navbar";
-@import "../components/navbar/components/dropdown";
+@import "../components/slider/slider";
 // ...
