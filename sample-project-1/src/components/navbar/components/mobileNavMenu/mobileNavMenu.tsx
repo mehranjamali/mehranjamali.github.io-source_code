@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { NavLink } from "react-router-dom";
 
 // nav link type
@@ -19,18 +19,20 @@ const generateNavLinkClass = (isActive: boolean) => {
    return `py-3 pr-4 w-full dark:hover:bg-slate-600 hover:bg-gray-200
            dark:active:bg-slate-600 active:bg-gray-200 border-r-2
            hover:text-sky-400 hover:border-sky-400 transition-05 ${
-              isActive
-                 ? "border-sky-400 dark:text-white text-slate-800"
-                 : "border-white dark:border-slate-800"
+              isActive ? "border-sky-400 dark:text-white text-slate-800" : "border-white dark:border-slate-800"
            }`;
 };
 
 function MobileNavMenu({ showMobileMenu, closeMenus, navLinks }: propsMobileNavMenu) {
+   useEffect(() => {
+      // console.log("MobileNavMenu Component re-rendered");
+   });
+
    return (
       <div
          data-name="mobile-menu"
          className={`absolute h-screen flex flex-col justify-between items-start mr-0  z-50 shadow-2xl w-56 text-sm 
-                        bg-white dark:bg-slate-800 dark:text-slate-300 text-slate-500 border-t border-l dark:border-slate-600
+                        bg-white dark:bg-slate-800 dark:text-slate-300 text-slate-500 border-t border-l dark:border-slate-700
                         translate-x-full transition-05 pr-0 pb-16 ${
                            showMobileMenu ? "transform-none" : "translate-x-full"
                         }`}
@@ -53,7 +55,7 @@ function MobileNavMenu({ showMobileMenu, closeMenus, navLinks }: propsMobileNavM
             })}
          </div>
          {/* ---end of side list */}
-         {/* me */}
+         {/* Design By Me */}
          <div data-name="about-me" className="flex flex-col px-2 gap-5 w-full">
             <div className="flex flex-col justify-between items-center px-3">
                <a
@@ -75,8 +77,8 @@ function MobileNavMenu({ showMobileMenu, closeMenus, navLinks }: propsMobileNavM
             </div>
             <h2 className="text-center w-full">
                {/* <FontAwesomeIcon icon={faHeart} className="text-base text-red-500" /> */}
-               <span className="text-xs"> Design By </span>
-               <span className="text-sm font-bold"> Mehran Jamali </span>
+               <span className="text-xs text-slate-400"> Developed By </span>
+               <span className="text-sm"> Mehran Jamali </span>
                {/* <FontAwesomeIcon icon={faHeart} className="text-base text-red-500" /> */}
             </h2>
          </div>
@@ -85,4 +87,4 @@ function MobileNavMenu({ showMobileMenu, closeMenus, navLinks }: propsMobileNavM
    );
 }
 
-export default MobileNavMenu;
+export default React.memo(MobileNavMenu);

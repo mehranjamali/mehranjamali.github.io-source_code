@@ -1,0 +1,19 @@
+@keyframes loaderProgressBar {
+   0% {
+      width: 0;
+   }
+   60% {
+      width: 20%;
+   }
+   80% {
+      width: 90%;
+   }
+   100% {
+      width: 100%;
+   }
+}
+
+.loaderProgressBar {
+   animation: loaderProgressBar;
+   animation-duration: 1.3s;
+}

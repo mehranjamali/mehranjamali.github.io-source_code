@@ -1,0 +1,20 @@
+.scrollbar {
+   *::-webkit-scrollbar {
+      width: 0.3rem;
+   }
+}
+
+.scrollbar {
+   *::-webkit-scrollbar-track {
+      box-shadow: none;
+      background-color: inherit;
+   }
+}
+
+.scrollbar {
+   *::-webkit-scrollbar-thumb {
+      background-color: rgb(121, 121, 121);
+      outline: none;
+      border-radius: 30px;
+   }
+}

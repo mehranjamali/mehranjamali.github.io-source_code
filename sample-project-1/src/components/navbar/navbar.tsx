@@ -1,7 +1,7 @@
-import { useRef, useState, useEffect, useReducer } from "react";
-import { NavLink } from "react-router-dom";
+import React, { useState, useEffect, useReducer } from "react";
+import { NavLink, useLocation } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUser, faBell, faHeart } from "@fortawesome/free-regular-svg-icons";
+import { faUser, faBell } from "@fortawesome/free-regular-svg-icons";
 import { faSearch, faSun, faMoon } from "@fortawesome/free-solid-svg-icons";
 
 // components
@@ -9,6 +9,12 @@ import Search from "./components/search/search";
 import Notification from "./components/notification/notification";
 import Dropdown, { dropdownType } from "./components/dropdown/dropdown";
 import MobileNavMenu, { navLinkType } from "./components/mobileNavMenu/mobileNavMenu";
+
+// redux
+// -- hooks
+import { RootState, useSelectorHook } from "../../store/hooks/useHooks";
+// -- user
+import { userAuthReadStateSelector, userAuthType } from "../../store/slices/user";
 
 // dropdown items
 const dropdownObjs: dropdownType[] = [
@@ -33,9 +39,9 @@ const dropdownObjs: dropdownType[] = [
 // nav links
 const navLinks: navLinkType[] = [
    { title: "صفحه اصلی", to: "/" },
-   { title: "نویسنده ها", to: "/users" },
+   { title: "نویسنده ها", to: "/author" },
    { title: "مقالات", to: "/articles" },
-   { title: "آموزش مجازی", to: "/onlineLearning" },
+   { title: "کتاب ها", to: "/Books" },
    { title: "درباره ما", to: "/aboutUs" },
 ];
 
@@ -56,22 +62,23 @@ const reducer = (state: typeof initialState, action: any) => {
    switch (action.type) {
       // toggle mobile menu below the md(768px) media screen
       case "mobile-menu":
-         // stop scroll below the md(768px) media screen --> because of mobile menu
-         body.classList.toggle("stop-scroll");
+         // media-scroll below the md(768px) media screen --> because of mobile menu
+         body.classList.toggle("media-scroll");
          // stop scroll in all media screen --> because of notification , search
          body.classList.remove("stop-scroll-body");
          return { ...initialState, showMobileMenu: !state.showMobileMenu };
 
       // toggle notification panel in all media screen
       case "notification-panel":
-         body.classList.remove("stop-scroll");
+         // media-scroll --> because of mobile menu
+         body.classList.remove("media-scroll");
          if (!state.showNotificationPanel) body.classList.add("stop-scroll-body");
          else body.classList.remove("stop-scroll-body");
          return { ...initialState, showNotificationPanel: !state.showNotificationPanel };
 
       // toggle search modal in all media screen
       case "search-modal":
-         body.classList.remove("stop-scroll");
+         body.classList.remove("media-scroll");
          if (!state.showSearchModal) body.classList.add("stop-scroll-body");
          else body.classList.remove("stop-scroll-body");
          return { ...initialState, showSearchModal: !state.showSearchModal };
@@ -90,11 +97,27 @@ const reducer = (state: typeof initialState, action: any) => {
    }
 };
 
+// Component
 function Navbar() {
-   const [{ showDropdown, showMobileMenu, showNotificationPanel, showSearchModal }, dispatch] = useReducer(reducer, initialState);
-   const [lightTheme, setLightTheme] = useState(localStorage.getItem("theme") === "light");
+   const [{ showDropdown, showMobileMenu, showNotificationPanel, showSearchModal }, navbarDispatch] = useReducer(
+      reducer,
+      initialState
+   );
 
-   // CDM
+   const [lightTheme, setLightTheme] = useState(localStorage.getItem("theme") === "light");
+   const userState: userAuthType = useSelectorHook((state: RootState) => userAuthReadStateSelector(state));
+
+   const location = useLocation();
+
+   // handle navbar visibility
+   const handleNavbarVisibility = () => {
+      // pathname
+      if (["/login", "/register"].includes(location.pathname)) {
+         return "hidden";
+      }
+   };
+
+   // CDM check theme
    useEffect(() => {
       const theme: string | null = localStorage.getItem("theme");
       if (theme) {
@@ -106,8 +129,14 @@ function Navbar() {
       }
    }, []);
 
+   useEffect(() => {
+      // console.log("Navbar Component re-rendered");
+   });
+
    // toggleTheme
    const toggleTheme = (status: boolean) => {
+      // true --> light
+      // false --> dark
       if (status) {
          localStorage.setItem("theme", "light");
          setLightTheme(true);
@@ -131,8 +160,8 @@ function Navbar() {
    return (
       <nav
          data-name="navbar"
-         className="fixed top-0 right-0 left-0 bg-white text-slate-900 dark:bg-slate-800 dark:text-white 
-                    border-b border-slate-300 dark:border-b dark:border-slate-600 z-50 transition-03"
+         className={`fixed top-0 right-0 left-0 bg-white text-slate-700 dark:bg-slate-800 dark:text-slate-200 
+                    border-b border-slate-300 dark:border-b dark:border-slate-700 z-50 transition-03 ${handleNavbarVisibility()}`}
       >
          <div
             data-name="navbar-container"
@@ -150,18 +179,22 @@ function Navbar() {
                            showMobileMenu ? "" : "hidden"
                         }`}
                         onClick={() => {
-                           dispatch({ type: "close-all" });
+                           navbarDispatch({ type: "close-all" });
                         }}
                      ></div>
                      {/* MobileNavMenu Component */}
-                     <MobileNavMenu closeMenus={() => dispatch({ type: "close-all" })} navLinks={navLinks} showMobileMenu={showMobileMenu} />
+                     <MobileNavMenu
+                        closeMenus={() => navbarDispatch({ type: "close-all" })}
+                        navLinks={navLinks}
+                        showMobileMenu={showMobileMenu}
+                     />
                   </div>
                   {/* ---end of mobile menu */}
                   {/* hamburger */}
                   <div
                      data-name="hamburger"
                      className={`block hamburger md:hidden ${showMobileMenu ? "open" : ""}`}
-                     onClick={() => dispatch({ type: "mobile-menu" })}
+                     onClick={() => navbarDispatch({ type: "mobile-menu" })}
                   >
                      <span className="hamburger-top bg-slate-800 dark:bg-white"></span>
                      <span className="hamburger-middle bg-slate-800 dark:bg-white"></span>
@@ -187,7 +220,7 @@ function Navbar() {
                                  to={item.to}
                                  className={({ isActive }) => generateNavLinkClass(isActive)}
                                  onClick={() => {
-                                    dispatch({ type: "close-all" });
+                                    navbarDispatch({ type: "close-all" });
                                  }}
                               >
                                  {item.title}
@@ -207,7 +240,7 @@ function Navbar() {
                   {lightTheme ? (
                      <FontAwesomeIcon
                         icon={faMoon}
-                        className="cursor-pointer text-slate-800 hover:text-indigo-500 py-1 text-xl transition-05"
+                        className="cursor-pointer text-slate-700 hover:text-indigo-500 py-1 text-xl transition-05"
                         onClick={() => {
                            toggleTheme(false);
                         }}
@@ -229,16 +262,18 @@ function Navbar() {
                      icon={faSearch}
                      className="cursor-pointer py-1 hover:text-sky-400 transition-03"
                      onClick={() => {
-                        dispatch({ type: "search-modal" });
+                        navbarDispatch({ type: "search-modal" });
                      }}
                   />
                   <div className="">
                      {/* bg */}
                      <div
                         data-name="search-bg"
-                        className={`absolute inset-0 from-top bg-slate-400/50 w-full h-screen ${!showSearchModal && "hidden"}`}
+                        className={`absolute inset-0 from-top bg-slate-400/50 w-full h-screen ${
+                           !showSearchModal && "hidden"
+                        }`}
                         onClick={() => {
-                           dispatch({ type: "close-all" });
+                           navbarDispatch({ type: "close-all" });
                         }}
                      ></div>
                      {/* ---end of bg */}
@@ -248,21 +283,26 @@ function Navbar() {
                </div>
                {/* ---end of search  */}
                {/* notification */}
-               <div data-name="notification" className="flex items-center py-4 text-lg">
+               <div
+                  data-name="notification"
+                  className={`flex items-center py-4 text-lg ${!userState.accessToken && "hidden"}`}
+               >
                   <FontAwesomeIcon
                      icon={faBell}
                      className="cursor-pointer py-1 hover:text-sky-400 transition-03"
                      onClick={() => {
-                        dispatch({ type: "notification-panel" });
+                        navbarDispatch({ type: "notification-panel" });
                      }}
                   />
                   <div className="">
                      {/* bg */}
                      <div
                         data-name="notification-bg"
-                        className={`absolute inset-0 bg-slate-400/50  from-top w-full h-screen ${!showNotificationPanel && "hidden"}`}
+                        className={`absolute inset-0 bg-slate-400/50  from-top w-full h-screen ${
+                           !showNotificationPanel && "hidden"
+                        }`}
                         onClick={() => {
-                           dispatch({ type: "close-all" });
+                           navbarDispatch({ type: "close-all" });
                         }}
                      ></div>
                      {/* ---end of bg */}
@@ -271,16 +311,26 @@ function Navbar() {
                </div>
                {/* ---end of notification */}
                {/* user dropdown */}
-               <div data-name="dropdown" className="flex items-center relative py-4 text-lg">
+               <div
+                  data-name="dropdown"
+                  className={`flex items-center relative py-4 text-lg ${!userState.accessToken && "hidden"}`}
+               >
                   <FontAwesomeIcon
                      icon={faUser}
                      className="cursor-pointer bg-gray-200 dark:bg-slate-600 text-gray-600 dark:text-gray-200 p-2 rounded-full 
                      hover:text-sky-400 dark:hover:text-sky-500 transition-03"
                      onClick={() => {
-                        dispatch({ type: "dropdown" });
+                        navbarDispatch({ type: "dropdown" });
                      }}
                   />
-                  <Dropdown closeMenus={() => dispatch({ type: "close-all" })} showDropdown={showDropdown} dropdownObjs={dropdownObjs} />
+                  <Dropdown
+                     closeMenus={() => navbarDispatch({ type: "close-all" })}
+                     showDropdown={showDropdown}
+                     dropdownObjs={dropdownObjs}
+                  />
+               </div>
+               <div data-name="login" className={`flex items-center py-4 text-lg ${userState.accessToken && "hidden"}`}>
+                  <NavLink to="/login">Login</NavLink>
                </div>
                {/* ---end of user dropdown */}
             </div>
@@ -291,4 +341,4 @@ function Navbar() {
    );
 }
 
-export default Navbar;
+export default React.memo(Navbar);

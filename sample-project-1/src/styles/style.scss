@@ -3,20 +3,6 @@
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
 
-// utils
-@import "./utils/colors";
-@import "./utils/variables";
-@import "./utils/functions";
-@import "./utils/mixins";
-
-// theme
-@import "./themes/dark";
-@import "./themes/light";
-
-// base
-@import "./base/base";
-@import "./base/typography";
-
 // index, app
 @import "./index";
 @import "./App";
@@ -24,10 +10,16 @@
 // library
 @import "../../../node_modules/react-toastify/dist/ReactToastify.css";
 
+// common
+@import "./common/modal";
+@import "./common/scrollBar";
+
 // pages
 @import "../pages/home/home";
+@import "../pages/author//author";
 
 // components
 @import "../components/navbar/navbar";
 @import "../components/slider/slider";
-// ...
+@import "../components/loader/homeLoader";
+@import "../components/flexTable/flexTable";

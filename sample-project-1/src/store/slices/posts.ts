@@ -2,7 +2,7 @@ import { createSlice, createSelector } from "@reduxjs/toolkit";
 import { stateType, actionType } from "../types/type";
 import { apiCallBegan } from "../services/apiService";
 import showToast from "../../utiles/toast";
-import { type } from "os";
+import moment from "moment";
 
 // types
 type postType = {
@@ -15,7 +15,7 @@ type postType = {
 // slice
 const postsSlice = createSlice({
    name: "posts",
-   initialState: { data: [], error: "", loading: false } as stateType<postType[]>,
+   initialState: { data: [], lastFetch: null, error: "", loading: false } as stateType<postType[]>,
    reducers: {
       postsRequested: (postsState: stateType<postType[]>, action: actionType<string>) => {
          postsState.loading = true;
@@ -29,6 +29,7 @@ const postsSlice = createSlice({
       postsReceived: (postsState: stateType<postType[]>, action: actionType<postType[]>) => {
          postsState.loading = false;
          postsState.data = action.payload;
+         postsState.lastFetch = Date.now();
          postsState.error = "";
       },
    },
@@ -38,36 +39,43 @@ const postsSlice = createSlice({
 const postsUrl = "posts";
 
 // commands
-const fetchPosts = () => {
-   return apiCallBegan({
-      url: postsUrl,
-      method: "get",
-      onStart: postsSlice.actions.postsRequested.type,
-      onSuccess: postsSlice.actions.postsReceived.type,
-      onError: postsSlice.actions.postsRequestFailed.type,
-      needAuthorization: true,
-   });
+const fetchPosts = () => (dispatch: any, getState: any) => {
+   // caching with time
+   const { lastFetch } = getState().entities.posts;
+   const timeDiff = moment().diff(lastFetch, "minutes");
+   if (timeDiff < 3) {
+      console.log("you can't send a new request less then 3 minutes");
+      return;
+   }
+   return dispatch(
+      apiCallBegan({
+         url: postsUrl,
+         method: "get",
+         onStart: postsSlice.actions.postsRequested.type,
+         onSuccess: postsSlice.actions.postsReceived.type,
+         onError: postsSlice.actions.postsRequestFailed.type,
+         needAuthorization: true,
+      })
+   );
 };
 
 // selectors
-const selectPosts = (state: any) => {
-   return createSelector(
-      (state: any) => state.entities.posts,
-      (posts: any) => posts
-   )(state);
-};
+const selectPosts = createSelector(
+   (state: any) => state.entities.posts,
+   (posts: any) => posts
+);
 
-const selectPostsByUser = (state: any, userId: number) => {
-   return createSelector(
+const selectPostsByUser = () =>
+   createSelector(
       (state: any) => state.entities.posts,
-      (posts: any) => {
+      (_: any, userId: any) => userId,
+      (posts: any, userId: any) => {
          return {
             ...posts,
             data: posts.data.filter((post: any) => post.userId === userId),
          };
       }
-   )(state);
-};
+   );
 
 // export type
 export type { postType };

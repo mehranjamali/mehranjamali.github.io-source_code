@@ -1,12 +1,16 @@
-import React from "react";
+import React, { useEffect } from "react";
+import UserInfo from "./components/userInfo/userInfo";
+import Recent from "./components/recent/recent";
 
 function RC() {
+   useEffect(() => {
+      // console.log("RC re-rendered");
+   });
+
    return (
-      <div
-         className="bg-white text-slate-900 dark:bg-slate-800 dark:text-white shadow-xl p-2 
-                    sm:rounded-md transition-03"
-      >
-         <p className="text-base">right section</p>
+      <div data-name="right-sidebar-content" className={`flex flex-col items-start justify-start gap-2 h-full `}>
+         <UserInfo />
+         <Recent />
       </div>
    );
 }

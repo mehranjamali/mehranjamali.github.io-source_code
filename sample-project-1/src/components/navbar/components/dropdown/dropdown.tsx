@@ -1,6 +1,16 @@
+import React, { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRightFromBracket } from "@fortawesome/free-solid-svg-icons";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+
+// redux
+// -- hooks
+import { useDispatchHook } from "../../../../store/hooks/useHooks";
+// -- user
+import { userAuthLogoutCommand } from "../../../../store/slices/user";
+
+// components
+import Spinner from "../../../../components/spinner/spinner";
 
 type propsDropdown = {
    showDropdown: boolean;
@@ -13,7 +23,40 @@ export type dropdownType = {
    list: { link: string; name: string }[];
 };
 
+// spinner size
+const spinnerSize = {
+   layer1: { width: "w-6", height: "h-6" },
+   layer2: { width: "w-4", height: "h-4" },
+   layer3: { width: "w-2", height: "h-2" },
+};
+
 function Dropdown({ showDropdown, dropdownObjs, closeMenus }: propsDropdown) {
+   const navigate = useNavigate();
+   const dispatch = useDispatchHook();
+
+   const [showSpinner, setShowSpinner] = useState<boolean>(false);
+
+   // handle logout
+   const handleLogout = () => {
+      setShowSpinner(true);
+      setTimeout(() => {
+         setShowSpinner(false);
+         dispatch(userAuthLogoutCommand());
+         closeMenus();
+      }, 500);
+   };
+
+   useEffect(() => {
+      // console.log("Dropdown Component re-rendered");
+   });
+
+   // handle create account navigator
+   const handleCreateAccountNavigator = () => {
+      closeMenus();
+      // navigate("/register");
+      navigate("/login");
+   };
+
    return (
       <ul
          data-name="dropdown"
@@ -51,31 +94,26 @@ function Dropdown({ showDropdown, dropdownObjs, closeMenus }: propsDropdown) {
             );
          })}
 
-         <li
-            data-name="dropdown-btn-box"
-            className="flex flex-row items-start justify-between gap-4 pt-3 pb-1"
-         >
+         <li data-name="dropdown-btn-box" className="flex flex-row items-start justify-between gap-4 pt-3 pb-1">
             <div data-name="sign-out" className="w-full">
                <button
-                  className="flex items-center justify-center text-xs font-semibold 
+                  className="flex items-center justify-center text-xs font-semibold h-9 
                           text-red-500 py-2 border border-red-500 rounded-md w-full
-                          hover:text-white hover:bg-red-500 
-                          active:text-white active:bg-red-500 
-                          shadow-xl transition-03"
-                  onClick={() => closeMenus()}
+                          hover:bg-red-100 dark:hover:bg-slate-700 shadow-xl transition-03"
+                  onClick={() => handleLogout()}
                >
-                  <FontAwesomeIcon icon={faArrowRightFromBracket} className="pl-2" />
-                  <span>خروج</span>
+                  <div className={`${showSpinner && "hidden"} flex items-center justify-center`}>
+                     <FontAwesomeIcon icon={faArrowRightFromBracket} className="pl-2" />
+                     <span>خروج</span>
+                  </div>
+                  <Spinner size={spinnerSize} spin={showSpinner} color={"border-red-500"} />
                </button>
             </div>
             <div data-name="sign-up" className="w-full">
                <button
-                  className="text-xs font-semibold text-sky-400 py-2 border
-                          border-sky-500 rounded-md w-full 
-                          hover:text-white hover:bg-sky-500 
-                          active:text-white active:bg-sky-500 
-                            shadow-xl transition-03"
-                  onClick={() => closeMenus()}
+                  className="text-xs font-semibold text-sky-400 py-2 border border-sky-500 rounded-md w-full 
+                  h-9 hover:bg-sky-100 dark:hover:bg-slate-700 shadow-xl transition-03"
+                  onClick={() => handleCreateAccountNavigator()}
                >
                   ایجاد حساب
                </button>
@@ -85,4 +123,4 @@ function Dropdown({ showDropdown, dropdownObjs, closeMenus }: propsDropdown) {
    );
 }
 
-export default Dropdown;
+export default React.memo(Dropdown);

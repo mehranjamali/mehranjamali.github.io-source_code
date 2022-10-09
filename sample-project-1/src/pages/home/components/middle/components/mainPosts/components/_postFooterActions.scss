@@ -1,0 +1,14 @@
+.like-post-btns-hover-box {
+   transition-delay: 0.5s;
+   visibility: hidden;
+   opacity: 0;
+   &:hover {
+      visibility: visible !important;
+      opacity: 1 !important;
+   }
+}
+
+.like-post-btn-footer:hover + .like-post-btns-hover-box {
+   visibility: visible !important;
+   opacity: 1 !important;
+}

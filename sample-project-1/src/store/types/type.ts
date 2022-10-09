@@ -6,7 +6,7 @@ export type actionType<P> = {
 export type stateType<D> = {
    data: D;
    loading: boolean;
-   // lastFetch: any;
+   lastFetch: any; //good for caching
    error: string;
 };
 

@@ -1,2 +1,9 @@
-@import "./components/left/components/relevant/relevant";
+@import "components/left/components/relevant/relevant";
 @import "components/left/components/popular/popular";
+@import "components/right/components/userInfo/userInfo";
+@import "components/right/components/recent/recent";
+@import "components/middle/components/mainPosts/components/likeHoverBox";
+@import "components/middle/components/mainPosts/components/postFooterActions";
+@import "components/middle/components/createPostHead/createPostHead";
+@import "components/middle/components/createPostHead/createImagePost";
+@import "components/middle/components/createPostHead/createPostModal";

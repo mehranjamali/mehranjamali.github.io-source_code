@@ -1,0 +1,27 @@
+.create-post-modal-write-content {
+   position: relative;
+   textarea:focus + .right-border-textarea div {
+      height: 100%;
+      opacity: 1;
+      visibility: visible;
+      box-sizing: border-box;
+   }
+}
+
+.right-border-textarea {
+   position: absolute;
+   top: 0;
+   right: 0;
+   height: 100%;
+   padding: 15px 0;
+   div {
+      right: 0;
+      top: 0;
+      height: 0px;
+      padding-right: 1px;
+      border-radius: 100%;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s;
+   }
+}

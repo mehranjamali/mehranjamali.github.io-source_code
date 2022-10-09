@@ -1,3 +1,17 @@
 div[data-name="popular"] {
    max-width: 273px;
+   max-height: 85vh;
+   // min-height: 440px;
+}
+
+@media screen and(min-width:1024px) {
+   div[data-name="popular"] {
+      min-width: 241px;
+   }
+}
+
+@media screen and(min-width:1280px) {
+   div[data-name="popular"] {
+      min-width: 273px;
+   }
 }

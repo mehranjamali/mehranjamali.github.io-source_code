@@ -2,10 +2,10 @@ import { useEffect, useReducer, useState } from "react";
 import { Link } from "react-router-dom";
 // fontawesome
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faInfo, faPlus, faCheck } from "@fortawesome/free-solid-svg-icons";
+import { faInfo, faPlus, faArrowLeft, faCheck } from "@fortawesome/free-solid-svg-icons";
 
 // component
-import Spinner from "../../../../../../components/snipper/spinner";
+import Spinner from "../../../../../../components/spinner/spinner";
 
 // service
 import { getRelevantList, relevantListType } from "./relevantService";
@@ -13,27 +13,27 @@ import { getRelevantList, relevantListType } from "./relevantService";
 const initialState = {
    relevantList: [] as relevantListType,
    partOfList: [] as relevantListType,
-   partNumber: 0,
+   // partNumber: 0,
    // showLoadMoreBtn: false,
 };
 
 // spinner size
 const spinnerSize = {
    layer1: { width: "w-3", height: "h-3" },
-   layer2: { width: "w-1", height: "h-1" },
-   layer3: { width: "w-0", height: "h-0" },
+   layer2: { width: "w-2", height: "h-2" },
+   layer3: { width: "w-1", height: "h-1" },
 };
 
 const reducer = (state: typeof initialState, action: any) => {
    switch (action.type) {
       case "setRelevantList":
-         return { ...state, relevantList: [...action.payload], partOfList: [...action.payload].splice(0, 4) };
+         return { ...state, relevantList: [...action.payload], partOfList: [...action.payload].splice(0, 3) };
 
       case "follow":
          return {
             ...state,
             relevantList: state.relevantList.filter((x) => x.id !== action.payload),
-            partOfList: [...state.relevantList].filter((x) => x.id !== action.payload).splice(0, 4),
+            partOfList: [...state.relevantList].filter((x) => x.id !== action.payload).splice(0, 3),
          };
 
       default:
@@ -60,16 +60,13 @@ function Relevant() {
    const [{ partOfList, relevantList }, dispatch] = useReducer(reducer, initialState);
    const [showSpinner, setShowSpinner] = useState(true);
 
+   // CDM
    useEffect(() => {
       dispatch({ type: "setRelevantList", payload: getRelevantList() });
       setTimeout(() => {
          setShowSpinner(false);
-      }, 1200);
+      }, 800);
    }, []);
-
-   useEffect(() => {
-      console.log(relevantList);
-   });
 
    // loadMore
    // const loadMore = () => {
@@ -104,7 +101,7 @@ function Relevant() {
       <div
          data-name="relevant"
          className="bg-white text-slate-900 dark:bg-slate-800 dark:text-white shadow-xl p-3 
-                      sm:rounded-md transition-03 border border-slate-200 dark:border-slate-600"
+                      sm:rounded-md transition-03 border border-slate-200 dark:border-slate-700"
       >
          {/* head */}
          <div data-name="relevant-box-title" className="flex flex-row justify-between items-center">
@@ -115,7 +112,7 @@ function Relevant() {
             />
          </div>
          {/* list */}
-         <div data-name="relevant-list" className="relative flex flex-col gap-6 pt-6 pb-3 overflow-hidden">
+         <div data-name="relevant-list" className="relative flex flex-col gap-3 pt-6 pb-3 overflow-hidden">
             {partOfList.map((item: any, index: number) => {
                return (
                   <div
@@ -132,25 +129,25 @@ function Relevant() {
                         />
                      </Link>
                      <div data-name="relevant-item-info" className="flex-1">
-                        <p className="text-sm text-slate-600 dark:text-slate-300 font-semibold">{item.name}</p>
+                        <p className="text-sm text-slate-600 dark:text-slate-200">{item.name}</p>
                         <p className="text-xs text-slate-500 dark:text-slate-400 py-0.5">{item.headline}</p>
                         <button
                            data-name="follow-btn"
                            className="relative overflow-y-hidden flex items-center justify-center gap-1 text-slate-600 dark:text-slate-400 
-                               border border-slate-400 mt-1 px-2 w-24 rounded-md transition-03 hover:shadow-xl dark:hover:shadow-2xl 
+                               border border-slate-400 mt-1 px-2 w-26 rounded-full transition-03 hover:shadow-xl dark:hover:shadow-2xl 
                              hover:text-sky-500 hover:border-sky-500 dark:hover:text-sky-500 dark:hover:border-sky-500"
                            onClick={() => {
                               doFollow(item.id);
                            }}
                         >
-                           <div className="hidden p-0" id={generateFollowingBtnId(item.id)}>
+                           <div className="hidden p-0 m-0" id={generateFollowingBtnId(item.id)}>
                               <FontAwesomeIcon
                                  icon={faCheck}
                                  className="absolute pl-1 text-sm follow-btn__faCheck transition-03"
                               />
                               <span className="text-xs pr-5">دنبال شد</span>
                            </div>
-                           <div className="" id={generateFollowBtnId(item.id)}>
+                           <div className="p-0 m-0" id={generateFollowBtnId(item.id)}>
                               <FontAwesomeIcon
                                  icon={faPlus}
                                  className="absolute text-sm follow-btn__faPlus transition-03"
@@ -184,6 +181,13 @@ function Relevant() {
                className="relevant-load-more__faArrowLeft text-xs pr-2 transition-05 -mb-0.5"
             />
          </button> */}
+         <button data-name="relevant-load-more" className="text-slate-400 font-normal hover:text-sky-500">
+            <span className="text-xs transition-05">مشاهده همه موارد</span>
+            <FontAwesomeIcon
+               icon={faArrowLeft}
+               className="relevant-load-more__faArrowLeft text-xs pr-2 transition-05 -mb-0.5"
+            />
+         </button>
       </div>
    );
 }

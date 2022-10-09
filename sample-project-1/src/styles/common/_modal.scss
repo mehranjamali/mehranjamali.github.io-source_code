@@ -1,0 +1,31 @@
+.Modal__bg-height {
+   height: 100vh !important;
+}
+
+.Modal {
+   width: 80%;
+}
+.Modal-discard {
+   width: 80%;
+}
+
+@media (min-width: 475px) {
+   .Modal {
+      width: 420px;
+   }
+   .Modal-discard {
+      width: 320px;
+   }
+}
+@media (min-width: 640px) {
+   .Modal {
+      width: 500px;
+   }
+   .Modal-discard {
+      width: 400px;
+   }
+}
+// @media (min-width: 768px) {
+// }
+// @media (min-width: 1024px) {
+// }

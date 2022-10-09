@@ -1,0 +1,44 @@
+.add-image-label {
+   &:hover {
+      .add-image-icon {
+         transform: translatey(-10px);
+      }
+      .add-image-text {
+         transform: translatey(30px);
+         opacity: 1;
+         visibility: visible;
+      }
+      .add-image-toLeft-arrow {
+         right: 8px;
+         opacity: 1;
+         visibility: visible;
+      }
+      .add-image-toRight-arrow {
+         left: 8px;
+         opacity: 1;
+         visibility: visible;
+      }
+   }
+}
+
+.add-image-toLeft-arrow {
+   transition: all 0.3s;
+   visibility: hidden;
+   opacity: 0;
+}
+.add-image-toRight-arrow {
+   transition: all 0.3s;
+   visibility: hidden;
+   opacity: 0;
+}
+.add-image-icon {
+   transform: none;
+   transition: all 0.3s;
+}
+
+.add-image-text {
+   visibility: hidden;
+   opacity: 0;
+   transform: translatey(20px);
+   transition: all 0.3s;
+}

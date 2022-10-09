@@ -37,8 +37,8 @@ function Slider({ popularList }: sliderProps) {
                   <div data-name="slide" key={index} className="mySlides fade hidden rounded-md">
                      <img src={item.img} alt={item.title} className="text-xs min-slide-h rounded-md" />
                      <div
-                        className="absolute bottom-0 text-center w-full text-sm bg-slate-900/50 flex items-center 
-                         justify-center text-white dark:text-white h-9 overflow-hidden rounded-b-md"
+                        className="absolute bottom-0 left-0 right-0 text-center w-full text-xs bg-slate-600/50 dark:bg-slate-900/50 
+                        flex items-center justify-center text-white dark:text-white h-9 overflow-hidden rounded-b-md -mb-0"
                      >
                         <Link to="/" className="w-40 p-2 mx-auto">
                            {item.title}

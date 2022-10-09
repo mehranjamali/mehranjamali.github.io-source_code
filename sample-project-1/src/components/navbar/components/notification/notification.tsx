@@ -1,6 +1,6 @@
 import moment from "jalali-moment";
-import { useCallback, useEffect, useState, useMemo } from "react";
-import Spinner from "../../../snipper/spinner";
+import React, { useCallback, useEffect, useState, useMemo } from "react";
+import Spinner from "../../../spinner/spinner";
 import { getNotifications } from "./notificationService";
 import showToast from "../../../../utiles/toast";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -37,6 +37,9 @@ function Notification({ showPanel }: propsNotification) {
          setLoading(false);
       }, 1200);
    }, [showPanel]);
+   useEffect(() => {
+      // console.log("Notification Component re-rendered");
+   });
 
    // handle delete notification
    // server request --> deleteNotification(dayId, notificationId);
@@ -63,7 +66,7 @@ function Notification({ showPanel }: propsNotification) {
 
             // animation
             const notificationInDOM = document.getElementById(generateNotificationId(dayId, notificationId));
-               notificationInDOM?.classList.add("scale-75", "transition-03");
+            notificationInDOM?.classList.add("scale-75", "transition-03");
             setTimeout(() => {
                notificationInDOM?.classList.add("-translate-x-full");
             }, 300);
@@ -71,15 +74,15 @@ function Notification({ showPanel }: propsNotification) {
                notificationInDOM?.classList.remove("-translate-x-full", "scale-75", "transition-03");
                setNotifications(copiedList);
             }, 600);
-            // animation
+            // end of animation
 
-            showToast("عملیات با موفقیت انجام شد");
+            // showToast("عملیات با موفقیت انجام شد", "success");
             return true;
          } // if (notificationIndex > -1)
-         showToast("عملیات با موفقیت انجام شد");
+         showToast("مشکلی رخ داده است", "error");
          return false;
       } // if (dayIndex > -1)
-      showToast("عملیات با موفقیت انجام شد");
+      showToast("مشکلی رخ داده است", "error");
       return false;
    };
 
@@ -91,7 +94,7 @@ function Notification({ showPanel }: propsNotification) {
                     shadow-2xl w-64 sm:w-80 h-screen pb-16
                     bg-white dark:bg-slate-800 
                     dark:text-slate-300 
-                    border-t border-r dark:border-slate-600
+                    border-t border-r dark:border-slate-700
                     transition-05 ${showPanel ? "" : "-translate-x-full"}`}
       >
          <div data-name="notification-main" className="w-full overflow-y-auto overflow-x-hidden">
@@ -171,4 +174,4 @@ function Notification({ showPanel }: propsNotification) {
    );
 }
 
-export default Notification;
+export default React.memo(Notification);

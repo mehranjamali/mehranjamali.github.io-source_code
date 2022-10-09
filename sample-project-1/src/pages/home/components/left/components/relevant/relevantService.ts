@@ -2,7 +2,7 @@ const relevantList = [
    {
       id: 1,
       name: "ایلان ماسک",
-      headline: "بنیانگذار اسپیس ایکس، رئیس شرکت تسلا",
+      headline: "بنیانگذار و رئیس شرکت تسلا",
       img: "https://expatguideturkey.com/wp-content/uploads/2022/04/elon-musk-twitter-.jpg",
       follow: false,
    },
@@ -30,7 +30,7 @@ const relevantList = [
    {
       id: 5,
       name: "ایلان ماسک",
-      headline: "بنیانگذار اسپیس ایکس، رئیس شرکت تسلا",
+      headline: "بنیانگذار و رئیس شرکت تسلا",
       img: "https://expatguideturkey.com/wp-content/uploads/2022/04/elon-musk-twitter-.jpg",
       follow: false,
    },
@@ -58,7 +58,7 @@ const relevantList = [
    {
       id: 9,
       name: "ایلان ماسک",
-      headline: "بنیانگذار اسپیس ایکس، رئیس شرکت تسلا",
+      headline: "بنیانگذار و رئیس شرکت تسلا",
       img: "https://expatguideturkey.com/wp-content/uploads/2022/04/elon-musk-twitter-.jpg",
       follow: false,
    },

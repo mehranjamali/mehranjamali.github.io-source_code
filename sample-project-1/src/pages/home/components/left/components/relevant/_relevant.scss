@@ -2,6 +2,18 @@ div[data-name="relevant"] {
    max-width: 273px;
 }
 
+@media screen and(min-width:1024px) {
+   div[data-name="relevant"] {
+      min-width: 241px;
+   }
+}
+
+@media screen and(min-width:1280px) {
+   div[data-name="relevant"] {
+      min-width: 273px;
+   }
+}
+
 button[data-name="relevant-load-more"]:hover .relevant-load-more__faArrowLeft {
    transform: translateX(-60%);
 }
