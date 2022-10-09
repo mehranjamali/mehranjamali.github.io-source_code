@@ -46,10 +46,7 @@ function Dropdown({ showDropdown, dropdownObjs, closeMenus }: propsDropdown) {
       }, 500);
    };
 
-   useEffect(() => {
-      // console.log("Dropdown Component re-rendered");
-   });
-
+  
    // handle create account navigator
    const handleCreateAccountNavigator = () => {
       closeMenus();
