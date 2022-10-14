@@ -109,7 +109,7 @@ const authorsWithBooksSlice = createSlice({
          state: stateType<authorStateType>,
          action: actionType<{ book: bookType; authorBlock: authorBlockObjType }>
       ) => {
-         showToast(`نویسنده "${action.payload.book.title}" حذف شد.`, "success", 2000);
+         showToast(`کتاب "${action.payload.book.title}" حذف شد.`, "success", 2000);
          const index = state.data.authorBlockData.findIndex(
             (x: authorBlockObjType) => x.id === action.payload.authorBlock.id
          );

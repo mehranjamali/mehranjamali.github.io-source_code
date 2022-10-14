@@ -45,7 +45,7 @@ function LoginPage() {
    useEffect(() => {
       const initClient = () => {
          gapi.client.init({
-            clientId: "984590594091-3ifn36g9q53btt50i3hjekjqa5jo0et4.apps.googleusercontent.com",
+            clientId: "984590594091-u3nvnj8pa6r7vibv6d1eurar6jabmp2n.apps.googleusercontent.com",
             scope: "",
          });
       };
@@ -80,16 +80,16 @@ function LoginPage() {
 
    // google login hook
    const { signIn } = useGoogleLogin({
-      clientId: "984590594091-3ifn36g9q53btt50i3hjekjqa5jo0et4.apps.googleusercontent.com",
+      clientId: "984590594091-u3nvnj8pa6r7vibv6d1eurar6jabmp2n.apps.googleusercontent.com",
       onSuccess: handleResponseGoogle,
       onFailure: handleResponseGoogle,
-      cookiePolicy: "http://localhost:3000",
+      cookiePolicy: "http://localhost:8888",
    });
 
    // check errors
-   const checkErrors = useMemo(() => {
+   const checkErrors = () => {
       return errors.userNameForLogin || errors.passwordForLogin;
-   }, [errors]);
+   };
 
    // return
    return (
@@ -114,7 +114,7 @@ function LoginPage() {
                      <p className="text-base text-slate-900 dark:text-white">ورود به حساب کاربری</p>
                      <p className="text-xs text-slate-400">در دنیای حرفه ای خود با ما به روز باشید</p>
                   </div>
-                  <div className={`${!checkErrors && !userAuthState.error && "hidden"}`}>
+                  <div className={`${!checkErrors() && !userAuthState.error && "hidden"}`}>
                      <FontAwesomeIcon className="text-red-600" icon={faCircleXmark} />
                   </div>
                </div>
@@ -129,7 +129,7 @@ function LoginPage() {
                         id="userNameForLogin"
                         isEmpty={watch("userNameForLogin") ? false : true}
                         error={errors.userNameForLogin}
-                        other={{ ...register("userNameForLogin", { required: true }) }}
+                        other={{ ...register("userNameForLogin", { required: true, minLength: 4 }) }}
                      />
                      {/* Input Component password */}
                      <InputLoginRegister
@@ -163,10 +163,28 @@ function LoginPage() {
                      <div
                         data-name="login-form-error"
                         className={`text-xs text-red-600 bg-red-50 w-full dark:bg-slate-700 rounded-md p-1 items-center gap-2 
-                        ${checkErrors ? "flex" : "hidden"}`}
+                        ${checkErrors() ? "flex" : "hidden"}`}
                      >
                         <FontAwesomeIcon icon={faCircleDot} className="text-2xs w-2.5 h-2.5" />
                         <p className="-mb-0.5">لطفا فرم را پر کنید. </p>
+                     </div>
+                     {/* error */}
+                     <div
+                        data-name="login-form-error"
+                        className={`text-xs text-red-600 bg-red-50 w-full dark:bg-slate-700 rounded-md p-1 items-center gap-2 
+                        ${errors.passwordForLogin?.type === "minLength" ? "flex" : "hidden"}`}
+                     >
+                        <FontAwesomeIcon icon={faCircleDot} className="text-2xs w-2.5 h-2.5" />
+                        <p className="-mb-0.5">طول رمز عبور حداقل باید 4 کاراکتر باشد.</p>
+                     </div>
+                     {/* error */}
+                     <div
+                        data-name="login-form-error"
+                        className={`text-xs text-red-600 bg-red-50 w-full dark:bg-slate-700 rounded-md p-1 items-center gap-2 
+                        ${errors.userNameForLogin?.type === "minLength" ? "flex" : "hidden"}`}
+                     >
+                        <FontAwesomeIcon icon={faCircleDot} className="text-2xs w-2.5 h-2.5" />
+                        <p className="-mb-0.5">طول نام کاربری حداقل باید 4 کاراکتر باشد.</p>
                      </div>
                      <button
                         className="relative flex justify-center items-center gap-2 w-full bg-blue-700 rounded-full 

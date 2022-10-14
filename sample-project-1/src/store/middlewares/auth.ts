@@ -23,7 +23,7 @@ const authMiddleware =
             if (newToken) dispatch(userAuthUpdateTokenCommand(accessToken));
          } else {
             dispatch(userAuthLogoutCommand());
-            showToast("شما باید وارد حساب کاربری خود شوید", "error", 3000);
+            if (!action.payload?.init) showToast("شما باید وارد حساب کاربری خود شوید", "error", 3000);
          }
       } else return next(action);
    };

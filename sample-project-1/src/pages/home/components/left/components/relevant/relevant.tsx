@@ -10,6 +10,10 @@ import Spinner from "../../../../../../components/spinner/spinner";
 // service
 import { getRelevantList, relevantListType } from "./relevantService";
 
+// redux
+import { RootState, useSelectorHook } from "../../../../../../store/hooks/useHooks";
+import { userAuthReadStateSelector, userAuthType } from "../../../../../../store/slices/user";
+
 const initialState = {
    relevantList: [] as relevantListType,
    partOfList: [] as relevantListType,
@@ -60,6 +64,8 @@ function Relevant() {
    const [{ partOfList, relevantList }, dispatch] = useReducer(reducer, initialState);
    const [showSpinner, setShowSpinner] = useState(true);
 
+   const userState: userAuthType = useSelectorHook((state: RootState) => userAuthReadStateSelector(state));
+
    // CDM
    useEffect(() => {
       dispatch({ type: "setRelevantList", payload: getRelevantList() });
@@ -100,8 +106,10 @@ function Relevant() {
    return (
       <div
          data-name="relevant"
-         className="bg-white text-slate-900 dark:bg-slate-800 dark:text-white shadow-xl p-3 
-                      sm:rounded-md transition-03 border border-slate-200 dark:border-slate-700"
+         className={`bg-white text-slate-900 dark:bg-slate-800 dark:text-white shadow-xl p-3 
+                      sm:rounded-md transition-03 border border-slate-200 dark:border-slate-700 ${
+                         !userState.accessToken && "hidden"
+                      }`}
       >
          {/* head */}
          <div data-name="relevant-box-title" className="flex flex-row justify-between items-center">
@@ -124,8 +132,8 @@ function Relevant() {
                      <Link data-name="relevant-item-img" to={`users/${item.id}${item.name}`}>
                         <img
                            src={item.img}
-                           alt="relevant-user-img"
-                           className="w-14 h-14 text-xs object-cover rounded-full bg-slate-200 dark:bg-slate-600"
+                           alt="users"
+                           className="w-14 h-14 object-cover rounded-full  text-2xs bg-slate-200 dark:bg-slate-600 text-slate-400"
                         />
                      </Link>
                      <div data-name="relevant-item-info" className="flex-1">
@@ -133,29 +141,29 @@ function Relevant() {
                         <p className="text-xs text-slate-500 dark:text-slate-400 py-0.5">{item.headline}</p>
                         <button
                            data-name="follow-btn"
-                           className="relative overflow-y-hidden flex items-center justify-center gap-1 text-slate-600 dark:text-slate-400 
-                               border border-slate-400 mt-1 px-2 w-26 rounded-full transition-03 hover:shadow-xl dark:hover:shadow-2xl 
-                             hover:text-sky-500 hover:border-sky-500 dark:hover:text-sky-500 dark:hover:border-sky-500"
+                           className="relative overflow-hidden flex items-center justify-center gap-1 text-slate-600 dark:text-slate-400 
+                                      border border-slate-400 mt-1 px-2 w-26 rounded-full transition-03 hover:shadow-xl dark:hover:shadow-2xl 
+                                    hover:text-sky-500 hover:border-sky-500 dark:hover:text-sky-500 dark:hover:border-sky-500"
                            onClick={() => {
                               doFollow(item.id);
                            }}
                         >
-                           <div className="hidden p-0 m-0" id={generateFollowingBtnId(item.id)}>
+                           <div className="hidden h-7" id={generateFollowingBtnId(item.id)}>
                               <FontAwesomeIcon
                                  icon={faCheck}
                                  className="absolute pl-1 text-sm follow-btn__faCheck transition-03"
                               />
                               <span className="text-xs pr-5">دنبال شد</span>
                            </div>
-                           <div className="p-0 m-0" id={generateFollowBtnId(item.id)}>
+                           <div className="h-7 flex items-center" id={generateFollowBtnId(item.id)}>
                               <FontAwesomeIcon
                                  icon={faPlus}
-                                 className="absolute text-sm follow-btn__faPlus transition-03"
+                                 className="absolute text-xs follow-btn__faPlus transition-03"
                               />
-                              <div className="absolute follow-btn__spinner -mb-1 transition-03">
+                              <div className="absolute follow-btn__spinner transition-03">
                                  <Spinner size={spinnerSize} spin />
                               </div>
-                              <span className="text-xs pr-5">دنبال کردن</span>
+                              <p className="text-xs pr-5">دنبال کردن</p>
                            </div>
                         </button>
                      </div>
@@ -181,6 +189,7 @@ function Relevant() {
                className="relevant-load-more__faArrowLeft text-xs pr-2 transition-05 -mb-0.5"
             />
          </button> */}
+
          <button data-name="relevant-load-more" className="text-slate-400 font-normal hover:text-sky-500">
             <span className="text-xs transition-05">مشاهده همه موارد</span>
             <FontAwesomeIcon

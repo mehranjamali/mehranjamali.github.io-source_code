@@ -10,7 +10,7 @@ const relevantList = [
       id: 2,
       name: "وارن بافت",
       headline: "معامله گر سهام و سرمایه گذار",
-      img: "https://photos5.appleinsider.com/gallery/47281-92202-47174-91930-41760-80988-40551-78134-34561-62472-warren-buffet-head-xl-xl-xl-xl-xl.jpg",
+      img: "https://img-cdn.inc.com/image/upload/w_1920,h_1080,c_fill/images/panoramic/GettyImages-492444122_512163_psnryw.jpg",
       follow: false,
    },
    {
@@ -38,7 +38,7 @@ const relevantList = [
       id: 6,
       name: "وارن بافت",
       headline: "معامله گر سهام و سرمایه گذار",
-      img: "https://photos5.appleinsider.com/gallery/47281-92202-47174-91930-41760-80988-40551-78134-34561-62472-warren-buffet-head-xl-xl-xl-xl-xl.jpg",
+      img: "https://img-cdn.inc.com/image/upload/w_1920,h_1080,c_fill/images/panoramic/GettyImages-492444122_512163_psnryw.jpg",
       follow: false,
    },
    {
@@ -66,7 +66,7 @@ const relevantList = [
       id: 10,
       name: "وارن بافت",
       headline: "معامله گر سهام و سرمایه گذار",
-      img: "https://photos5.appleinsider.com/gallery/47281-92202-47174-91930-41760-80988-40551-78134-34561-62472-warren-buffet-head-xl-xl-xl-xl-xl.jpg",
+      img: "https://img-cdn.inc.com/image/upload/w_1920,h_1080,c_fill/images/panoramic/GettyImages-492444122_512163_psnryw.jpg",
       follow: false,
    },
    {

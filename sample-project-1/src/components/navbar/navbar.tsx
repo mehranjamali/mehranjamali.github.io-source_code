@@ -150,6 +150,15 @@ function Navbar() {
       }
    };
 
+   // dropdown handleEventListener
+   const handleEventListener = () => {
+      if (!showDropdown) {
+         setTimeout(() => {
+            window.addEventListener("click", () => navbarDispatch({ type: "close-all" }), { once: true });
+         }, 100);
+      }
+   };
+
    // generate NavLink class
    const generateNavLinkClass = (isActive: boolean) => {
       return `py-4 px-1 hover:text-sky-400 hover:border-sky-400 transition-03 ${
@@ -321,6 +330,7 @@ function Navbar() {
                      hover:text-sky-400 dark:hover:text-sky-500 transition-03"
                      onClick={() => {
                         navbarDispatch({ type: "dropdown" });
+                        handleEventListener();
                      }}
                   />
                   <Dropdown

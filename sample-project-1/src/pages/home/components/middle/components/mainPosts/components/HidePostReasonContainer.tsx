@@ -12,14 +12,14 @@ import { reasonType } from "../../../../../../../store/slices/fakePost";
 type hidePostContainerPropsType = {
    showHidePostReasonContainer: boolean;
    submitHidePostReason: (reason: reasonType) => void;
-   setShowHidePostReasonContainer: React.Dispatch<React.SetStateAction<boolean>>;
+   handleHidePostReasonContainer: (bool: boolean) => void;
    hidePostReasonsList: reasonType[];
    post: any;
 };
 
 function HidePostReasonContainer({
    showHidePostReasonContainer,
-   setShowHidePostReasonContainer,
+   handleHidePostReasonContainer,
    submitHidePostReason,
    hidePostReasonsList,
    post,
@@ -54,7 +54,7 @@ function HidePostReasonContainer({
                </div>
                <button
                   className="pr-0.5 pl-2.5 pt-1 align-middle text-center text-base transition-03 hover:pr-2.5 hover:pl-0.5"
-                  onClick={() => setShowHidePostReasonContainer(false)}
+                  onClick={() => handleHidePostReasonContainer(false)}
                >
                   <FontAwesomeIcon icon={faArrowLeftLong} />
                </button>

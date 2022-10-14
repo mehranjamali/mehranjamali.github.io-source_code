@@ -63,6 +63,7 @@ function BookForm({ state, authors }: BookFormPropsType) {
       handleSubmit,
       setValue,
       watch,
+      setError,
       formState: { errors },
    } = useForm<bookType>();
 
@@ -77,7 +78,7 @@ function BookForm({ state, authors }: BookFormPropsType) {
       setSelectedGenres([]);
    };
 
-   //
+   // set genres options
    useEffect(() => {
       const genresOptions = getGenresList().map((genre: genreType, index: number) => {
          return {
@@ -120,18 +121,35 @@ function BookForm({ state, authors }: BookFormPropsType) {
       return _.isEmpty(errors) ? false : true;
    };
 
+   // check year error
+   const checkYearPublichDate = () => {
+      if (selectedAuthors.length) {
+         if (
+            Number(selectedAuthors[0].data.born) + 12 <= watch("publishDate") &&
+            watch("publishDate") <= (selectedAuthors[0].data.died || 2022)
+         ) {
+            return true;
+         } else {
+            setError("publishDate", { type: "year", message: "" });
+            return false;
+         }
+      } else return false;
+   };
+
    // on submit
    const onSubmit = (data: bookType) => {
-      const objToSendServer: bookType = {
-         ...data,
-         genres: selectedGenres.map((genre: any) => {
-            return genre.data;
-         }),
-         authorId: selectedAuthors[0].data.id,
-         image: photo ? photo : data.image,
-      };
-      dispatch(updateBooksCommand(objToSendServer, state?.parent?.id || 0));
-      setDefaultForm();
+      if (checkYearPublichDate()) {
+         const objToSendServer: bookType = {
+            ...data,
+            genres: selectedGenres.map((genre: any) => {
+               return genre.data;
+            }),
+            authorId: selectedAuthors[0].data.id,
+            image: photo ? photo : data.image,
+         };
+         dispatch(updateBooksCommand(objToSendServer, state?.parent?.id || 0));
+         setDefaultForm();
+      }
    };
 
    // handle file input change
@@ -163,7 +181,11 @@ function BookForm({ state, authors }: BookFormPropsType) {
                   >
                      <div className="flex items-center gap-2">
                         <div className="w-8 h-8 rounded-full">
-                           <img src={authors[index].image} alt="" className="w-full h-full object-cover rounded-full" />
+                           <img
+                              src={authors[index].image}
+                              alt="author"
+                              className="w-full h-full object-cover rounded-full bg-slate-200 dark:bg-slate-600 text-2xs text-slate-400"
+                           />
                         </div>
                         <p className="pt-1">{authors[index].name}</p>
                      </div>
@@ -177,7 +199,7 @@ function BookForm({ state, authors }: BookFormPropsType) {
          setSelectedAuthors(selectedList);
       } else setSelectedAuthors([]);
    };
-   // author select box options
+   // set author options
    const authorSelectInputOptions = (): optionType[] => {
       return authors.map((author: authorType, index: number) => {
          return {
@@ -190,7 +212,11 @@ function BookForm({ state, authors }: BookFormPropsType) {
                >
                   <div className="flex items-center gap-2">
                      <div className="w-8 h-8 rounded-full">
-                        <img src={author.image} alt="" className="w-full h-full object-cover rounded-full" />
+                        <img
+                           src={author.image}
+                           alt="author"
+                           className="w-full h-full object-cover rounded-full bg-slate-200 dark:bg-slate-600 text-2xs text-slate-400"
+                        />
                      </div>
                      <p className="pt-1">{author.name}</p>
                   </div>
@@ -208,7 +234,11 @@ function BookForm({ state, authors }: BookFormPropsType) {
       return (
          <div className="flex items-center gap-2">
             <div className="w-8 h-8 rounded-full">
-               <img src={author.image} alt="" className="w-full h-full object-cover rounded-full" />
+               <img
+                  src={author.image}
+                  alt="author"
+                  className="w-full h-full object-cover rounded-full bg-slate-200 dark:bg-slate-600 text-2xs text-slate-400"
+               />
             </div>
             <p className="text-xs">{author.name}</p>
          </div>
@@ -312,7 +342,12 @@ function BookForm({ state, authors }: BookFormPropsType) {
                         >
                            <FontAwesomeIcon icon={faXmark} />
                         </button>
-                        <img src={photo} alt="" className="w-full h-full object-contain lg:object-cover rounded-md" />
+                        <img
+                           src={photo}
+                           alt="book-img"
+                           className="w-full h-full object-contain lg:object-cover rounded-md 
+                                    bg-slate-200 dark:bg-slate-600 text-sm text-slate-400"
+                        />
                      </div>
                   </div>
                </label>
@@ -382,10 +417,11 @@ function BookForm({ state, authors }: BookFormPropsType) {
                type="number"
                id="BookPublishDate"
                required={true}
-               other={{ ...register("publishDate", { required: true, maxLength: 4 }) }}
+               other={{ ...register("publishDate", { required: true, maxLength: 4, max: 2022 }) }}
             />
 
-            {/* error */}
+            {/* errors */}
+            {/* -- form */}
             <div
                dir="rtl"
                data-name="book-form-error"
@@ -393,17 +429,45 @@ function BookForm({ state, authors }: BookFormPropsType) {
                         ${checkErrors() ? "flex" : "hidden"}`}
             >
                <FontAwesomeIcon icon={faCircleDot} className="text-2xs w-2.5 h-2.5" />
-               <p className="-mb-0.5">لطفا فرم را پر کنید. </p>
+               <p className="">لطفا فرم را پر کنید. </p>
             </div>
+            {/* -- year less then 2022 */}
             <div
                dir="rtl"
                data-name="book-form-error"
                className={`text-xs text-red-600 bg-red-50 w-full dark:bg-slate-700 rounded-md p-1 items-center gap-2 
-                        ${errors.publishDate ? "flex" : "hidden"}`}
+                        ${errors.publishDate?.type === "max" ? "flex" : "hidden"}`}
             >
                <FontAwesomeIcon icon={faCircleDot} className="text-2xs w-2.5 h-2.5" />
-               <p className="-mb-0.5"> سال را به درستی وارد کنید. </p>
+               <p className=""> سال انتشار باید کوچک تر از 2022 باشد. </p>
             </div>
+            {/* -- year between author born and died year */}
+            {selectedAuthors.length
+               ? errors.publishDate?.type === "year" && (
+                    <div
+                       dir="rtl"
+                       data-name="book-form-error"
+                       className={`text-xs text-red-600 bg-red-50 w-full dark:bg-slate-700 rounded-md p-1 flex flex-col gap-2 `}
+                    >
+                       <div className="flex items-center gap-2">
+                          <FontAwesomeIcon icon={faCircleDot} className="text-2xs w-2.5 h-2.5" />
+                          <p className="">
+                             <span>سال انتشار باید بین</span>
+                             <span className="px-1">{Number(selectedAuthors[0]?.data.born) + 12}</span>
+                             <span>و</span>
+                             <span className="px-1">
+                                {selectedAuthors[0]?.data.died ? selectedAuthors[0]?.data.died : 2022}
+                             </span>
+                             <span>باشد.</span>
+                          </p>
+                       </div>
+                       <div className="flex items-center gap-2">
+                          <FontAwesomeIcon icon={faCircleDot} className="text-2xs w-2.5 h-2.5" />
+                          <p className="">حداقل سن نویسندگی 12 در نظر گرفته شده است.</p>
+                       </div>
+                    </div>
+                 )
+               : ""}
 
             <div className="w-full flex items-center justify-end">
                <SubmitButton extraClassName="w-16 flex justify-center gap-2">Done</SubmitButton>

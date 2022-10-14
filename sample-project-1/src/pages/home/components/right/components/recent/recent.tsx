@@ -51,8 +51,8 @@ function Recent() {
                            >
                               <img
                                  src={item.img}
-                                 alt="recent-item-img"
-                                 className="h-14 w-20 object-cover object-center rounded-md bg-slate-200 dark:bg-slate-600"
+                                 alt="recent-img"
+                                 className="h-14 w-20 object-cover object-center rounded-md bg-slate-200 dark:bg-slate-600 text-2xs text-slate-400"
                               />
                               <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between md:flex-col md:items-start gap-2 w-full">
                                  <p className="text-xs">{item.title}</p>

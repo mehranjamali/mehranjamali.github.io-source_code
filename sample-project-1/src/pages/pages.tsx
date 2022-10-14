@@ -1,17 +1,13 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import HomePage from "./home/home";
 import LoginPage from "./login/login";
-import RegisterPage from "./register/register";
 import NotFoundPage from "./notFound/notFound";
 import Author from "./author/author";
 import SavedPosts from "./savedPosts/savedPosts";
+import ProtectedRoute from "../components/protectedRoute/protectedRoute";
 
 function Pages() {
-   useEffect(() => {
-      console.log("Pages Component re-rendered");
-   });
-
    return (
       <div
          data-name="pages-routes"
@@ -26,10 +22,12 @@ function Pages() {
             <Routes>
                <Route index element={<HomePage />} />
                <Route path="home" element={<Navigate to="/" />} />
-               <Route path="Author" element={<Author />} />
-               <Route path="saved-posts" element={<SavedPosts />} />
+               <Route element={<ProtectedRoute />}>
+                  <Route path="Author" element={<Author />} />
+                  <Route path="saved-posts" element={<SavedPosts />} />
+               </Route>
                <Route path="login" element={<LoginPage />} />
-               <Route path="register" element={<RegisterPage />} />
+               <Route path="register" element={<LoginPage />} />
                <Route path="*" element={<NotFoundPage />} />
             </Routes>
          </div>

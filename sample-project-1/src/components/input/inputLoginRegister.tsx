@@ -30,10 +30,12 @@ function InputLoginRegister({
    return (
       <div className="relative w-full h-fit">
          <input
+            autoComplete="off"
             type={type}
             id={id}
             {...other}
-            className={`text-sm border dark:border-slate-500 dark:bg-slate-800 rounded-md min-h-11 max-h-12 h-12 pt-6 pb-0.5 px-2 
+            dir="ltr"
+            className={`text-sm border dark:border-slate-500 dark:bg-slate-800 rounded-md min-h-11 max-h-12 h-12 pt-6 pb-2 px-2 text-left
              w-full peer outline-none focus:border-2 focus:border-slate-400 dark:focus:border-slate-400 ${addClassNameInput}`}
          />
          <label
@@ -52,11 +54,9 @@ function InputLoginRegister({
          <button
             type="button"
             onClick={(e: any) => switchShowHidePassword(e)}
-            className={`
-            ${
-               type !== "password" && "hidden"
-            } absolute left-1 top-3.5 text-2xs font-medium text-blue-700 dark:text-blue-500 py-1 px-1.5 
-            hover:bg-blue-100 dark:hover:bg-slate-700 transition-01 rounded-xl`}
+            className={`${type !== "password" && "hidden"} ${isEmpty && "hidden"}
+            absolute right-1 bottom-1 text-2xs font-medium text-blue-700 dark:text-blue-500 py-1 px-1.5 
+            hover:bg-blue-100 dark:hover:bg-slate-700 rounded-xl`}
          >
             مشاهده
          </button>

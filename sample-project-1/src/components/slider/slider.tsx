@@ -35,7 +35,11 @@ function Slider({ popularList }: sliderProps) {
             {popularList?.map((item: any, index: number) => {
                return (
                   <div data-name="slide" key={index} className="mySlides fade hidden rounded-md">
-                     <img src={item.img} alt={item.title} className="text-xs min-slide-h rounded-md" />
+                     <img
+                        src={item.img}
+                        alt={item.title}
+                        className="text-2xs min-slide-h rounded-md bg-slate-200 dark:bg-slate-600 text-slate-400"
+                     />
                      <div
                         className="absolute bottom-0 left-0 right-0 text-center w-full text-xs bg-slate-600/50 dark:bg-slate-900/50 
                         flex items-center justify-center text-white dark:text-white h-9 overflow-hidden rounded-b-md -mb-0"

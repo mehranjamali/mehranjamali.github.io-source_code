@@ -10,6 +10,7 @@ type TextInputPropsType = {
    value?: string;
    required?: boolean;
    placeholder?: string;
+   opstions?: any;
 };
 
 function Input({
@@ -23,6 +24,7 @@ function Input({
    value,
    required,
    placeholder,
+   opstions,
 }: TextInputPropsType) {
    return (
       <div className="relative w-full h-fit">
@@ -38,6 +40,7 @@ function Input({
             className={`text-sm border dark:border-slate-600 dark:bg-slate-800 rounded-md w-full peer outline-none 
             focus:border-1 focus:border-slate-500 dark:focus:border-slate-300 ${addClassNameInput}`}
             {...other}
+            {...opstions}
          />
       </div>
    );

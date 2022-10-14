@@ -121,14 +121,6 @@ function Select({
       dispatch({ type: "setInitial", payload: initialState });
    }, [selected]);
 
-   // dropdown
-   // useEffect(() => {
-   //    window.addEventListener("click", () => setDropdownIsHide(true));
-   //    return () => {
-   //       window.removeEventListener("click", () => setDropdownIsHide(true));
-   //    };
-   // });
-
    // itemsFiltered default
    useEffect(() => {
       if (dropdownIsHide) dispatch({ type: "itemsFiltered", payload: { searchPath: searchPath, query: "" } });

@@ -33,25 +33,23 @@ const userAuthSlice = createSlice({
    reducers: {
       userAuthLogin: (state: userAuthType, action: actionType<userAuthType>) => {
          localStorage.setItem("refreshToken", "weHaveValidRefreshToken");
-         window.location.replace("http://localhost:3000/");
+         window.location.replace("http://localhost:8888/");
          return { error: "", ...action.payload };
       },
       userAuthLoginError: (state: userAuthType, action: actionType<string>) => {
          state.error = action.payload;
          state.accessToken = "";
-         state.lastCheckTime = null;
          showToast(action.payload, "error");
       },
       userAuthLogout: (state: userAuthType, action: actionType<undefined>) => {
          state.accessToken = "";
-         state.lastCheckTime = null;
          state.error = "";
          localStorage.setItem("refreshToken", "");
       },
       userAuthUpdateToken: (state: userAuthType, action: actionType<userAuthType>) => {
          return { error: "", ...action.payload };
       },
-      userAuthCheckToken: (state: userAuthType, action: actionType<{ needAuthorization: boolean }>) => {
+      userAuthCheckToken: (state: userAuthType, action: actionType<{ needAuthorization: boolean; init: boolean }>) => {
          // do nothing ...
       },
    },
@@ -70,7 +68,7 @@ const userAuthLoginCommand = (formData: loginFormInputType) => (dispatch: any) =
       error: "",
    };
    // dispatch(apiCallBegan({onSuccess, onError, onStart}))
-   if (loginObj.email === "mehranjamali115@gmail.com") return dispatch(userAuthSlice.actions.userAuthLogin(loginObj));
+   if (loginObj.email) return dispatch(userAuthSlice.actions.userAuthLogin(loginObj));
    else return dispatch(userAuthSlice.actions.userAuthLoginError("کاربری با این مشخصات وجود ندارد."));
 };
 
@@ -94,7 +92,12 @@ const userAuthUpdateTokenCommand = (token: string) => {
 
 // --check token command
 const userAuthCheckTokenCommand = () => {
-   return userAuthSlice.actions.userAuthCheckToken({ needAuthorization: true });
+   return userAuthSlice.actions.userAuthCheckToken({ needAuthorization: true, init: true });
+};
+
+// -- user must be authenticated Error
+const userMustBeAuthenticatedError = () => {
+   showToast("شما باید وارد حساب کاربری خود شوید", "error", 3000);
 };
 
 // selectors
@@ -108,7 +111,13 @@ const userAuthReadStateSelector = createSelector(
 // --type
 export type { userAuthType, loginFormInputType };
 // --command
-export { userAuthLoginCommand, userAuthUpdateTokenCommand, userAuthLogoutCommand, userAuthCheckTokenCommand };
+export {
+   userAuthLoginCommand,
+   userAuthUpdateTokenCommand,
+   userAuthLogoutCommand,
+   userAuthCheckTokenCommand,
+   userMustBeAuthenticatedError,
+};
 // --selector
 export { userAuthReadStateSelector };
 // --slice

@@ -40,7 +40,6 @@ const mainPostSlice = createSlice({
    initialState: { loading: false, lastFetch: null, error: "", data: [] } as stateType<mainPostType[]>,
    reducers: {
       mainPostRequested: (state: stateType<mainPostType[]>, action: actionType<string>) => {
-         console.log(action);
          state.loading = true;
          state.error = "";
       },

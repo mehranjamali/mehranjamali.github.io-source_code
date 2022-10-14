@@ -1,4 +1,5 @@
-import { useEffect, useRef, useState } from "react";
+/* eslint-disable react-hooks/exhaustive-deps */
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import _ from "lodash";
 
@@ -35,6 +36,7 @@ function AuthorForm({ state }: AuthorFormPropsType) {
       register,
       handleSubmit,
       setValue,
+      setError,
       watch,
       formState: { errors },
    } = useForm<authorType>();
@@ -62,20 +64,24 @@ function AuthorForm({ state }: AuthorFormPropsType) {
       // eslint-disable-next-line react-hooks/exhaustive-deps
    }, [state, setValue]);
 
-   // check errors
-   const checkErrors = () => {
-      if (watch("died") && watch("died") < watch("born")) return true;
-      return _.isEmpty(errors) ? false : true;
+   // check year
+   const checkYearIsDiedMoreThenBorn = () => {
+      if (watch("died") === "") return true;
+      if (watch("died") > watch("born")) return true;
+      setError("died", { type: "lessThenBorn", message: "" });
+      return false;
    };
 
    // on submit
    const onSubmit = (data: authorType) => {
-      const objToSendServer: authorType = {
-         ...data,
-         image: photo ? photo : data.image,
-      };
-      dispatch(updateAuthorsCommand(objToSendServer, state?.authorBlockId || 0));
-      setDefaultForm();
+      if (checkYearIsDiedMoreThenBorn()) {
+         const objToSendServer: authorType = {
+            ...data,
+            image: photo ? photo : data.image,
+         };
+         dispatch(updateAuthorsCommand(objToSendServer, state?.authorBlockId || 0));
+         setDefaultForm();
+      }
    };
 
    // handle file input change
@@ -143,7 +149,12 @@ function AuthorForm({ state }: AuthorFormPropsType) {
                         >
                            <FontAwesomeIcon icon={faXmark} />
                         </button>
-                        <img src={photo} alt="" className="w-full h-full object-contain lg:object-cover rounded-md" />
+                        <img
+                           src={photo}
+                           alt="author-img"
+                           className="w-full h-full object-contain lg:object-cover rounded-md 
+                                    bg-slate-200 dark:bg-slate-600 text-sm text-slate-400"
+                        />
                      </div>
                   </div>
                </label>
@@ -172,7 +183,14 @@ function AuthorForm({ state }: AuthorFormPropsType) {
                type="number"
                id="AuthorBorn"
                required={true}
-               other={{ ...register("born", { required: true, maxLength: 4 }) }}
+               other={{
+                  ...register("born", {
+                     required: true,
+                     maxLength: 4,
+                     max: 2010,
+                     valueAsNumber: true,
+                  }),
+               }}
             />
             <Input
                addClassNameInput=" h-10 py-1 pt-1.5 px-2 pl-17 "
@@ -180,7 +198,7 @@ function AuthorForm({ state }: AuthorFormPropsType) {
                label="Died in"
                type="number"
                id="AuthorDied"
-               other={{ ...register("died", { required: false, maxLength: 4 }) }}
+               other={{ ...register("died", { required: false, maxLength: 4, max: 2022, valueAsNumber: true }) }}
             />
             <Input
                addClassNameInput=" h-10 py-1 pt-1.5 px-2 pl-19 "
@@ -190,30 +208,50 @@ function AuthorForm({ state }: AuthorFormPropsType) {
                required={true}
                other={{ ...register("country", { required: true }) }}
             />
-            {/* error */}
-            <div
-               dir="rtl"
-               data-name="author-form-error"
-               className={`text-xs text-red-600 bg-red-50 w-full dark:bg-slate-700 rounded-md p-1 items-center gap-2 
-                        ${checkErrors() ? "flex" : "hidden"}`}
-            >
-               <FontAwesomeIcon icon={faCircleDot} className="text-2xs w-2.5 h-2.5" />
-               <p className="-mb-0.5">لطفا فرم را پر کنید. </p>
-            </div>
-            <div
-               dir="rtl"
-               data-name="author-form-error"
-               className={`text-xs text-red-600 bg-red-50 w-full dark:bg-slate-700 rounded-md p-1 items-center gap-2 
-                        ${
-                           (watch("died") && watch("died") < watch("born")) || errors.died || errors.born
-                              ? "flex"
-                              : "hidden"
-                        }`}
-            >
-               <FontAwesomeIcon icon={faCircleDot} className="text-2xs w-2.5 h-2.5" />
-               <p className="-mb-0.5"> سال را به درستی وارد کنید. </p>
-            </div>
 
+            {/* errors */}
+            {/* -- form */}
+            <div
+               dir="rtl"
+               data-name="author-form-error"
+               className={`text-xs text-red-600 bg-red-50 w-full dark:bg-slate-700 rounded-md p-1 items-center gap-2 
+                        ${!_.isEmpty(errors) ? "flex" : "hidden"}`}
+            >
+               <FontAwesomeIcon icon={faCircleDot} className="text-2xs w-2.5 h-2.5" />
+               <p className="">لطفا فرم را به درستی پر کنید. </p>
+            </div>
+            {/* -- year born less then 2010 */}
+            <div
+               dir="rtl"
+               className={` text-xs text-red-600 bg-red-50 w-full dark:bg-slate-700 rounded-md p-1 ${
+                  errors.born?.type === "max" ? "flex items-center gap-2" : "hidden"
+               }`}
+            >
+               <FontAwesomeIcon icon={faCircleDot} className="text-2xs w-2.5 h-2.5" />
+               <p>تاریخ تولد باید کوچک تر 2010 باشد </p>
+            </div>
+            {/* -- year died less then 2020 */}
+            <div
+               dir="rtl"
+               className={` text-xs text-red-600 bg-red-50 w-full dark:bg-slate-700 rounded-md p-1 ${
+                  errors.died?.type === "max" ? "flex items-center gap-2" : "hidden"
+               }`}
+            >
+               <FontAwesomeIcon icon={faCircleDot} className="text-2xs w-2.5 h-2.5" />
+               <p>تاریخ فوت باید کوچک تر 2020 باشد </p>
+            </div>
+            {/* -- year died must more then born  */}
+            {errors.died?.type === "lessThenBorn" && (
+               <div
+                  dir="rtl"
+                  className={` text-xs text-red-600 bg-red-50 w-full dark:bg-slate-700 rounded-md p-1 
+                     flex items-center gap-2
+                  `}
+               >
+                  <FontAwesomeIcon icon={faCircleDot} className="text-2xs w-2.5 h-2.5" />
+                  <p>تاریخ فوت باید بزرگتر از تاریخ تولد باشد.</p>
+               </div>
+            )}
             <div className="w-full flex items-center justify-end">
                <SubmitButton extraClassName="w-16 flex justify-center gap-2">Done</SubmitButton>
             </div>

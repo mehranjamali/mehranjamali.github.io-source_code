@@ -1,12 +1,22 @@
 import { useState } from "react";
-import { useDispatchHook } from "../../../../../../../store/hooks/useHooks";
 
 // FontAwesomeIcon
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faComment, faPaperPlane, faShareSquare } from "@fortawesome/free-solid-svg-icons";
+import { faPaperPlane, faRepeat } from "@fortawesome/free-solid-svg-icons";
+import { faComment } from "@fortawesome/free-regular-svg-icons";
 
 // redux
+// hook
+import { useDispatchHook, RootState, useSelectorHook } from "../../../../../../../store/hooks/useHooks";
+
+// -- fakePost
 import { likeMainPostCommand } from "../../../../../../../store/slices/fakePost";
+// -- user
+import {
+   userAuthReadStateSelector,
+   userMustBeAuthenticatedError,
+   userAuthType,
+} from "../../../../../../../store/slices/user";
 
 import LikeHoverBox, { initialLikeType } from "./likeHoverBox";
 
@@ -18,25 +28,34 @@ function PostFooterActions({ post }: PostFooterActionsPropsType) {
    const [likeType, setLikeType] = useState<typeof initialLikeType>(initialLikeType);
 
    const dispatch = useDispatchHook();
+   const userState: userAuthType = useSelectorHook((state: RootState) => userAuthReadStateSelector(state));
 
    // handle like
    const handleLike = (likeTypeObj: typeof initialLikeType) => {
-      if (likeType.status !== likeTypeObj.status) {
-         dispatch(likeMainPostCommand(post.id, true));
-         setLikeType(likeTypeObj);
+      if (userState.accessToken) {
+         if (likeType.status !== likeTypeObj.status) {
+            dispatch(likeMainPostCommand(post.id, true));
+            setLikeType(likeTypeObj);
+         } else {
+            dispatch(likeMainPostCommand(post.id, !post.liked));
+         }
       } else {
-         dispatch(likeMainPostCommand(post.id, !post.liked));
+         userMustBeAuthenticatedError();
       }
    };
 
    // set default like
    const setDefaultLike = () => {
-      if (likeType.status !== 0) {
-         dispatch(likeMainPostCommand(post.id, false));
-         setLikeType(initialLikeType);
-         return;
+      if (userState.accessToken) {
+         if (likeType.status !== 0) {
+            dispatch(likeMainPostCommand(post.id, false));
+            setLikeType(initialLikeType);
+            return;
+         } else {
+            dispatch(likeMainPostCommand(post.id, !post.liked));
+         }
       } else {
-         dispatch(likeMainPostCommand(post.id, !post.liked));
+         userMustBeAuthenticatedError();
       }
    };
 
@@ -52,7 +71,7 @@ function PostFooterActions({ post }: PostFooterActionsPropsType) {
                ${post.liked && likeType.color} hover:peer-first:block `}
             >
                <span className="text-lg xs:text-base xs:pl-2">
-                  <FontAwesomeIcon icon={post.liked ? likeType.likedIcon : likeType.intialIcon} />
+                  <FontAwesomeIcon icon={post.liked ? likeType.likedIcon : likeType.intialIcon} className="-mb-0.5" />
                </span>
                <span className="hidden xs:inline">{likeType.name}</span>
             </button>
@@ -63,19 +82,19 @@ function PostFooterActions({ post }: PostFooterActionsPropsType) {
             {/* end of ---> like-post-btn-box */}
             <button className="hover:bg-slate-200 dark:hover:bg-slate-700 py-2 px-3 rounded-md transition-03 flex-grow box-border">
                <span className="text-lg xs:text-base xs:pl-2">
-                  <FontAwesomeIcon icon={faComment} />
+                  <FontAwesomeIcon icon={faComment} className="-mb-0.5" />
                </span>
                <span className="hidden xs:inline">نظر</span>
             </button>
             <button className="hover:bg-slate-200 dark:hover:bg-slate-700 py-2 px-3 rounded-md transition-03 flex-grow box-border">
                <span className="text-lg xs:text-base xs:pl-2">
-                  <FontAwesomeIcon icon={faShareSquare} />
+                  <FontAwesomeIcon icon={faRepeat} className="-mb-0.5" />
                </span>
-               <span className="hidden xs:inline">اشتراک گذاری</span>
+               <span className="hidden xs:inline">پست کردن مجدد</span>
             </button>
             <button className="hover:bg-slate-200 dark:hover:bg-slate-700 py-2 px-3 rounded-md transition-03 flex-grow box-border">
                <span className="text-lg xs:text-base xs:pl-2">
-                  <FontAwesomeIcon icon={faPaperPlane} />
+                  <FontAwesomeIcon icon={faPaperPlane} className="-mb-0.5" />
                </span>
                <span className="hidden xs:inline">ارسال</span>
             </button>

@@ -15,14 +15,14 @@ type PostControlMenuDDPropsType = {
    setShowControlMenu: React.Dispatch<React.SetStateAction<boolean>>;
    post: any;
    showPostReportModal: () => void;
-   setShowHidePostReasonContainer: React.Dispatch<React.SetStateAction<boolean>>;
+   handleHidePostReasonContainer: (bool: boolean) => void;
 };
 
 function PostControlMenuDD({
    showControlMenu,
    setShowControlMenu,
    post,
-   setShowHidePostReasonContainer,
+   handleHidePostReasonContainer,
    showPostReportModal,
 }: PostControlMenuDDPropsType) {
    const dispatch = useDispatchHook();
@@ -37,7 +37,7 @@ function PostControlMenuDD({
             </Link>
          </div>,
          "success",
-         false
+         2000
       );
    };
    return (
@@ -84,7 +84,7 @@ function PostControlMenuDD({
                className="flex flex-row items-center text-right gap-1.5 p-3
              dark:hover:bg-slate-600 hover:bg-gray-200 transition-03"
                onClick={() => {
-                  setShowHidePostReasonContainer(true);
+                  handleHidePostReasonContainer(true);
                   setShowControlMenu(false);
                }}
             >

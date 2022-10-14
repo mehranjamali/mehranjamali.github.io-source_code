@@ -112,8 +112,8 @@ function Notification({ showPanel }: propsNotification) {
                            ""
                         ) : (
                            <div
-                              className="bg-slate-200 dark:bg-slate-700 dark:border-slate-500 text-sky-600 z-50 
-                        w-full p-1 font-semibold text-base font-bYekan sticky top-0 border-b border-t border-slate-300 transition-03"
+                              className="bg-slate-200 dark:bg-slate-700 dark:border-slate-500 text-sky-600 z-50 w-full p-1
+                                           font-semibold text-sm font-bYekan sticky top-0 border-b border-t border-slate-300 transition-03"
                            >
                               {generateDate(notificationDay.day)}
                            </div>
@@ -128,19 +128,19 @@ function Notification({ showPanel }: propsNotification) {
                                  id={generateNotificationId(notificationDay.id, notification.id)}
                               >
                                  <div className="flex flex-col sm:flex-row flex-wrap items-center justify-start gap-2 w-full transition-05">
-                                    <img
-                                       src={notification.img}
-                                       className="bg-sky-500 rounded-full flex-grow-0"
-                                       width="40px"
-                                       height="40px"
-                                       alt="img"
-                                    />
+                                    <div className="h-8 w-8">
+                                       <img
+                                          src={notification.img}
+                                          className="rounded-full h-full w-full object-cover  bg-slate-200 dark:bg-slate-600 text-2xs text-slate-400 "
+                                          alt="img"
+                                       />
+                                    </div>
                                     <h2 className="text-sm h-full flex-1">
                                        <span>{notification.title}</span>
                                     </h2>
                                  </div>
                                  <div>
-                                    <p className="text-sm text-slate-500">{notification.desc}</p>
+                                    <p className="text-sm text-slate-500 dark:text-slate-400">{notification.desc}</p>
                                  </div>
                                  <div className="w-full flex justify-center sm:justify-end items-center z-30">
                                     <button

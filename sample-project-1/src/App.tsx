@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { BrowserRouter as Router } from "react-router-dom";
 
 // redux
@@ -8,7 +8,6 @@ import {
    createPostModalClearStateCommand,
    uiStateType,
 } from "./store/slices/uiController";
-import { userAuthCheckTokenCommand } from "./store/slices/user";
 
 // Routes
 import Pages from "./pages/pages";
@@ -37,15 +36,6 @@ function App() {
 
    // dispatch
    const dispatch = useDispatchHook();
-
-   // useEffect
-   useEffect(() => {
-      dispatch(userAuthCheckTokenCommand());
-   }, [dispatch]);
-
-   useEffect(() => {
-      // console.log("App component re-rendered");
-   });
 
    // do show Global Modal
    const doShowGlobalModal = (content: any) => {

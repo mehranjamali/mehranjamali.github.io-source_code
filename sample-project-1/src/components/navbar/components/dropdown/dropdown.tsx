@@ -46,7 +46,11 @@ function Dropdown({ showDropdown, dropdownObjs, closeMenus }: propsDropdown) {
       }, 500);
    };
 
-  
+   // close dropdown
+   // useEffect(() => {
+   //    if (showDropdown) window.addEventListener("click", () => closeMenus(), { once: true });
+   // }, []);
+
    // handle create account navigator
    const handleCreateAccountNavigator = () => {
       closeMenus();
@@ -94,7 +98,7 @@ function Dropdown({ showDropdown, dropdownObjs, closeMenus }: propsDropdown) {
          <li data-name="dropdown-btn-box" className="flex flex-row items-start justify-between gap-4 pt-3 pb-1">
             <div data-name="sign-out" className="w-full">
                <button
-                  className="flex items-center justify-center text-xs font-semibold h-9 
+                  className="flex items-center justify-center text-xs  h-9 
                           text-red-500 py-2 border border-red-500 rounded-md w-full
                           hover:bg-red-100 dark:hover:bg-slate-700 shadow-xl transition-03"
                   onClick={() => handleLogout()}
@@ -108,7 +112,7 @@ function Dropdown({ showDropdown, dropdownObjs, closeMenus }: propsDropdown) {
             </div>
             <div data-name="sign-up" className="w-full">
                <button
-                  className="text-xs font-semibold text-sky-400 py-2 border border-sky-500 rounded-md w-full 
+                  className="text-xs text-sky-400 py-2 border border-sky-500 rounded-md w-full 
                   h-9 hover:bg-sky-100 dark:hover:bg-slate-700 shadow-xl transition-03"
                   onClick={() => handleCreateAccountNavigator()}
                >

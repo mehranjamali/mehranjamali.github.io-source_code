@@ -50,7 +50,7 @@ function FlexTableBody({ columns, data, child, tableName, childTableName, parent
                   key={`${index}-${item.id}`}
                   className="flex flex-col border-b last:border-none border-slate-300 dark:border-slate-500 overflow-y-hidden"
                >
-                  <div data-name="row" className="relative flex md:flex-row justify-between items-center py-2 pt-2.5">
+                  <div data-name="row" className="flex flex-row  items-center py-2 pt-2.5">
                      {child?.path &&
                         (_.get(item, child.path).length !== 0 ? (
                            <button
@@ -77,7 +77,7 @@ function FlexTableBody({ columns, data, child, tableName, childTableName, parent
                                  <img
                                     src={renderCell(item, column)}
                                     alt={column.image.alt}
-                                    className={`  ${column.image.extraClassName}`}
+                                    className={`bg-slate-200 dark:bg-slate-600 text-2xs text-slate-400  ${column.image.extraClassName}`}
                                  />
                               ) : (
                                  renderCell(item, column)

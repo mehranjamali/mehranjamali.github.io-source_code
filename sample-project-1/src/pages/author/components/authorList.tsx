@@ -27,22 +27,20 @@ function AuthorList({ authors, showPanelHandler, onSearch, totalCount, onDeleteA
    const authorColumns: columnsType[] = [
       {
          path: "author.image",
-         basis: "1/12",
          extraClassName: "w-10 h-10 basis-16 md:basis-1/12 rounded-full flex items-center justify-center ml-1",
          image: {
-            alt: "author img",
+            alt: "author",
             extraClassName: " object-cover rounded-full w-10 h-10 text-2xs ",
          },
       },
       {
          path: "author.name",
-         basis: "4/12",
-         extraClassName: " basis-9/12 sm:basis-5/12 md:basis-4/12 text-sm md:text-base text-slate-900 dark:text-white pl-3 ",
+         extraClassName:
+            " basis-9/12 sm:basis-5/12 md:basis-4/12 text-sm md:text-base text-slate-900 dark:text-white pl-3 ",
       },
       {
          path: "",
-         basis: "2/12",
-         extraClassName: " hidden sm:block text-xs text-slate-900 dark:text-white ",
+         extraClassName: " hidden sm:block text-xs text-slate-900 dark:text-white basis-2/12 ",
          content: (authorBlockObj: authorBlockObjType) => (
             <div>
                <div className="relative w-fit pr-3">
@@ -54,8 +52,7 @@ function AuthorList({ authors, showPanelHandler, onSearch, totalCount, onDeleteA
       },
       {
          path: "",
-         basis: "2/12",
-         extraClassName: " hidden md:block text-xs text-slate-900 dark:text-white ",
+         extraClassName: " hidden md:block text-xs text-slate-900 dark:text-white basis-2/12",
          content: (authorBlockObj: authorBlockObjType) => (
             <p>
                <span>{authorBlockObj.author.born}</span>
@@ -66,20 +63,18 @@ function AuthorList({ authors, showPanelHandler, onSearch, totalCount, onDeleteA
       },
       {
          path: "author.country",
-         basis: "2/12",
-         extraClassName: "text-xs text-slate-900 dark:text-white hidden sm:block",
+         extraClassName: "text-xs text-slate-900 dark:text-white hidden sm:block basis-2/12",
       },
       {
          path: "",
-         basis: "8",
-         extraClassName: "text-sm ",
+         extraClassName: "text-sm basis-8",
          content: (authorBlockObj: authorBlockObjType) => (
             <button
                data-for={``}
                onClick={() => {
                   console.log(authorBlockObj);
                }}
-               className="hover:text-blue-500 dark:hover:text-blue-500 transition-02 text-slate-500 dark:text-slate-300 "
+               className="hover:text-blue-500 dark:hover:text-blue-500 transition-02 text-slate-500 dark:text-slate-300"
             >
                <FontAwesomeIcon icon={faEye} />
                <ReactTooltip effect="solid" className="">
@@ -90,8 +85,7 @@ function AuthorList({ authors, showPanelHandler, onSearch, totalCount, onDeleteA
       },
       {
          path: "",
-         basis: "7",
-         extraClassName: "text-sm",
+         extraClassName: "text-sm basis-7",
          content: (authorBlockObj: authorBlockObjType) => (
             <button
                onClick={() => {
@@ -105,8 +99,7 @@ function AuthorList({ authors, showPanelHandler, onSearch, totalCount, onDeleteA
       },
       {
          path: "",
-         basis: "7",
-         extraClassName: "text-sm",
+         extraClassName: "text-sm basis-7",
          content: (authorBlockObj: authorBlockObjType) => (
             <DeleteItem
                item={authorBlockObj}
@@ -124,13 +117,11 @@ function AuthorList({ authors, showPanelHandler, onSearch, totalCount, onDeleteA
       columns: [
          {
             path: "image",
-            basis: "1/12",
             extraClassName: "w-9 h-9 basis-16 md:basis-1/12 rounded-full flex items-center justify-center",
             image: { alt: "book img", extraClassName: " object-cover rounded-full w-9 h-9 text-2xs " },
          },
          {
             path: "",
-            basis: "4/12",
             extraClassName: " basis-9/12 sm:basis-6/12 md:basis-4/12 ",
             content: (bookObj: bookType) => (
                <div>
@@ -141,8 +132,7 @@ function AuthorList({ authors, showPanelHandler, onSearch, totalCount, onDeleteA
          },
          {
             path: "",
-            basis: "3/12",
-            extraClassName: "hidden sm:block",
+            extraClassName: "hidden sm:block basis-3/12",
             content: (bookObj: bookType) => (
                <p className="flex text-xs">
                   <FontAwesomeIcon icon={faStar} className="text-yellow-500" />
@@ -154,8 +144,7 @@ function AuthorList({ authors, showPanelHandler, onSearch, totalCount, onDeleteA
          },
          {
             path: "",
-            basis: "3/12",
-            extraClassName: "hidden md:block",
+            extraClassName: "hidden md:block basis-3/12",
             content: (bookObj: bookType) => (
                <ul>
                   {bookObj?.genres.map((item: genreType, index: number) => {
@@ -171,8 +160,7 @@ function AuthorList({ authors, showPanelHandler, onSearch, totalCount, onDeleteA
          },
          {
             path: "",
-            basis: "4",
-            extraClassName: "text-xs ",
+            extraClassName: "text-xs basis-4",
             content: (bookObj: bookType) => (
                <button
                   onClick={() => {
@@ -186,8 +174,7 @@ function AuthorList({ authors, showPanelHandler, onSearch, totalCount, onDeleteA
          },
          {
             path: "",
-            basis: "3",
-            extraClassName: " text-xs pr-2 ",
+            extraClassName: " text-xs pr-2 basis-4",
             content: (bookObj: bookType, ...rest: any) => (
                <button
                   onClick={() => {
@@ -201,8 +188,7 @@ function AuthorList({ authors, showPanelHandler, onSearch, totalCount, onDeleteA
          },
          {
             path: "",
-            basis: "3",
-            extraClassName: "text-xs",
+            extraClassName: "text-xs basis-3",
             content: (bookObj: bookType, ...rest: any) => (
                <DeleteItem
                   item={bookObj}
@@ -258,7 +244,10 @@ function AuthorList({ authors, showPanelHandler, onSearch, totalCount, onDeleteA
          {/* list body */}
          {authors?.length ? (
             <div>
-               <div data-name="authors-with-books-list-body" className="px-1 md:px-4 pt-1 flex flex-col gap-1 overflow-x-auto">
+               <div
+                  data-name="authors-with-books-list-body"
+                  className="px-1 md:px-4 pt-1 flex flex-col gap-1 overflow-x-auto"
+               >
                   <FlexTable
                      tableName="authorList"
                      columns={authorColumns}

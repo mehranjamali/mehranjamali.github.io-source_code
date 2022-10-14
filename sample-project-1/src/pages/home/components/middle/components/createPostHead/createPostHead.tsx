@@ -8,7 +8,6 @@ import { GlobalModalContext } from "../../../../../../context/globalModalContext
 // component
 import Spinner from "../../../../../../components/spinner/spinner";
 import CreateImagePost from "./createImagePost";
-import CreateVidePost from "./createVideoPost";
 import CreatePostModal from "./createPostModal";
 import { useContext } from "react";
 
@@ -35,7 +34,7 @@ function CreatePostHead() {
    };
    // video post
    const onShowCreateVideoPostModal = () => {
-      modal.showModal(<CreateVidePost />);
+      // modal.showModal(<div>test</div>);
    };
    // ceate post ---> don't need discard modal
    const onShowCreatePostModal = () => {

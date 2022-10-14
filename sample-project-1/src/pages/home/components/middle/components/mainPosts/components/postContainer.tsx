@@ -10,16 +10,23 @@ import PostControlMenuDD from "./postControlMenuDD";
 // context
 import { GlobalModalContext } from "../../../../../../../context/globalModalContext";
 
-// type
+// redux
+// -- fakePost slice
 import {
    reasonType,
    reportPostReasonsListType,
    hideMainPostCommand,
    reportMainPostCommand,
 } from "../../../../../../../store/slices/fakePost";
+// -- user
+import {
+   userAuthReadStateSelector,
+   userAuthType,
+   userMustBeAuthenticatedError,
+} from "../../../../../../../store/slices/user";
 
 // fontawesome icon
-import { useDispatchHook } from "../../../../../../../store/hooks/useHooks";
+import { useDispatchHook, RootState, useSelectorHook } from "../../../../../../../store/hooks/useHooks";
 import PostFooterActions from "./postFooterActions";
 import { Link } from "react-router-dom";
 
@@ -142,6 +149,7 @@ const spinnerSize = {
 
 function PostContainer({ post }: postContainerPropsType) {
    const dispatch = useDispatchHook();
+   const userState: userAuthType = useSelectorHook((state: RootState) => userAuthReadStateSelector(state));
    // state
    const [showPost, setShowPost] = useState<boolean>(true);
    const [showHidePostReasonContainer, setShowHidePostReasonContainer] = useState<boolean>(false);
@@ -179,24 +187,42 @@ function PostContainer({ post }: postContainerPropsType) {
       setShowPost(false);
    };
 
+   //
+   const handleHidePostReasonContainer = (bool: boolean) => {
+      if (userState.accessToken) {
+         setShowHidePostReasonContainer(bool);
+         modal.hideModal();
+      } else {
+         userMustBeAuthenticatedError();
+      }
+   };
+
    // show hide post container
    // HPRC => Hide Post Reason Container
    const showHPRCAndHideReportModal = () => {
-      setShowHidePostReasonContainer(true);
-      modal.hideModal();
+      if (userState.accessToken) {
+         setShowHidePostReasonContainer(true);
+         modal.hideModal();
+      } else {
+         userMustBeAuthenticatedError();
+      }
    };
 
    // Call Show Post and Send Component as a Parameter
    const showPostReportModal = () => {
-      modal.showModal(
-         <ReportPostReasonContainer
-            post={post}
-            reportPostReasonsList={reportPostReasonsList}
-            submitReportPostReason={dispatchReportPost}
-            hideModal={modal.hideModal}
-            showHPRCAndHideReportModal={showHPRCAndHideReportModal}
-         />
-      );
+      if (userState.accessToken) {
+         modal.showModal(
+            <ReportPostReasonContainer
+               post={post}
+               reportPostReasonsList={reportPostReasonsList}
+               submitReportPostReason={dispatchReportPost}
+               hideModal={modal.hideModal}
+               showHPRCAndHideReportModal={showHPRCAndHideReportModal}
+            />
+         );
+      } else {
+         userMustBeAuthenticatedError();
+      }
    };
 
    return (
@@ -218,8 +244,9 @@ function PostContainer({ post }: postContainerPropsType) {
                <div className="relative">
                   <img
                      src={post.userImageUrl}
-                     className="object-cover rounded-full w-12 h-12 bg-slate-200 dark:bg-slate-600 text-xs text-slate-400"
-                     alt="post-user-img"
+                     className="object-cover rounded-full w-12 h-12 bg-slate-200 dark:bg-slate-600 text-2xs text-slate-400 
+                                flex items-center justify-center"
+                     alt="users"
                   />
                   {/* online green light */}
                   <span
@@ -251,14 +278,14 @@ function PostContainer({ post }: postContainerPropsType) {
                   post={post}
                   showControlMenu={showControlMenu}
                   setShowControlMenu={setShowControlMenu}
-                  setShowHidePostReasonContainer={setShowHidePostReasonContainer}
+                  handleHidePostReasonContainer={handleHidePostReasonContainer}
                   showPostReportModal={showPostReportModal}
                />
             </div>
             {/* hide post reason modal */}
             <HidePostReasonContainer
                showHidePostReasonContainer={showHidePostReasonContainer}
-               setShowHidePostReasonContainer={setShowHidePostReasonContainer}
+               handleHidePostReasonContainer={handleHidePostReasonContainer}
                submitHidePostReason={dispatchHidePost}
                hidePostReasonsList={hidePostReasonsList}
                post={post}
@@ -292,11 +319,11 @@ function PostContainer({ post }: postContainerPropsType) {
                   );
                })}
             </div>
-            <div className={`mt-2 rounded-md ${post.postContent?.imgUrl ? "" : ""}`} hidden={!post.postContent?.imgUrl}>
+            <div className={`mt-2 rounded-md min-h- ${!post.postContent?.imgUrl && "hidden"}`}>
                <img
-                  src={post.postContent.imgUrl}
+                  src={post.postContent?.imgUrl}
                   alt="post-img"
-                  className="rounded-md bg-slate-200 dark:bg-slate-600 text-slate-400 text-base"
+                  className="main-post-img rounded-md text-2xs bg-slate-200 dark:bg-slate-600 text-slate-400"
                />
             </div>
          </div>
