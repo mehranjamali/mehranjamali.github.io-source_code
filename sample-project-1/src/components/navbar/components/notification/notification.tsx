@@ -127,7 +127,7 @@ function Notification({ showPanel }: propsNotification) {
                                      dark:border-slate-700"
                                  id={generateNotificationId(notificationDay.id, notification.id)}
                               >
-                                 <div className="flex flex-col sm:flex-row flex-wrap items-center justify-start gap-2 w-full transition-05">
+                                 <div className="flex flex-row flex-wrap items-center justify-start gap-2 w-full transition-05">
                                     <div className="h-8 w-8">
                                        <img
                                           src={notification.img}
@@ -142,7 +142,7 @@ function Notification({ showPanel }: propsNotification) {
                                  <div>
                                     <p className="text-sm text-slate-500 dark:text-slate-400">{notification.desc}</p>
                                  </div>
-                                 <div className="w-full flex justify-center sm:justify-end items-center z-30">
+                                 <div className="w-full flex justify-end items-center z-30">
                                     <button
                                        onClick={() => {
                                           handleDeleteNotification(notificationDay.id, notification.id);

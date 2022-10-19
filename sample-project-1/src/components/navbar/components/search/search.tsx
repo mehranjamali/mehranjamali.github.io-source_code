@@ -110,7 +110,7 @@ function Search({ showModal }: propsSearch) {
       <div
          data-name="search"
          className={`absolute left-0 right-0 flex flex-col shadow-2xl w-11/12 sm:max-w-xl mx-auto bg-white 
-         dark:bg-slate-800 mt-12 mb-30  rounded-md  transition-05 dark:border-slate-500 overflow-y-auto ${
+         dark:bg-slate-800 mt-12 mb-30 rounded-md transition-05 dark:border-slate-500 overflow-y-auto ${
             !showModal && "translate-y-search-modal"
          }`}
       >
@@ -186,13 +186,14 @@ function Search({ showModal }: propsSearch) {
                         <FontAwesomeIcon className="-mb-0.5" icon={faSearch} />
                         <span className="pr-2">{item.title}</span>
                      </div>
+                     <div className="h-0.5 w-40 border-t xs:hidden dark:border-slate-700 border-slate-200"></div>
                      <div className="text-slate-400 dark:text-slate-400 text-xs">
+                        <span className={`pl-2 ${!item.history && "hidden"}`}>
+                           <FontAwesomeIcon className="-mb-0.5" icon={faHistory} />
+                        </span>
                         <span>{item.categoryTitle} - </span>
                         <span>تعداد بازدید : </span>
                         <span>{item.visitNumber}</span>
-                        <span className={`pr-4 ${!item.history && "hidden"}`}>
-                           <FontAwesomeIcon className="-mb-0.5" icon={faHistory} />
-                        </span>
                      </div>
                   </Link>
                </div>

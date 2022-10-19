@@ -25,7 +25,7 @@ function GlobalModal({ isHideGlobalModal, onClose, children }: globalModalPropsT
          {/* modal content */}
          <div
             className="Modal absolute pt-4 pb-2 rounded-md border dark:border-slate-700 border-slate-500
-         dark:bg-slate-800 bg-white shadow-md dark:shadow-slate-900 shadow-slate-600 z-100"
+                     dark:bg-slate-800 bg-white shadow-md dark:shadow-slate-900 shadow-slate-600 z-100"
          >
             <button
                onClick={() => {

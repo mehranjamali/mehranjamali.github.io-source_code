@@ -45,7 +45,7 @@ function LoginPage() {
    useEffect(() => {
       const initClient = () => {
          gapi.client.init({
-            clientId: "984590594091-u3nvnj8pa6r7vibv6d1eurar6jabmp2n.apps.googleusercontent.com",
+            clientId: "984590594091-2eel1i34jf7rnor5vjpetkir57840thk.apps.googleusercontent.com",
             scope: "",
          });
       };
@@ -80,10 +80,10 @@ function LoginPage() {
 
    // google login hook
    const { signIn } = useGoogleLogin({
-      clientId: "984590594091-u3nvnj8pa6r7vibv6d1eurar6jabmp2n.apps.googleusercontent.com",
+      clientId: "984590594091-2eel1i34jf7rnor5vjpetkir57840thk.apps.googleusercontent.com",
       onSuccess: handleResponseGoogle,
       onFailure: handleResponseGoogle,
-      cookiePolicy: "http://localhost:8888",
+      cookiePolicy: "https://mehranjamali.github.io",
    });
 
    // check errors

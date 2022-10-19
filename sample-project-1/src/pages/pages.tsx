@@ -35,4 +35,4 @@ function Pages() {
    );
 }
 
-export default React.memo(Pages);
+export default Pages;

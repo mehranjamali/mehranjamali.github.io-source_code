@@ -52,16 +52,16 @@ input[type="number"] {
 /* FONTS */
 @font-face {
    font-family: Shabnam;
-   src: url("../../assets/font/Shabnam.eot");
-   src: url("../../assets/font/Shabnam.eot?#iefix") format("FontName-opentype"),
-      url("../../assets/font/Shabnam.woff") format("woff"), url("../../assets/font/Shabnam.ttf") format("truetype");
+   src: url("../assets/font/Shabnam.eot");
+   src: url("../assets/font/Shabnam.eot?#iefix") format("FontName-opentype"),
+      url("../assets/font/Shabnam.woff") format("woff"), url("../assets/font/Shabnam.ttf") format("truetype");
    font-weight: 400;
    font-style: normal;
 }
 
 @font-face {
    font-family: bYekan;
-   src: url("../../assets/font/bYekan.ttf");
+   src: url("../assets/font/bYekan.ttf");
    font-weight: 400;
    font-style: normal;
 }

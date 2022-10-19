@@ -12,11 +12,12 @@ import { RootState, useSelectorHook } from "../../store/hooks/useHooks";
 import { userAuthReadStateSelector, userAuthType } from "../../store/slices/user";
 
 function ProtectedRoute() {
+   // user state
+   const userState: userAuthType = useSelectorHook((state: RootState) => userAuthReadStateSelector(state));
+
    useEffect(() => {
       !userState.accessToken && showToast("برای دسترسی به این بخش ابتدا شما باید لاگین کنید.", "error", 4000);
    }, []);
-   // user state
-   const userState: userAuthType = useSelectorHook((state: RootState) => userAuthReadStateSelector(state));
 
    return userState.accessToken ? <Outlet /> : <Navigate to="/login" />;
 }

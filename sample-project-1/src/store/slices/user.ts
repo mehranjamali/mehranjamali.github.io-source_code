@@ -33,7 +33,7 @@ const userAuthSlice = createSlice({
    reducers: {
       userAuthLogin: (state: userAuthType, action: actionType<userAuthType>) => {
          localStorage.setItem("refreshToken", "weHaveValidRefreshToken");
-         window.location.replace("http://localhost:8888/");
+         window.location.replace("https://mehranjamali.github.io/");
          return { error: "", ...action.payload };
       },
       userAuthLoginError: (state: userAuthType, action: actionType<string>) => {

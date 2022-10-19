@@ -23,7 +23,7 @@ import CreatePostModalFooter from "./createPostModalFooter";
 import CreateImagePost from "./createImagePost";
 
 // context
-import { GlobalModalContext } from "../../../../../../context/globalModalContext";
+import { useModal } from "../../../../../../context/globalModal/globalModalContext";
 
 type CreatePostModalPorpsType = {
    photo?: any;
@@ -37,7 +37,7 @@ const initianlPermissionItem = {
 
 function CreatePostModal({ photo }: CreatePostModalPorpsType) {
    // context
-   const modal = useContext(GlobalModalContext);
+   const modal = useModal();
 
    // state
    const [showPermissionDD, setShowPermissionDD] = useState<boolean>(false);

@@ -1,8 +1,17 @@
 import React, { useState, useEffect, useReducer } from "react";
 import { NavLink, useLocation } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+   faSearch,
+   faSun,
+   faMoon,
+   faHome,
+   faUsers,
+   faNewspaper,
+   faBook,
+   faExclamationCircle,
+} from "@fortawesome/free-solid-svg-icons";
 import { faUser, faBell } from "@fortawesome/free-regular-svg-icons";
-import { faSearch, faSun, faMoon } from "@fortawesome/free-solid-svg-icons";
 
 // components
 import Search from "./components/search/search";
@@ -38,11 +47,11 @@ const dropdownObjs: dropdownType[] = [
 
 // nav links
 const navLinks: navLinkType[] = [
-   { title: "صفحه اصلی", to: "/" },
-   { title: "نویسنده ها", to: "/author" },
-   { title: "مقالات", to: "/articles" },
-   { title: "کتاب ها", to: "/Books" },
-   { title: "درباره ما", to: "/aboutUs" },
+   { title: "صفحه اصلی", to: "/", icon: faHome },
+   { title: "نویسنده ها", to: "/author", icon: faUsers },
+   { title: "مقالات", to: "/articles", icon: faNewspaper },
+   { title: "کتاب ها", to: "/Books", icon: faBook },
+   { title: "درباره ما", to: "/aboutUs", icon: faExclamationCircle },
 ];
 
 // html, body
@@ -179,7 +188,7 @@ function Navbar() {
             {/* right_side: hamburger , brand , mobile menu - nav links */}
             <div data-name="navbar-right-side" className="flex flex-row justify-end items-center gap-12">
                {/* hamburger , brand , mobile menu */}
-               <div className="flex flex-row justify-end items-center gap-6">
+               <div className="flex flex-row justify-end items-center gap-4 xs:gap-6">
                   {/* mobile menu */}
                   <div data-name="mobile-menu" className="absolute w-0 top-14 right-0 md:hidden z-50">
                      <div
@@ -211,7 +220,7 @@ function Navbar() {
                   </div>
                   {/* ---end of hamburger */}
                   {/* brand */}
-                  <NavLink to="/" className="font-bold text-xl">
+                  <NavLink to="/" className="font-bold text-base xs:text-xl -mb-1">
                      {/* set style later */}
                      Brand
                   </NavLink>
@@ -243,13 +252,16 @@ function Navbar() {
             </div>
             {/* ---end of right_side: hamburger , brand , mobile menu - nav links */}
             {/* left_side: profile , search , notification , theme*/}
-            <div data-name="navbar-left-side" className="flex flex-row justify-start items-center navbar-h gap-6">
+            <div
+               data-name="navbar-left-side"
+               className="flex flex-row justify-start items-center navbar-h gap-4 xs:gap-6"
+            >
                {/* theme */}
-               <div data-name="theme" className="flex items-center py-4 text-lg">
+               <div data-name="theme" className="flex items-center py-4 text-base xs:text-xl">
                   {lightTheme ? (
                      <FontAwesomeIcon
                         icon={faMoon}
-                        className="cursor-pointer text-slate-700 hover:text-indigo-500 py-1 text-xl transition-05"
+                        className="cursor-pointer text-slate-700 hover:text-indigo-500 py-1 transition-05"
                         onClick={() => {
                            toggleTheme(false);
                         }}
@@ -257,7 +269,7 @@ function Navbar() {
                   ) : (
                      <FontAwesomeIcon
                         icon={faSun}
-                        className="cursor-pointer text-slate-200 py-1 text-xl hover:text-yellow-500 transition-05"
+                        className="cursor-pointer text-slate-200 py-1 hover:text-yellow-500 transition-05"
                         onClick={() => {
                            toggleTheme(true);
                         }}
@@ -266,7 +278,7 @@ function Navbar() {
                </div>
                {/* ---end of theme */}
                {/* search  */}
-               <div data-name="search" className="flex items-center py-4 text-lg">
+               <div data-name="search" className="flex items-center py-4 text-base xs:text-lg">
                   <FontAwesomeIcon
                      icon={faSearch}
                      className="cursor-pointer py-1 hover:text-sky-400 transition-03"
@@ -294,7 +306,7 @@ function Navbar() {
                {/* notification */}
                <div
                   data-name="notification"
-                  className={`flex items-center py-4 text-lg ${!userState.accessToken && "hidden"}`}
+                  className={`flex items-center py-4 text-base xs:text-lg ${!userState.accessToken && "hidden"}`}
                >
                   <FontAwesomeIcon
                      icon={faBell}
@@ -351,4 +363,4 @@ function Navbar() {
    );
 }
 
-export default React.memo(Navbar);
+export default Navbar;

@@ -1,4 +1,4 @@
-import { useContext, useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 
 // redux
 import { useDispatchHook, useSelectorHook, RootState } from "../../../../../../store/hooks/useHooks";
@@ -8,7 +8,7 @@ import {
 } from "../../../../../../store/slices/uiController";
 
 // context
-import { GlobalModalContext } from "../../../../../../context/globalModalContext";
+import { useModal } from "../../../../../../context/globalModal/globalModalContext";
 
 // icon
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -22,7 +22,7 @@ function CreateImagePost() {
    const uiState = useSelectorHook((state: RootState) => createPostModalReadStateSelector(state));
 
    // modal context
-   const modal = useContext(GlobalModalContext);
+   const modal = useModal();
 
    const selectPhotoInput = useRef<any>(null);
 

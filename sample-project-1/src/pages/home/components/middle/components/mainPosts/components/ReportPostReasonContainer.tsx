@@ -1,6 +1,6 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { reasonType, reportPostReasonsListType } from "../../../../../../../store/slices/fakePost";
-import { GlobalModalContext } from "../../../../../../../context/globalModalContext";
+import { useModal } from "../../../../../../../context/globalModal/globalModalContext";
 
 // FontAwesome icon
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -23,7 +23,7 @@ const ReportPostReasonContainer = ({
    submitReportPostReason,
    showHPRCAndHideReportModal,
 }: ReportPostReasonContainerPropsType) => {
-   const modal = useContext(GlobalModalContext);
+   const modal = useModal();
    // use state
    const [reason, setReason] = useState<reportPostReasonsListType | null>(null);
    const [showSubContainer, setShowSubContainer] = useState(false);

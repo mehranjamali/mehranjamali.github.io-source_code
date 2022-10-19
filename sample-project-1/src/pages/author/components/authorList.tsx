@@ -57,7 +57,7 @@ function AuthorList({ authors, showPanelHandler, onSearch, totalCount, onDeleteA
             <p>
                <span>{authorBlockObj.author.born}</span>
                <span className={`px-1 ${!authorBlockObj.author.died && "hidden"}`}>-</span>
-               <span>{authorBlockObj.author.died}</span>
+               <span>{authorBlockObj.author.died || ""}</span>
             </p>
          ),
       },

@@ -36,12 +36,25 @@ function MainPosts() {
    const toggleSortBox = () => {
       toggleSortDDAngle.current.classList.toggle("-rotate-90");
       sortBoxDD.current.classList.toggle("hidden");
+      if (!sortBoxDD.current.classList.contains("hidden")) {
+         setTimeout(() => {
+            window.addEventListener(
+               "click",
+               () => {
+                  toggleSortDDAngle.current.classList.remove("-rotate-90");
+                  sortBoxDD.current.classList.add("hidden");
+               },
+               { once: true }
+            );
+         }, 100);
+      }
    };
 
    const doSortOnPosts = () => {
       toggleSortDDAngle.current.classList.remove("-rotate-90");
       sortBoxDD.current.classList.add("hidden");
    };
+
 
    return (
       <div data-name="main-posts" className="w-full">

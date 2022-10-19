@@ -66,7 +66,7 @@ function AuthorForm({ state }: AuthorFormPropsType) {
 
    // check year
    const checkYearIsDiedMoreThenBorn = () => {
-      if (watch("died") === "") return true;
+      if (!watch("died")) return true;
       if (watch("died") > watch("born")) return true;
       setError("died", { type: "lessThenBorn", message: "" });
       return false;

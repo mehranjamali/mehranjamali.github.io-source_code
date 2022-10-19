@@ -2,6 +2,7 @@
    "name": "sample-project-1",
    "version": "0.1.0",
    "private": true,
+   "homepage": "https://mehranjamali.github.io",
    "dependencies": {
       "@fortawesome/free-brands-svg-icons": "^6.2.0",
       "@reduxjs/toolkit": "^1.8.2",
@@ -36,7 +37,9 @@
       "start": "react-scripts start",
       "build": "react-scripts build",
       "test": "react-scripts test",
-      "eject": "react-scripts eject"
+      "eject": "react-scripts eject",
+      "predeploy": "npm run build",
+      "deploy": "gh-pages -d build"
    },
    "eslintConfig": {
       "extends": [
@@ -57,6 +60,7 @@
       ]
    },
    "devDependencies": {
-      "@types/lodash": "^4.14.182"
+      "@types/lodash": "^4.14.182",
+      "gh-pages": "^4.0.0"
    }
 }

@@ -3,13 +3,12 @@ import { faBriefcase } from "@fortawesome/free-solid-svg-icons";
 import { faImage, faNewspaper, faCirclePlay } from "@fortawesome/free-regular-svg-icons";
 
 // context
-import { GlobalModalContext } from "../../../../../../context/globalModalContext";
+import { useModal } from "../../../../../../context/globalModal/globalModalContext";
 
 // component
 import Spinner from "../../../../../../components/spinner/spinner";
 import CreateImagePost from "./createImagePost";
 import CreatePostModal from "./createPostModal";
-import { useContext } from "react";
 
 // redux
 // -- hooks
@@ -27,7 +26,7 @@ function CreatePostHead() {
    const userState: userAuthType = useSelectorHook((state: RootState) => userAuthReadStateSelector(state));
 
    // context
-   const modal = useContext(GlobalModalContext);
+   const modal = useModal();
    // image post
    const onShowCreateImagePostModal = () => {
       modal.showModal(<CreateImagePost />);

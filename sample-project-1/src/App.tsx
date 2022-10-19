@@ -1,13 +1,5 @@
-import React, { useState } from "react";
-import { BrowserRouter as Router } from "react-router-dom";
-
-// redux
-import { useDispatchHook, useSelectorHook, RootState } from "./store/hooks/useHooks";
-import {
-   createPostModalReadStateSelector,
-   createPostModalClearStateCommand,
-   uiStateType,
-} from "./store/slices/uiController";
+import React from "react";
+import { HashRouter as Router } from "react-router-dom";
 
 // Routes
 import Pages from "./pages/pages";
@@ -15,54 +7,11 @@ import Pages from "./pages/pages";
 // components
 import Navbar from "./components/navbar/navbar";
 import { Slide, ToastContainer } from "react-toastify";
-import GlobalModal from "./components/globalModal/globalModal";
-import DiscardModal from "./components/discardModal/discardModal";
 
-// context
-import { GlobalModalContext } from "./context/globalModalContext";
-
-// need body beacuse of modal
-const body = document.body;
+// global modal context component
+import GlobalModalProvider from "./context/globalModal/globalModalContext";
 
 function App() {
-   // modal state
-   const [isHideGlobalModal, setIsHideGlobalModal] = useState<boolean>(true);
-   const [isHideDiscardModal, setIsHideDiscardModal] = useState<boolean>(true);
-   const [globalModalContent, setGlobalModalContent] = useState<any>(null);
-   // selector
-   const uiState: uiStateType["createPostModal"] = useSelectorHook((state: RootState) =>
-      createPostModalReadStateSelector(state)
-   );
-
-   // dispatch
-   const dispatch = useDispatchHook();
-
-   // do show Global Modal
-   const doShowGlobalModal = (content: any) => {
-      setIsHideGlobalModal(false);
-      setGlobalModalContent(content);
-      body.classList.add("overflow-y-hidden");
-   };
-
-   // hide Global Modal Handler
-   const hideGlobalModalHandler = (highLevel: boolean = false) => {
-      if (!uiState?.needDiscard || highLevel) return doHideGlobalModal();
-      doShowDiscardModal();
-   };
-
-   // do hide Global Modal
-   const doHideGlobalModal = () => {
-      setIsHideGlobalModal(true);
-      setGlobalModalContent(null);
-      body.classList.remove("overflow-y-hidden");
-      dispatch(createPostModalClearStateCommand());
-   };
-
-   // do show Discard Modal
-   const doShowDiscardModal = () => {
-      setIsHideDiscardModal(false);
-   };
-
    return (
       <div
          className="flex flex-col justify-between items-center relative min-h-screen 
@@ -70,27 +19,9 @@ function App() {
       >
          <Router>
             <Navbar />
-            {/* global-modal content */}
-            <GlobalModalContext.Provider
-               value={{
-                  showModal: (content: any, needDiscard: boolean) => doShowGlobalModal(content),
-                  hideModal: (highLevel: boolean) => hideGlobalModalHandler(highLevel),
-                  isHideGlobalModal: isHideGlobalModal,
-               }}
-            >
+            <GlobalModalProvider>
                <Pages />
-               {/* Global Modal */}
-               <GlobalModal onClose={hideGlobalModalHandler} isHideGlobalModal={isHideGlobalModal}>
-                  {globalModalContent}
-               </GlobalModal>
-               {/* Discard Modal */}
-               <DiscardModal
-                  doHideGlobalModal={doHideGlobalModal}
-                  isHideDiscardModal={isHideDiscardModal}
-                  setIsHideDiscardModal={setIsHideDiscardModal}
-               />
-            </GlobalModalContext.Provider>
-            {/* Toaster */}
+            </GlobalModalProvider>
             <ToastContainer
                position="bottom-right"
                autoClose={1000}

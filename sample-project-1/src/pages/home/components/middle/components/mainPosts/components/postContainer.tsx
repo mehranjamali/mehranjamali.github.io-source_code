@@ -1,4 +1,4 @@
-import React, { useContext, useState, useCallback, useEffect } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 
 // components
 import Spinner from "../../../../../../../components/spinner/spinner";
@@ -8,7 +8,7 @@ import LikeCommentNumber from "./LikeCommentNumber";
 import PostControlMenuDD from "./postControlMenuDD";
 
 // context
-import { GlobalModalContext } from "../../../../../../../context/globalModalContext";
+import { useModal } from "../../../../../../../context/globalModal/globalModalContext";
 
 // redux
 // -- fakePost slice
@@ -158,7 +158,12 @@ function PostContainer({ post }: postContainerPropsType) {
    // show more text
    const [isShowMoreActive, setIsShowMoreActive] = useState<boolean>(false);
    // context
-   const modal = useContext(GlobalModalContext);
+   const modal = useModal();
+
+   // close dd menu event listener
+   useEffect(() => {
+      window.addEventListener("click", () => setShowControlMenu(false), { once: true });
+   });
 
    const handleShowControlMenu = useCallback(() => {
       if (!showControlMenu) {
