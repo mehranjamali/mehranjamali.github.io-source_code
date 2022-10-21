@@ -54,4 +54,5 @@ The general page breakdown looks like this: (Protected = need login)
 ## Redux
 
 
+![Web 1920 – 1(crop)](https://user-images.githubusercontent.com/29439821/197223302-5e6fe731-b056-4c0e-8f05-d91d9a047563.png)
 
