@@ -1,56 +1,58 @@
-# Getting Started with Create React App
+## React + Redux real world example.
+ You can view a live demo over at https://mehranjamali.github.io \
+ I left the front `Redux DevTools` open so that you can check the site better.
+- You can see the code on my GitHub: [source code](https://github.com/mehranjamali/mehranjamali.github.io-source_code/tree/master/sample-project-1) 
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+ 
+ In this project I have developed some features of Linkedin and other similar Websites.\
+ The purpose of doing this project is to challenge myself and create a portfolio.\
+ I would be grateful if you send me your comments and criticisms.
+ - Email: mehranjamali117@gmail.com - Linkedin: [mehranjamali](https://www.linkedin.com/in/mehran-jamali-b2a43b239/)
 
 ## Packages
+react - @reduxjs/toolkit - tailwindcss - typescript - redux-thunk , [view all](https://github.com/mehranjamali/mehranjamali.github.io-source_code/blob/master/sample-project-1/package.json)
 
-@reduxjs/toolkit: 1.8.2\
-axios: 0.27.2\
-lodash: 4.17.21\
-react-redux: 8.0.2\
-react-router-dom: 6.3.0\
-redux: 4.2.0\
-sass: 1.52.3
+## Functionality overview
+The example application does not use any server, everything is local but I implemented authentication and asynchronous operation logic in my services and middlewares, I have used `Redux-Thunk` for this purpose.\
 
-## Available Scripts
+General functionality: 
+- Authenticate users. ( login page:  Sign in with any `username` and `password` you want + Sign in with `google` + logout button )
+- Create post ( with photo )
+- Like 
+- Follow other users
+- Save your Favorite post
+- Report post 
+- Hide post
+- Notification in navbar
+- CRUD Author and Book (Table)
 
-In the project directory, you can run:
+The general page breakdown looks like this: (Protected = need login)
+- Home page (URL: /#/ )
+  - create post button ( with photo ) - Protected 
+  - List of posts 
+    - like - Protected 
+    - report - Protected 
+    - hide - Protected 
+    - copy link
+  - List of users you can follow - Protected 
+  - List of popular articles
+  - User feed - Protected 
+  - Favorite posts navigate button - Protected 
+  - List of recently published articles
+- Sign in page (URL: /#/login) 
+  - Sign in with any `username` and `password` you want
+  - Sign in with google
+- Favorite posts page (URL: /#/saved-posts) - Protected 
+- Authors page (URL: /#/author) - Protected 
+  - CRUD Author
+  - CRUD Book
+  - Nested Table
+  - Pagination
+  - Search
 
-### `npm start`
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## Redux
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
 
-### `npm test`
+![Web 1920 – 1(crop)](https://user-images.githubusercontent.com/29439821/197222633-725dd617-5a24-41ff-9486-599ce9d43d2b.png)
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
