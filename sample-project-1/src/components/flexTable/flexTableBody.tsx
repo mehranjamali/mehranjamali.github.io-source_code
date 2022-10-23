@@ -37,8 +37,15 @@ function FlexTableBody({ columns, data, child, tableName, childTableName, parent
    // Toggle Child Table
    const toggleChildTable = (id: string, event: any) => {
       const childTable = document.getElementById(id);
-      childTable?.classList.toggle("hide-child-table");
+      childTable?.classList.toggle("show-child-table");
+      setTimeout(() => {
+         childTable?.classList.toggle("hide-child-table");
+      }, 10);
       event.currentTarget.classList.toggle("rotate-90");
+   };
+
+   const generateRowTranstion = (rowIndex: number) => {
+      return `table-transition-${rowIndex + 2}`;
    };
 
    return (
@@ -48,14 +55,18 @@ function FlexTableBody({ columns, data, child, tableName, childTableName, parent
                <div
                   data-name="block"
                   key={`${index}-${item.id}`}
-                  className="flex flex-col border-b last:border-none border-slate-300 dark:border-slate-500 overflow-y-hidden"
+                  className={` flex flex-col border-b last:border-none border-slate-300 dark:border-slate-500 overflow-y-hidden `}
                >
-                  <div data-name="row" className="flex flex-row  items-center py-2 pt-2.5">
+                  <div
+                     data-name="row"
+                     className={`${generateRowTranstion(index)} 
+                                 flex flex-row items-center py-2 pt-2.5 hide-child-row `}
+                  >
                      {child?.path &&
                         (_.get(item, child.path).length !== 0 ? (
                            <button
                               className={`flex flex-row items-center justify-center transition-02 w-5 h-5 text-slate-500
-                                     dark:text-slate-300 hover:text-blue-500 dark:hover:text-blue-500`}
+                                        dark:text-slate-300 hover:text-blue-500 dark:hover:text-blue-500 `}
                               disabled={!_.get(item, child.path).length}
                               onClick={(event: any) =>
                                  toggleChildTable(createUniqueId(item, generateTableName()), event)
@@ -77,7 +88,7 @@ function FlexTableBody({ columns, data, child, tableName, childTableName, parent
                                  <img
                                     src={renderCell(item, column)}
                                     alt={column.image.alt}
-                                    className={`bg-slate-200 dark:bg-slate-600 text-2xs text-slate-400  ${column.image.extraClassName}`}
+                                    className={`bg-slate-200 pointer-events-none dark:bg-slate-600 text-2xs text-slate-400  ${column.image.extraClassName}`}
                                  />
                               ) : (
                                  renderCell(item, column)
@@ -91,7 +102,7 @@ function FlexTableBody({ columns, data, child, tableName, childTableName, parent
                      <div
                         data-name="child-flex-table"
                         id={createUniqueId(item, generateTableName())}
-                        className="px-2 border border-slate-300 dark:border-slate-500 mb-5 mt-1 md:mx-8 rounded-md hide-child-table transition-03"
+                        className="px-2 border border-slate-300 dark:border-slate-500 mb-5 mt-1 md:mx-8 rounded-md hide-child-table"
                      >
                         <div className="pr-1">
                            <FlexTable

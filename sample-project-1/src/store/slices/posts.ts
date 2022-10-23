@@ -24,6 +24,8 @@ const postsSlice = createSlice({
       postsRequestFailed: (postsState: stateType<postType[]>, action: actionType<string>) => {
          postsState.loading = false;
          postsState.error = action.payload;
+         postsState.data = [];
+         postsState.lastFetch = null;
          showToast(action.payload);
       },
       postsReceived: (postsState: stateType<postType[]>, action: actionType<postType[]>) => {
@@ -36,7 +38,7 @@ const postsSlice = createSlice({
 });
 
 // url
-const postsUrl = "posts";
+const postsUrl = "/posts";
 
 // commands
 const fetchPosts = () => (dispatch: any, getState: any) => {
@@ -54,7 +56,7 @@ const fetchPosts = () => (dispatch: any, getState: any) => {
          onStart: postsSlice.actions.postsRequested.type,
          onSuccess: postsSlice.actions.postsReceived.type,
          onError: postsSlice.actions.postsRequestFailed.type,
-         needAuthorization: true,
+         needAuthorization: false,
       })
    );
 };

@@ -35,6 +35,7 @@ function PostControlMenuDD({
             <Link to={postLink} className="text-xs text-blue-600 dark:text-blue-400">
                مشاهده پست
             </Link>
+            {/* <div className="text-xs text-blue-600 dark:text-blue-400 cursor-pointer">مشاهده پست</div> */}
          </div>,
          "success",
          2000

@@ -1,5 +1,3 @@
-import { useState } from "react";
-
 // icon
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faEdit, faTrash, faEye, faStar, faUser, faCircle } from "@fortawesome/free-solid-svg-icons";
@@ -10,9 +8,9 @@ import { authorBlockObjType, bookType, genreType, authorType } from "../../../st
 // components
 import FlexTable from "../../../components/flexTable/flexTable";
 import { columnsType, childType } from "../../../components/flexTable/flexTableType";
-import ReactTooltip from "react-tooltip";
 import FlexTableSearchBox from "../../../components/flexTable/flexTableSearchBox";
 import DeleteItem from "../../../components/flexTable/deleteItem";
+
 type propsType = {
    authors: any;
    showPanelHandler: (panelName: string, data?: authorType | bookType | null, ...rest: any) => void;
@@ -70,16 +68,13 @@ function AuthorList({ authors, showPanelHandler, onSearch, totalCount, onDeleteA
          extraClassName: "text-sm basis-8",
          content: (authorBlockObj: authorBlockObjType) => (
             <button
-               data-for={``}
                onClick={() => {
                   console.log(authorBlockObj);
                }}
-               className="hover:text-blue-500 dark:hover:text-blue-500 transition-02 text-slate-500 dark:text-slate-300"
+               className="hover:text-blue-500 dark:hover:text-blue-500 transition-02
+                          text-slate-500 dark:text-slate-300 cursor-not-allowed"
             >
                <FontAwesomeIcon icon={faEye} />
-               <ReactTooltip effect="solid" className="">
-                  <span>Lorem ipsum dolor sit.</span>
-               </ReactTooltip>
             </button>
          ),
       },
@@ -166,7 +161,8 @@ function AuthorList({ authors, showPanelHandler, onSearch, totalCount, onDeleteA
                   onClick={() => {
                      console.log(bookObj);
                   }}
-                  className="hover:text-blue-500 dark:hover:text-blue-500 transition-02 text-slate-500 dark:text-slate-300 mx-2"
+                  className="hover:text-blue-500 dark:hover:text-blue-500 transition-02
+                             text-slate-500 dark:text-slate-300 mx-2 cursor-not-allowed"
                >
                   <FontAwesomeIcon icon={faEye} />
                </button>

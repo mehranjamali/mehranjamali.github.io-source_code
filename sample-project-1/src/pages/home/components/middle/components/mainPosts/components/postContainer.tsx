@@ -250,7 +250,7 @@ function PostContainer({ post }: postContainerPropsType) {
                   <img
                      src={post.userImageUrl}
                      className="object-cover rounded-full w-12 h-12 bg-slate-200 dark:bg-slate-600 text-2xs text-slate-400 
-                                flex items-center justify-center"
+                                flex items-center justify-center pointer-events-none"
                      alt="users"
                   />
                   {/* online green light */}
@@ -315,20 +315,26 @@ function PostContainer({ post }: postContainerPropsType) {
             >
                بیشتر ...
             </span>
-            <div className="text-xs text-left" dir="ltr">
+            <div className="text-xs text-left flex items-center justify-start" dir="ltr">
                {post.postContent.tags.map((tag: any, index: number) => {
                   return (
-                     <Link key={index} to={`/${tag.link}`} className="text-blue-400 pr-1.5">
+                     <div
+                        key={index}
+                        // to={`/${tag.link}`}
+                        className="text-blue-400 pr-1.5 cursor-pointer"
+                     >
                         #{tag.tagName}
-                     </Link>
+                     </div>
                   );
                })}
             </div>
-            <div className={`mt-2 rounded-md min-h- ${!post.postContent?.imgUrl && "hidden"}`}>
+            <div
+               className={`mt-2 rounded-md flex justify-center items-center ${!post.postContent?.imgUrl && "hidden"}`}
+            >
                <img
                   src={post.postContent?.imgUrl}
                   alt="post-img"
-                  className="main-post-img rounded-md text-2xs bg-slate-200 dark:bg-slate-600 text-slate-400"
+                  className="main-post-img pointer-events-none rounded-md w-full text-2xs bg-slate-200 dark:bg-slate-600 text-slate-400"
                />
             </div>
          </div>

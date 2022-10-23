@@ -104,6 +104,7 @@ function CreateImagePost() {
                      type="file"
                      id="selectPhoto"
                      className="hidden"
+                     accept="image/*"
                      onChange={(e) => handleFileInputChange(e)}
                   />
                </div>
@@ -113,7 +114,7 @@ function CreateImagePost() {
                      !photo && "hidden"
                   } w-full h-full flex justify-center items-center overflow-x-hidden overflow-hidden shadow-lg text-0`}
                >
-                  <img src={photo} alt="" className="w-full h-full object-cover" />
+                  <img src={photo} alt="" className="w-full h-full object-cover pointer-events-none" />
                   {/* <img
                      src={`${process.env.REACT_APP_IMG_PUBLIC_PATH}${photo?.name}`}
                      alt=""

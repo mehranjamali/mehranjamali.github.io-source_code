@@ -131,7 +131,8 @@ function Notification({ showPanel }: propsNotification) {
                                     <div className="h-8 w-8">
                                        <img
                                           src={notification.img}
-                                          className="rounded-full h-full w-full object-cover  bg-slate-200 dark:bg-slate-600 text-2xs text-slate-400 "
+                                          className="rounded-full h-full w-full object-cover  bg-slate-200 dark:bg-slate-600 
+                                                     text-2xs text-slate-400 pointer-events-none"
                                           alt="img"
                                        />
                                     </div>

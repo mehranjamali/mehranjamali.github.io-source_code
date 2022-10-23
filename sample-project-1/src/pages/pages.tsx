@@ -12,7 +12,7 @@ function Pages() {
       <div
          data-name="pages-routes"
          className="min-h-screen h-full min-w-full pt-18 pb-5 text-lg flex flex-row justify-center items-center
-       bg-gray-50 text-slate-800 dark:bg-slate-700 dark:text-white transition-03"
+                  bg-gray-50 text-slate-800 dark:bg-slate-700 dark:text-white transition-03"
       >
          <div
             data-name="pages-routes-container"

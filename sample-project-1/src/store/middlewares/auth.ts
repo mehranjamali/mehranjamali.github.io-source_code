@@ -8,6 +8,7 @@ const authMiddleware =
    ({ dispatch, getState }: any) =>
    (next: any) =>
    async (action: actionType<any>) => {
+      // console.log("auth middleware called! : ", action.type);
       if (action.payload?.needAuthorization) {
          // from store
          const { accessTokenInStore, lastCheckTime } = getState().user.auth;

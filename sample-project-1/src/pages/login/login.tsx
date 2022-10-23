@@ -97,7 +97,7 @@ function LoginPage() {
          {/* absolute login-header */}
          <div data-name="login-header" className="absolute top-10 right-10">
             <Link to={"/"} className="text-xl">
-               Website Logo
+               Brand
             </Link>
          </div>
          {/* static login-body */}
@@ -141,7 +141,11 @@ function LoginPage() {
                         other={{ ...register("passwordForLogin", { required: true, minLength: 4 }) }}
                      />
                      {/* forgot password link */}
-                     <Link className="w-full text-xs" to={"/forgot-password"}>
+                     <Link
+                        className="w-full text-xs"
+                        // to={"/forgot-password"}
+                        to="/login"
+                     >
                         <p
                            className="text-blue-700 dark:text-blue-500 hover:bg-blue-100 dark:hover:bg-slate-700 
                                         w-fit py-1 px-1 rounded-xl transition-02"
@@ -232,7 +236,7 @@ function LoginPage() {
                </div>
             </div>
             <div data-name="go-register">
-               <Link to={"/register"} className="text-xs text-slate-600 dark:text-slate-200">
+               <Link to={"/login"} className="text-xs text-slate-600 dark:text-slate-200">
                   عضو نیستید؟ <span className="text-blue-600 dark:text-blue-500 font-semibold"> ثبت نام </span> کنید
                </Link>
             </div>

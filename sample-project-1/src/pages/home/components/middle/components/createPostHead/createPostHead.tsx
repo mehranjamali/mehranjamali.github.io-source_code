@@ -50,7 +50,7 @@ function CreatePostHead() {
          <div className="flex flex-row items-center w-full gap-3">
             <div className="w-14 h-12 rounded-full">
                <img
-                  className="w-full h-full rounded-full text-xs bg-slate-200 dark:bg-slate-600"
+                  className="w-full h-full rounded-full text-xs bg-slate-200 dark:bg-slate-600 pointer-events-none"
                   src={process.env.REACT_APP_USER_IMG_URL}
                   alt="user-img"
                />

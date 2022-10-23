@@ -135,14 +135,32 @@ input[type="number"] {
 .transition-03 {
    transition: all 0.3s !important;
 }
+.transition-04 {
+   transition: all 0.4s !important;
+}
 .transition-05 {
    transition: all 0.5s !important;
+}
+.transition-06 {
+   transition: all 0.6s !important;
+}
+.transition-07 {
+   transition: all 0.7s !important;
+}
+.transition-08 {
+   transition: all 0.8s !important;
+}
+.transition-09 {
+   transition: all 0.9s !important;
 }
 .transition-1 {
    transition: all 1s !important;
 }
 .transition-2 {
    transition: all 2s !important;
+}
+.transition-delay {
+   transition-delay: 0.5s !important;
 }
 
 .bottom-13 {

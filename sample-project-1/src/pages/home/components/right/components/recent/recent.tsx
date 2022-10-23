@@ -44,7 +44,8 @@ function Recent() {
                         return (
                            <Link
                               key={index}
-                              to="/ss"
+                              // to="/ss"
+                              to="/"
                               data-name="recent-item"
                               className="flex flex-row justify-start items-center gap-2 w-full text-xs hover:text-sky-500 dark:hover:text-sky-500
                                        text-slate-700 dark:text-slate-300 transition-03 "
@@ -52,7 +53,7 @@ function Recent() {
                               <img
                                  src={item.img}
                                  alt="recent-img"
-                                 className="h-14 w-20 object-cover object-center rounded-md bg-slate-200 dark:bg-slate-600 text-2xs text-slate-400"
+                                 className="h-14 w-20 object-cover object-center rounded-md bg-slate-200 dark:bg-slate-600 text-2xs text-slate-400 pointer-events-none"
                               />
                               <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between md:flex-col md:items-start gap-2 w-full">
                                  <p className="text-xs">{item.title}</p>

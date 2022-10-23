@@ -9,6 +9,7 @@ export type navLinkType = {
    title: string;
    to: string;
    icon: any;
+   extraClassName?: string;
 };
 
 // props type
@@ -19,13 +20,13 @@ type propsMobileNavMenu = {
 };
 
 // generate NavLink class
-const generateNavLinkClass = (isActive: boolean) => {
+const generateNavLinkClass = (isActive: boolean, extraClassName: string) => {
    return `py-2.5 px-2 w-full dark:hover:bg-slate-600 hover:bg-gray-200 dark:active:bg-slate-600 active:bg-gray-200 
-           border-r-2 hover:text-sky-400 hover:border-sky-400 dark:hover:border-sky-400 transition-03  ${
-              isActive
-                 ? "border-sky-400 dark:text-white text-slate-800 bg-gray-200 dark:bg-slate-700"
-                 : "border-white dark:border-slate-800"
-           }`;
+           border-r-2 hover:text-sky-400 hover:border-sky-400 dark:hover:border-sky-400 transition-03 ${extraClassName} ${
+      isActive
+         ? "border-sky-400 dark:text-white text-slate-800 bg-gray-200 dark:bg-slate-700"
+         : "border-white dark:border-slate-800"
+   }`;
 };
 
 function MobileNavMenu({ showMobileMenu, closeMenus, navLinks }: propsMobileNavMenu) {
@@ -58,7 +59,7 @@ function MobileNavMenu({ showMobileMenu, closeMenus, navLinks }: propsMobileNavM
                   <NavLink
                      key={index}
                      to={item.to}
-                     className={({ isActive }) => generateNavLinkClass(isActive)}
+                     className={({ isActive }) => generateNavLinkClass(isActive, item.extraClassName || "")}
                      onClick={() => {
                         closeMenus();
                      }}
@@ -93,7 +94,10 @@ function MobileNavMenu({ showMobileMenu, closeMenus, navLinks }: propsMobileNavM
             </div>
             <div className="flex flex-row justify-center items-center text-xs">
                <p className="py-2">mehranjamali117@gmail.com</p>
-               <button className=" py-2 pr-2 hover:text-sky-500 transition-03" onClick={(e: any) => handleCopyPostLink("mehranjamali117@gmail.com", e)}>
+               <button
+                  className=" py-2 pr-2 hover:text-sky-500 transition-03"
+                  onClick={(e: any) => handleCopyPostLink("mehranjamali117@gmail.com", e)}
+               >
                   <FontAwesomeIcon icon={faCopy} className="" />
                </button>
             </div>

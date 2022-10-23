@@ -30,17 +30,17 @@ const dropdownObjs: dropdownType[] = [
    {
       title: "اکانت کاربری",
       list: [
-         { link: "/users", name: "تنظیمات" },
-         { link: "/users", name: "ویرایش اطلاعات کاربری" },
+         { link: "/", name: "تنظیمات" },
+         { link: "/", name: "ویرایش اطلاعات کاربری" },
       ],
    },
    {
       title: "مدیریت",
       list: [
-         { link: "/users", name: "لیست های من" },
-         { link: "/users", name: "مورد علاقه های من" },
-         { link: "/users", name: "آموزش های من" },
-         { link: "/users", name: "پست ها و پیش نویس ها" },
+         { link: "/", name: "لیست های من" },
+         { link: "/", name: "مورد علاقه های من" },
+         { link: "/", name: "آموزش های من" },
+         { link: "/", name: "پست ها و پیش نویس ها" },
       ],
    },
 ];
@@ -49,9 +49,9 @@ const dropdownObjs: dropdownType[] = [
 const navLinks: navLinkType[] = [
    { title: "صفحه اصلی", to: "/", icon: faHome },
    { title: "نویسنده ها", to: "/author", icon: faUsers },
-   { title: "مقالات", to: "/articles", icon: faNewspaper },
-   { title: "کتاب ها", to: "/Books", icon: faBook },
-   { title: "درباره ما", to: "/aboutUs", icon: faExclamationCircle },
+   { title: "مقالات", to: "/articles", icon: faNewspaper, extraClassName: "pointer-events-none" },
+   { title: "کتاب ها", to: "/books", icon: faBook, extraClassName: "pointer-events-none" },
+   { title: "درباره ما", to: "/aboutUs", icon: faExclamationCircle, extraClassName: "pointer-events-none" },
 ];
 
 // html, body
@@ -169,8 +169,8 @@ function Navbar() {
    };
 
    // generate NavLink class
-   const generateNavLinkClass = (isActive: boolean) => {
-      return `py-4 px-1 hover:text-sky-400 hover:border-sky-400 transition-03 ${
+   const generateNavLinkClass = (isActive: boolean, extraClassName: string) => {
+      return `py-4 px-1 hover:text-sky-400 hover:border-sky-400 transition-03 ${extraClassName} ${
          isActive && "border-b border-sky-400 text-slate-900 dark:text-slate-50"
       }`;
    };
@@ -236,7 +236,7 @@ function Navbar() {
                            <li data-name="nav-link" className="py-4" key={index}>
                               <NavLink
                                  to={item.to}
-                                 className={({ isActive }) => generateNavLinkClass(isActive)}
+                                 className={({ isActive }) => generateNavLinkClass(isActive, item.extraClassName || "")}
                                  onClick={() => {
                                     navbarDispatch({ type: "close-all" });
                                  }}

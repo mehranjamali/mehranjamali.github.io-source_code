@@ -12,7 +12,7 @@ function NotFoundPage() {
          <div className="flex flex-col justify-between lg:h-72 w-full">
             <div className="h-full">
                <img
-                  className="shadow-lg h-full w-full object-cover"
+                  className="shadow-lg h-full w-full object-cover pointer-events-none"
                   src="https://aioseo.com/wp-content/uploads/2021/04/how-to-find-and-fix-404-errors-in-wordpress.png"
                   alt=""
                />

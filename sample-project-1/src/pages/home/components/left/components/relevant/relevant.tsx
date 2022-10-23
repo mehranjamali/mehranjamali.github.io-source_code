@@ -129,11 +129,15 @@ function Relevant() {
                      key={index}
                      id={generateId(item.id)}
                   >
-                     <Link data-name="relevant-item-img" to={`users/${item.id}${item.name}`}>
+                     <Link
+                        data-name="relevant-item-img"
+                        // to={`users/${item.id}${item.name}`}
+                        to={"/"}
+                     >
                         <img
                            src={item.img}
                            alt="users"
-                           className="w-14 h-14 object-cover rounded-full  text-2xs bg-slate-200 dark:bg-slate-600 text-slate-400"
+                           className="w-14 h-14 object-cover rounded-full  text-2xs bg-slate-200 dark:bg-slate-600 text-slate-400 pointer-events-none"
                         />
                      </Link>
                      <div data-name="relevant-item-info" className="flex-1">

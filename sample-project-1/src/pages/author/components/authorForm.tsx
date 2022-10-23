@@ -152,7 +152,7 @@ function AuthorForm({ state }: AuthorFormPropsType) {
                         <img
                            src={photo}
                            alt="author-img"
-                           className="w-full h-full object-contain lg:object-cover rounded-md 
+                           className="w-full h-full object-contain lg:object-cover rounded-md pointer-events-none
                                     bg-slate-200 dark:bg-slate-600 text-sm text-slate-400"
                         />
                      </div>
@@ -162,6 +162,7 @@ function AuthorForm({ state }: AuthorFormPropsType) {
                   ref={selectPhotoInput}
                   type="file"
                   id="selectPhoto"
+                  accept="image/*"
                   className="hidden"
                   onChange={(e) => handleFileInputChange(e)}
                />

@@ -172,7 +172,7 @@ function CreatePostModal({ photo }: CreatePostModalPorpsType) {
                   <div data-name="create-post-modal-user" className="flex flex-row gap-3 w-11/12">
                      <img
                         src={process.env.REACT_APP_USER_IMG_URL}
-                        className="object-cover rounded-full w-12 h-12 bg-slate-200 dark:bg-slate-600 text-xs text-slate-400"
+                        className="object-cover rounded-full w-12 h-12 bg-slate-200 dark:bg-slate-600 text-xs text-slate-400 pointer-events-none"
                         alt="post-user-img"
                      />
                      <div className="relative text-xs w-10/12">
@@ -292,7 +292,7 @@ function CreatePostModal({ photo }: CreatePostModalPorpsType) {
                      >
                         <FontAwesomeIcon icon={faXmark} />
                      </button>
-                     <img src={photo} alt="" className={`w-full h-full object-cover rounded-md`} />
+                     <img src={photo} alt="" className={`w-full h-full object-cover rounded-md pointer-events-none`} />
                   </div>
                </div>
             </div>

@@ -46,7 +46,7 @@ function UserInfo() {
                      <img
                         src={process.env.REACT_APP_USER_IMG_URL}
                         className="absolute mx-auto right-0 left-0 top-9 rounded-full h-16 w-16 border-2 border-white transition-02
-                                 bg-slate-200 dark:bg-slate-600 dark:border-slate-800 text-2xs text-slate-400"
+                                 bg-slate-200 dark:bg-slate-600 dark:border-slate-800 text-2xs text-slate-400 pointer-events-none"
                         alt="user"
                      />
                      <div data-name="headline" className="p-3 pt-11 text-center">

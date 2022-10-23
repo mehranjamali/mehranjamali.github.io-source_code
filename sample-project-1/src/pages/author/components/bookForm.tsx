@@ -184,7 +184,7 @@ function BookForm({ state, authors }: BookFormPropsType) {
                            <img
                               src={authors[index].image}
                               alt="author"
-                              className="w-full h-full object-cover rounded-full bg-slate-200 dark:bg-slate-600 text-2xs text-slate-400"
+                              className="w-full h-full object-cover rounded-full bg-slate-200 dark:bg-slate-600 text-2xs text-slate-400 pointer-events-none"
                            />
                         </div>
                         <p className="pt-1">{authors[index].name}</p>
@@ -215,7 +215,7 @@ function BookForm({ state, authors }: BookFormPropsType) {
                         <img
                            src={author.image}
                            alt="author"
-                           className="w-full h-full object-cover rounded-full bg-slate-200 dark:bg-slate-600 text-2xs text-slate-400"
+                           className="w-full h-full object-cover rounded-full bg-slate-200 dark:bg-slate-600 text-2xs text-slate-400 pointer-events-none"
                         />
                      </div>
                      <p className="pt-1">{author.name}</p>
@@ -237,7 +237,7 @@ function BookForm({ state, authors }: BookFormPropsType) {
                <img
                   src={author.image}
                   alt="author"
-                  className="w-full h-full object-cover rounded-full bg-slate-200 dark:bg-slate-600 text-2xs text-slate-400"
+                  className="w-full h-full object-cover rounded-full bg-slate-200 dark:bg-slate-600 text-2xs text-slate-400 pointer-events-none"
                />
             </div>
             <p className="text-xs">{author.name}</p>
@@ -345,7 +345,7 @@ function BookForm({ state, authors }: BookFormPropsType) {
                         <img
                            src={photo}
                            alt="book-img"
-                           className="w-full h-full object-contain lg:object-cover rounded-md 
+                           className="w-full h-full object-contain lg:object-cover rounded-md pointer-events-none
                                     bg-slate-200 dark:bg-slate-600 text-sm text-slate-400"
                         />
                      </div>
@@ -355,6 +355,7 @@ function BookForm({ state, authors }: BookFormPropsType) {
                   ref={selectPhotoInput}
                   type="file"
                   id="selectPhoto"
+                  accept="image/*"
                   className="hidden"
                   onChange={(e) => handleFileInputChange(e)}
                />

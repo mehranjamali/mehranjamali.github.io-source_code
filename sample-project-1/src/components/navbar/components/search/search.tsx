@@ -176,11 +176,11 @@ function Search({ showModal }: propsSearch) {
          {searchItems.filtered.map((item: any, index: number) => {
             return (
                <div data-name="search-sugest-item" key={index}>
-                  <Link
-                     className="w-full flex flex-col xs:flex-row items-center justify-between gap-3 border-b transition-03 
+                  <div
+                     className="w-full flex flex-col xs:flex-row items-center justify-between gap-3 border-b transition-03 cursor-pointer
                      px-5 py-2 dark:border-slate-700 border-slate-200 dark:hover:bg-slate-600 dark:active:bg-slate-600 
                      hover:bg-gray-200 active:bg-gray-200"
-                     to={`/search/${item.id}?title=${item.title}`}
+                     // to={`/search/${item.id}?title=${item.title}`}
                   >
                      <div className="dark:text-slate-400 text-slate-400 text-xs">
                         <FontAwesomeIcon className="-mb-0.5" icon={faSearch} />
@@ -195,7 +195,7 @@ function Search({ showModal }: propsSearch) {
                         <span>تعداد بازدید : </span>
                         <span>{item.visitNumber}</span>
                      </div>
-                  </Link>
+                  </div>
                </div>
             );
          })}

@@ -1,8 +1,18 @@
 .hide-child-table {
-   height: 0 !important;
-   visibility: hidden !important;
-   opacity: 0 !important;
-   margin: 0 !important;
-   padding: 0 !important;
-   border: none !important;
+   display: none;
+   .hide-child-row {
+      visibility: hidden;
+      opacity: 0;
+      transform: scale(0.3);
+   }
+}
+
+.show-child-table {
+   display: block !important;
+}
+
+@for $i from 1 through 50 {
+   .table-transition-#{$i} {
+      transition: all #{0.1 * $i}s !important;
+   }
 }

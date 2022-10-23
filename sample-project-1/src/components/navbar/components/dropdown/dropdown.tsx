@@ -76,19 +76,19 @@ function Dropdown({ showDropdown, dropdownObjs, closeMenus }: propsDropdown) {
                   <h3 className="mb-2 text-lg font-bold dark:text-gray-100">{dropdownObj.title}</h3>
                   {dropdownObj.list.map((item: any, index: number) => {
                      return (
-                        <Link
+                        <div
                            key={index}
-                           className="py-1 pr-2 border-r-2 border-gray-400 text-xs w-full 
+                           className="py-1 pr-2 border-r-2 border-gray-400 text-xs w-full cursor-pointer
                                     dark:hover:bg-slate-600 hover:bg-gray-200
                                     dark:active:bg-slate-600 active:bg-gray-200
                                     hover:text-sky-400 hover:border-sky-400 transition-03 mt-1"
-                           to={item.link}
+                           // to={item.link}
                            onClick={() => {
                               closeMenus();
                            }}
                         >
                            {item.name}
-                        </Link>
+                        </div>
                      );
                   })}
                </li>

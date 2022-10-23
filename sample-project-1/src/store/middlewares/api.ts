@@ -5,6 +5,7 @@ const apiMiddleware =
    ({ dispatch, getState }: any) =>
    (next: any) =>
    async (action: any) => {
+      // console.log("api middleware called! : ", action.type);
       if (action.type !== apiCallBegan.type) return next(action);
       const { url, method, onStart, onSuccess, onError, data } = action.payload;
       next(action);

@@ -38,7 +38,7 @@ function Slider({ popularList }: sliderProps) {
                      <img
                         src={item.img}
                         alt={item.title}
-                        className="text-2xs min-slide-h rounded-md bg-slate-200 dark:bg-slate-600 text-slate-400"
+                        className="text-2xs min-slide-h rounded-md bg-slate-200 dark:bg-slate-600 text-slate-400 pointer-events-none"
                      />
                      <div
                         className="absolute bottom-0 left-0 right-0 text-center w-full text-xs bg-slate-600/50 dark:bg-slate-900/50 
