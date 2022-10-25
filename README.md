@@ -51,8 +51,11 @@ The general page breakdown looks like this: (Protected = need login)
   - Search
 
 
+## test 
+I implemented `unit test` for "slices/posts.ts" inside `__tests__` folder using `jest` and `axios-mock-adapter` 
+
 ## Redux
 
 
-![Web 1920 – 1(crop)](https://user-images.githubusercontent.com/29439821/197222633-725dd617-5a24-41ff-9486-599ce9d43d2b.png)
+![Web 1920 – 1(crop)](https://user-images.githubusercontent.com/29439821/197223302-5e6fe731-b056-4c0e-8f05-d91d9a047563.png)
 
