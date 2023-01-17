@@ -1,17 +1,17 @@
 {
   "files": {
     "main.css": "/static/css/main.c928a521.css",
-    "main.js": "/static/js/main.cccaf11d.js",
+    "main.js": "/static/js/main.cb1bc64b.js",
     "static/media/Shabnam.eot": "/static/media/Shabnam.bcffd3bf7bdf8397f94e.eot",
     "static/media/Shabnam.ttf": "/static/media/Shabnam.7c7bc458ff70ddca3638.ttf",
     "static/media/bYekan.ttf": "/static/media/bYekan.a63119cb654a1c836760.ttf",
     "static/media/Shabnam.woff": "/static/media/Shabnam.16463703fe55647f7c35.woff",
     "index.html": "/index.html",
     "main.c928a521.css.map": "/static/css/main.c928a521.css.map",
-    "main.cccaf11d.js.map": "/static/js/main.cccaf11d.js.map"
+    "main.cb1bc64b.js.map": "/static/js/main.cb1bc64b.js.map"
   },
   "entrypoints": [
     "static/css/main.c928a521.css",
-    "static/js/main.cccaf11d.js"
+    "static/js/main.cb1bc64b.js"
   ]
 }
