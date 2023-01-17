@@ -13,7 +13,7 @@
 react - @reduxjs/toolkit - tailwindcss - typescript - redux-thunk , [view all](https://github.com/mehranjamali/mehranjamali.github.io-source_code/blob/master/sample-project-1/package.json)
 
 ## Functionality overview
-The example application does not use any server, everything is local but I implemented authentication and asynchronous operation logic in my services and middlewares, I have used `Redux-Thunk` for this purpose.\
+The example application does not use any server, everything is local but I implemented authentication and asynchronous operation logic in my services and middlewares, I have used `Redux-Thunk` for this purpose.
 
 General functionality: 
 - Authenticate users. ( login page:  Sign in with any `username` and `password` you want + Sign in with `google` + logout button )
@@ -50,6 +50,9 @@ The general page breakdown looks like this: (Protected = need login)
   - Pagination
   - Search
 
+
+## test 
+I implemented `unit test` for "store/slices/posts.ts" inside `__tests__` folder using `jest` and `axios-mock-adapter` 
 
 ## Redux
 
